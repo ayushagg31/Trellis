@@ -1,14 +1,21 @@
 const express = require('express')
-/* eslint-disable-next-line no-unused-vars */
+/* eslint-disable no-unused-vars */
 const cors = require('cors')
 const morgan = require('morgan')
 const helmet = require('helmet')
+const mongoose = require('mongoose')
 const { notFoundHandler, errorHandler } = require('./middleware')
 
 require('dotenv').config()
 
 const app = express()
-const PORT = 8080 || process.env.PORT
+
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+
+const PORT = process.env.PORT
 
 app.use(morgan('tiny'))
 app.use(helmet())
