@@ -26,7 +26,7 @@ const listTwoId = new mongoose.Types.ObjectId()
 const listTwo = {
     _id: listTwoId,
     name: 'listTwo',
-    boardId: boardOneId.toString()
+    boardId: boardTwoId.toString()
 }
 
 const cardOneId = new mongoose.Types.ObjectId()
@@ -40,30 +40,31 @@ const cardTwoId = new mongoose.Types.ObjectId()
 const cardTwo = {
     _id: cardTwoId,
     name: 'cardTwo',
-    listId: listOneId.toString()
+    listId: listTwoId.toString()
 }
 
-const setupBoard = async () => {
+const setupBoard = async (boardData) => {
     await Board.deleteMany()
-    await new Board(boardOne).save()
+    await new Board(boardData).save()
 }
 
-const setupList = async () => {
-    setupBoard
+const setupList = async (listData, boardData) => {
+    await setupBoard(boardData)
     await List.deleteMany()
-    await new List(listOne).save()
+    await new List(listData).save()
 }
 
-const setupCard = async () => {
-    setupList
+const setupCard = async (cardData, listData, boardData) => {
+    await setupList(listData, boardData)
     await Card.deleteMany()
-    await new Card(cardOne).save()
+    await new Card(cardData).save()
 }
 
 module.exports = {
     boardOneId,
     boardOne,
     boardTwo,
+    boardTwoId,
     setupBoard,
     listOneId,
     listOne,
