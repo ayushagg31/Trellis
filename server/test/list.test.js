@@ -1,10 +1,16 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 const request = require('supertest')
 const app = require('../src/app')
+const sinon = require('sinon')
+const mongoose = require('mongoose')
 const List = require('../src/models/list')
 const Board = require('../src/models/board')
-const { boardOneId, boardOne, listOne, listTwo } = require('./fixtures/db')
+const { boardOneId, boardOne, boardTwo, listOne, listTwo, listOneId, listTwoId, cardOne, setupList, setupCard } = require('./fixtures/db')
+
+
+afterEach(() => {
+    sinon.restore()
+})
 
 
 describe('POST@/api/lists', () => {
@@ -43,6 +49,47 @@ describe('Get@/api/lists', () => {
         const listEntries = await List.find({})
         expect(JSON.stringify(resp.body)).toEqual(JSON.stringify(listEntries))
     })
+})
+
+describe('Get@/api/lists/{id}', () => {
+    it('Should display list on valid id', async () => {
+        await setupList(listOne, boardOne)
+        await request(app).get(`/api/lists/${listOneId}`).send().expect(200)
+    })
+
+    it('Shouldn\'t display list on invalid id - 404', async () => {
+        await request(app).get(`/api/lists/${listTwoId}`).send().expect(404)
+    })
+
+    it('Should show server error - 500', async () => {
+        sinon.stub(mongoose.Model, 'findById').rejects({})
+        await request(app).get(`/api/lists/${listOneId}`).send().expect(500)
+    })
+
+})
+
+
+describe('Get@/api/lists/{id}/cards', () => {
+    it('Should display all lists with valid listId', async () => {
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).get(`/api/lists/${listOneId}/cards`).send().expect(200)
+    })
+
+    it('Should show 404 on invalid listId', async () => {
+        await request(app).get(`/api/lists/${listTwoId}/cards`).send().expect(404)
+    })
+
+    it('Should show server error on failure', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await request(app).get(`/api/lists/${listOneId}/cards`).send().expect(500)
+    })
+
+    it('Should show empty cards', async () => {
+        await setupList(listTwo, boardTwo)
+        const resp = await request(app).get(`/api/lists/${listTwoId}/cards`).send()
+        expect(resp.body).toHaveLength(0)
+    })
+
 })
 
 
