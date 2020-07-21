@@ -48,7 +48,7 @@ describe('Get@/api/lists', () => {
 describe('Get@/api/lists/{id}', () => {
     it('Should display list on valid id', async () => {
         await setupBoard(listOne)
-        await request(app).get(`/api/boards/${listOneId}`).send().expect(200)
+        await request(app).get(`/api/lists/${listOneId}`).send().expect(200)
     })
 
     it('Shouldn\'t display list on invalid id - 404', async () => {
