@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const List = require('../models/list')
-
+const Card = require('../models/card')
 const router = Router()
 
 
