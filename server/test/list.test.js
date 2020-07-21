@@ -45,4 +45,44 @@ describe('Get@/api/lists', () => {
     })
 })
 
+describe('Get@/api/lists/{id}', () => {
+    it('Should display list on valid id', async () => {
+        await setupBoard(listOne)
+        await request(app).get(`/api/boards/${listOneId}`).send().expect(200)
+    })
+
+    it('Shouldn\'t display list on invalid id - 404', async () => {
+        await request(app).get(`/api/lists/${listTwoId}`).send().expect(404)
+    })
+
+    it('Should show server error - 500', async () => {
+        sinon.stub(mongoose.Model, 'findById').rejects({})
+        await request(app).get(`/api/lists/${listOneId}`).send().expect(500)
+    })
+
+})
+
+
+describe('Get@/api/lists/{id}/cards', () => {
+    it('Should display all lists with valid listId', async () => {
+        await setupList(cardOne, listOne)
+        await request(app).get(`/api/lists/${listOneId}/cards`).send().expect(200)
+    })
+
+    it('Should show 404 on invalid listId', async () => {
+        await request(app).get(`/api/lists/${listTwoId}/cards`).send().expect(404)
+    })
+
+    it('Should show server error on failure', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await request(app).get(`/api/lists/${listOneId}/cards`).send().expect(500)
+    })
+
+    it('Should show empty cards', async () => {
+        await setupBoard(listTwo)
+        const resp = await request(app).get(`/api/lists/${listTwoId}/cards`).send()
+        expect(resp.body).toHaveLength(0)
+    })
+})
+
 

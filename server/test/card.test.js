@@ -45,3 +45,22 @@ describe('Get@/api/cards', () => {
 })
 
 
+describe('Get@/api/cards/{id}', () => {
+    it('Should display card on valid id', async () => {
+        await setupBoard(cardOne)
+        await request(app).get(`/api/cards/${cardOneId}`).send().expect(200)
+    })
+
+    it('Shouldn\'t display card on invalid id - 404', async () => {
+        await request(app).get(`/api/cards/${cardTwoId}`).send().expect(404)
+    })
+
+    it('Should show server error - 500', async () => {
+        sinon.stub(mongoose.Model, 'findById').rejects({})
+        await request(app).get(`/api/cards/${cardOneId}`).send().expect(500)
+    })
+
+})
+
+
+
