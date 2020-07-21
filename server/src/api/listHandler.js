@@ -27,5 +27,32 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+
+// get list based on board id
+router.get('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const lists = await List.findById(_id)
+        if (!lists)
+            return res.status(404).send()
+        res.send(lists)
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get('/:id/cards', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const lists = await List.findById(_id)
+        if (!lists)
+            return res.status(404).send()
+        const cards = await Card.find({ listID: _id })
+        res.send(cards)
+    } catch (error) {
+        next(error)
+    }
+})
+
 module.exports = router
 
