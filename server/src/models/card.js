@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const List = require('./list')
 const { Schema } = mongoose
 
 const cardSchema = new Schema({
@@ -9,7 +8,7 @@ const cardSchema = new Schema({
     },
     listId: { 
         type: Schema.Types.ObjectId, 
-        ref: List,
+        ref: 'list',
         required: true 
     }
 },
@@ -17,6 +16,4 @@ const cardSchema = new Schema({
     timestamps: true
 })
 
-const card = mongoose.model('cardSchema', cardSchema)
-
-module.exports = card
+module.exports = mongoose.model('card', cardSchema)
