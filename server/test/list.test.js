@@ -1,10 +1,16 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 const request = require('supertest')
 const app = require('../src/app')
+const sinon = require('sinon')
+const mongoose = require('mongoose')
 const List = require('../src/models/list')
 const Board = require('../src/models/board')
-const { boardOneId, boardOne, listOne, listTwo } = require('./fixtures/db')
+const { boardOneId, boardOne, boardTwo, listOne, listTwo, listOneId, listTwoId, cardOne, setupList, setupCard } = require('./fixtures/db')
+
+
+afterEach(() => {
+    sinon.restore()
+})
 
 
 describe('POST@/api/lists', () => {
@@ -47,7 +53,7 @@ describe('Get@/api/lists', () => {
 
 describe('Get@/api/lists/{id}', () => {
     it('Should display list on valid id', async () => {
-        await setupBoard(listOne)
+        await setupList(listOne, boardOne)
         await request(app).get(`/api/lists/${listOneId}`).send().expect(200)
     })
 
@@ -65,7 +71,7 @@ describe('Get@/api/lists/{id}', () => {
 
 describe('Get@/api/lists/{id}/cards', () => {
     it('Should display all lists with valid listId', async () => {
-        await setupList(cardOne, listOne)
+        await setupCard(cardOne, listOne, boardOne)
         await request(app).get(`/api/lists/${listOneId}/cards`).send().expect(200)
     })
 
@@ -79,10 +85,11 @@ describe('Get@/api/lists/{id}/cards', () => {
     })
 
     it('Should show empty cards', async () => {
-        await setupBoard(listTwo)
+        await setupList(listTwo, boardTwo)
         const resp = await request(app).get(`/api/lists/${listTwoId}/cards`).send()
         expect(resp.body).toHaveLength(0)
     })
+
 })
 
 

@@ -1,10 +1,16 @@
 /* eslint-disable no-undef */
 const request = require('supertest')
 const app = require('../src/app')
+const sinon = require('sinon')
 const List = require('../src/models/list')
 const Card = require('../src/models/card')
-const { listOne, cardOne, listOneId } = require('./fixtures/db')
+const mongoose = require('mongoose')
+const { listOne, cardOne, listOneId, boardOne,cardOneId, cardTwoId, setupCard } = require('./fixtures/db')
 
+
+afterEach(() => {
+    sinon.restore()
+})
 
 describe('POST@/api/cards', () => {
     it('Should create a new card', async () => {
@@ -47,7 +53,7 @@ describe('Get@/api/cards', () => {
 
 describe('Get@/api/cards/{id}', () => {
     it('Should display card on valid id', async () => {
-        await setupBoard(cardOne)
+        await setupCard(cardOne, listOne, boardOne)
         await request(app).get(`/api/cards/${cardOneId}`).send().expect(200)
     })
 

@@ -1,10 +1,8 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 const request = require('supertest')
 const sinon = require('sinon')
 const app = require('../src/app')
 const Board = require('../src/models/board')
-const List = require('../src/models/list')
 const mongoose = require('mongoose')
 const { listOne, boardTwo, boardOne, boardOneId, boardTwoId, setupBoard, setupList } = require('./fixtures/db')
 
