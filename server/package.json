@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
     "lint": "eslint src/",
-    "test": "env-cmd -f ./config/test.env jest --watch"
+    "test": "env-cmd -f ./config/test.env jest --watch --runInBand"
   },
   "jest": {
     "testEnvironment": "node"

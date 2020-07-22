@@ -1,10 +1,16 @@
 /* eslint-disable no-undef */
 const request = require('supertest')
 const app = require('../src/app')
+const sinon = require('sinon')
 const List = require('../src/models/list')
 const Card = require('../src/models/card')
-const { listOne, cardOne, listOneId } = require('./fixtures/db')
+const mongoose = require('mongoose')
+const { listOne, cardOne, listOneId, boardOne,cardOneId, cardTwoId, setupCard } = require('./fixtures/db')
 
+
+afterEach(() => {
+    sinon.restore()
+})
 
 describe('POST@/api/cards', () => {
     it('Should create a new card', async () => {
@@ -43,5 +49,24 @@ describe('Get@/api/cards', () => {
         expect(JSON.stringify(resp.body)).toEqual(JSON.stringify(cardEntries))
     })
 })
+
+
+describe('Get@/api/cards/{id}', () => {
+    it('Should display card on valid id', async () => {
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).get(`/api/cards/${cardOneId}`).send().expect(200)
+    })
+
+    it('Shouldn\'t display card on invalid id - 404', async () => {
+        await request(app).get(`/api/cards/${cardTwoId}`).send().expect(404)
+    })
+
+    it('Should show server error - 500', async () => {
+        sinon.stub(mongoose.Model, 'findById').rejects({})
+        await request(app).get(`/api/cards/${cardOneId}`).send().expect(500)
+    })
+
+})
+
 
 

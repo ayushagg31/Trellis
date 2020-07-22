@@ -3,7 +3,7 @@ const Card = require('../models/card')
 
 const router = Router()
 
-
+// fetch all the card entries from db
 router.get('/', async (req, res, next) => {
     try {
         const cardEntries = await Card.find()
@@ -13,6 +13,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
+// create new card entry
 router.post('/', async (req, res, next) => {
     try {
         const card = new Card(req.body)
@@ -26,6 +27,22 @@ router.post('/', async (req, res, next) => {
         next(error)
     }
 })
+
+
+// get cards based on list id
+router.get('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const cards = await Card.findById(_id)
+        if (!cards)
+            return res.status(404).send()
+        res.send(cards)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
 
 module.exports = router
 

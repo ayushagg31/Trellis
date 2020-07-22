@@ -67,10 +67,12 @@ module.exports = {
     boardTwoId,
     setupBoard,
     listOneId,
+    listTwoId,
     listOne,
     listTwo,
     setupList,
     cardOneId,
+    cardTwoId,
     cardOne,
     cardTwo,
     setupCard
