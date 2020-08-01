@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const Board = require('../models/board')
 const List = require('../models/list')
-
+const Card = require('../models/card')
 const router = Router()
 
 // fetch all the board entries
@@ -54,5 +54,18 @@ router.get('/:id/lists', async (req, res, next) => {
     }
 })
 
+// get cards based on boardId
+router.get('/:id/cards', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const board = await Board.findById(_id)
+        if (!board)
+            return res.status(404).send()
+        const cards = await Card.find({ boardId: _id })
+        res.send(cards)
+    } catch (error) {
+        next(error)
+    }
+})
 
 module.exports = router

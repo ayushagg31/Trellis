@@ -4,7 +4,8 @@ const sinon = require('sinon')
 const app = require('../src/app')
 const Board = require('../src/models/board')
 const mongoose = require('mongoose')
-const { listOne, boardTwo, boardOne, boardOneId, boardTwoId, setupBoard, setupList } = require('./fixtures/db')
+const { listOne, boardTwo, boardOne, boardOneId, boardTwoId, cardOne,
+    setupBoard, setupList, setupCard } = require('./fixtures/db')
 
 afterEach(() => {
     sinon.restore()
@@ -21,7 +22,7 @@ describe('POST@/api/boards', () => {
     })
 
     it('Should return internal server error when mongoose fails to save', async () => {
-        sinon.stub(mongoose.Model, 'create').rejects({})
+        sinon.stub(mongoose.Model.prototype, 'save').rejects({})
         await request(app).post('/api/boards').send(boardTwo).expect(500)
     })
 })
@@ -63,7 +64,6 @@ describe('Get@/api/boards/{id}', () => {
 
 })
 
-
 describe('Get@/api/boards/{id}/lists', () => {
     it('Should display all lists with valid boardId', async () => {
         await setupList(listOne, boardOne)
@@ -82,6 +82,28 @@ describe('Get@/api/boards/{id}/lists', () => {
     it('Should show empty lists', async () => {
         await setupBoard(boardTwo)
         const resp = await request(app).get(`/api/boards/${boardTwoId}/lists`).send()
+        expect(resp.body).toHaveLength(0)
+    })
+})
+
+describe('Get@/api/boards/{id}/cards', () => {
+    it('Should display all cards with valid boardId', async () => {
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).get(`/api/boards/${boardOneId}/cards`).send().expect(200)
+    })
+
+    it('Should show 404 on invalid boardId', async () => {
+        await request(app).get(`/api/boards/${boardTwoId}/cards`).send().expect(404)
+    })
+
+    it('Should show server error on failure', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await request(app).get(`/api/boards/${boardOneId}/cards`).send().expect(500)
+    })
+
+    it('Should show empty cards', async () => {
+        await setupBoard(boardTwo)
+        const resp = await request(app).get(`/api/boards/${boardTwoId}/cards`).send()
         expect(resp.body).toHaveLength(0)
     })
 })

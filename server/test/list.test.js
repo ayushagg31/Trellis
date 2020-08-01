@@ -4,8 +4,9 @@ const app = require('../src/app')
 const sinon = require('sinon')
 const mongoose = require('mongoose')
 const List = require('../src/models/list')
-const Board = require('../src/models/board')
-const { boardOneId, boardOne, boardTwo, listOne, listTwo, listOneId, listTwoId, cardOne, setupList, setupCard } = require('./fixtures/db')
+const { boardOneId, boardOne, boardTwo,
+    listOne, listTwo, listOneId, listTwoId, cardOne,
+    setupList, setupCard, setupBoard } = require('./fixtures/db')
 
 
 afterEach(() => {
@@ -15,9 +16,7 @@ afterEach(() => {
 
 describe('POST@/api/lists', () => {
     it('Should create a new list', async () => {
-        await Board.deleteMany()
-        await new Board(boardOne).save()
-        await List.deleteMany()
+        setupBoard(boardOne)
         await request(app).post('/api/lists').send(listOne).expect(200)
     })
 
@@ -28,13 +27,22 @@ describe('POST@/api/lists', () => {
     it('Should not create list without name', async () => {
         await request(app).post('/api/lists').send({ boardId: boardOneId }).expect(422)
     })
+
     it('Should not create list without boardId', async () => {
         await request(app).post('/api/lists').send({ name: 'listTestOne' }).expect(422)
     })
+
     it('Should not create list with invalid boardId', async () => {
         await request(app).post('/api/lists').send({ name: 'listTestOne', boardId: 'randomBoardId' }).expect(422)
 
     })
+
+    it('Should return internal server error when mongoose fails to save', async () => {
+        await setupBoard(boardTwo)
+        sinon.stub(mongoose.Model.prototype, 'save').rejects({})
+        await request(app).post('/api/lists').send(listTwo).expect(500)
+    })
+
 })
 
 describe('Get@/api/lists', () => {
@@ -48,6 +56,10 @@ describe('Get@/api/lists', () => {
         const resp = await request(app).get('/api/lists').send().expect(200)
         const listEntries = await List.find({})
         expect(JSON.stringify(resp.body)).toEqual(JSON.stringify(listEntries))
+    })
+    it('Should show server error - 500 internal server error', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await request(app).get('/api/lists').send().expect(500)
     })
 })
 

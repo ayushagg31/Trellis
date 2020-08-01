@@ -22,14 +22,12 @@ router.post('/', async (req, res, next) => {
     } catch (error) {
         if (error.name === 'ValidationError')
             res.status(422)
-        else
-            res.status(400)
         next(error)
     }
 })
 
 
-// get list based on board id
+// get list based on listId
 router.get('/:id', async (req, res, next) => {
     const _id = req.params.id
     try {
