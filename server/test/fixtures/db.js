@@ -34,7 +34,8 @@ const cardOne = {
     _id: cardOneId,
     name: 'cardOne',
     listId: listOneId.toString(),
-    boardId: boardOneId.toString()
+    boardId: boardOneId.toString(),
+    order: 'ab'
 }
 
 const cardTwoId = new mongoose.Types.ObjectId()
@@ -42,7 +43,8 @@ const cardTwo = {
     _id: cardTwoId,
     name: 'cardTwo',
     listId: listTwoId.toString(),
-    boardId: boardTwoId.toString()
+    boardId: boardTwoId.toString(),
+    order: 'aban'
 }
 
 const setupBoard = async (boardData) => {

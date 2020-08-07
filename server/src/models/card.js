@@ -6,14 +6,18 @@ const cardSchema = new Schema({
         type: String,
         required: true
     },
-    listId: { 
-        type: Schema.Types.ObjectId, 
+    listId: {
+        type: Schema.Types.ObjectId,
         ref: 'list',
-        required: true 
+        required: true
     },
     boardId: {
         type: Schema.Types.ObjectId,
         ref: 'board',
+        required: true
+    },
+    order: {
+        type: String,
         required: true
     }
 },

@@ -4,7 +4,10 @@ const app = require('../src/app')
 const sinon = require('sinon')
 const Card = require('../src/models/card')
 const mongoose = require('mongoose')
-const { listOne, cardOne, cardTwo, listOneId, listTwo, boardOne, boardTwo, boardOneId, cardOneId, cardTwoId, setupCard, setupList } = require('./fixtures/db')
+const { listOne, listOneId, listTwo,
+    boardOne, boardTwo, boardOneId, boardTwoId,
+    cardOne, cardTwo, cardOneId, cardTwoId,
+    setupCard, setupList, listTwoId } = require('./fixtures/db')
 
 afterEach(() => {
     sinon.restore()
@@ -20,22 +23,27 @@ describe('POST@/api/cards', () => {
     })
 
     it('Should not create card without name', async () => {
-        await request(app).post('/api/cards').send({ listId: listOneId, boardId: boardOneId }).expect(422)
+        await request(app).post('/api/cards').send({ listId: listOneId, boardId: boardOneId, order: 'aba' }).expect(422)
     })
 
     it('Should not create card without listId', async () => {
-        await request(app).post('/api/cards').send({ name: 'cardTestOne', boardId: boardOneId }).expect(422)
+        await request(app).post('/api/cards').send({ name: 'cardTestOne', boardId: boardOneId, order: 'aca' }).expect(422)
     })
 
     it('Should not create card without boardId', async () => {
-        await request(app).post('/api/cards').send({ name: 'cardTestOne', listId: listOneId }).expect(422)
+        await request(app).post('/api/cards').send({ name: 'cardTestOne', listId: listOneId, order: 'aka' }).expect(422)
+    })
+
+    it('Should not create card without order', async () => {
+        await request(app).post('/api/cards').send({ name: 'cardTestOne', listId: listOneId, boardId: boardOneId }).expect(422)
     })
 
     it('Should not create card with invalid listId', async () => {
         await request(app).post('/api/cards').send({
             name: 'cardTestrandom',
             listId: 'nbvnbvnm',
-            boardId: boardOneId
+            boardId: boardOneId,
+            order: 'aba'
         }).expect(422)
     })
 
@@ -43,7 +51,8 @@ describe('POST@/api/cards', () => {
         await request(app).post('/api/cards').send({
             name: 'cardTestrandom',
             listId: listOneId,
-            boardId: 'nvnnvn'
+            boardId: 'nvnnvn',
+            order: 'aca'
         }).expect(422)
     })
 
@@ -89,8 +98,32 @@ describe('Get@/api/cards/{id}', () => {
         sinon.stub(mongoose.Model, 'findById').rejects({})
         await request(app).get(`/api/cards/${cardOneId}`).send().expect(500)
     })
-
 })
 
+const updateCard = {
+    name: 'sampleCard',
+    listId: listTwoId,
+    order: 'zza'
+}
+
+describe('PATCH@/api/cards/{id}', () => {
+    it('Should update an existing card on all valid fields', async () => {
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).patch(`/api/cards/${cardOneId}`).send(updateCard).expect(200)
+    })
+
+    it('Should not update, if card doesn\'t exist', async () => {
+        await request(app).patch(`/api/cards/${cardTwoId}`).send(updateCard).expect(404)
+    })
+
+    it('Should not update card on invalid fields like boardId, _id', async () => {
+        await request(app).patch(`/api/cards/${cardTwoId}`).send({ boardId: boardTwoId, _id: cardTwoId }).expect(400)
+    })
+
+    it('Should return internal server error when mongoose fails to connect', async () => {
+        sinon.stub(mongoose.Model, 'findByIdAndUpdate').rejects({})
+        await request(app).patch(`/api/cards/${cardTwoId}`).send(updateCard).expect(500)
+    })
+})
 
 

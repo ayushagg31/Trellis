@@ -26,15 +26,33 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-
 // get cards based on cardId
 router.get('/:id', async (req, res, next) => {
     const _id = req.params.id
     try {
         const cards = await Card.findById(_id)
         if (!cards)
-            return res.status(404).send()
+            return res.status(404).send({ error: 'Card not found!' })
         res.send(cards)
+    } catch (error) {
+        next(error)
+    }
+})
+
+// update card content based on id
+router.patch('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['name', 'listId', 'order']
+    const isValidOperation = updates.every(
+        (update) => allowedUpdates.includes(update))
+    if (!isValidOperation)
+        return res.status(400).send({ error: 'Invalid updates!' })
+    try {
+        const card = await Card.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        if (!card)
+            return res.status(404).send({ error: 'Card not found!' })
+        res.send(card)
     } catch (error) {
         next(error)
     }
