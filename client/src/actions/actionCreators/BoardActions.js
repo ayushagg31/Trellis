@@ -38,3 +38,27 @@ export const createNewBoard = (params) => {
             })
     }
 }
+
+export const fetchListsFromBoard = (id) => {
+    return (dispatch) => {
+        dispatch({ type: ACTIONS.MAKE_REQUEST })
+        axios.get(BASE_URL + id + '/lists')
+            .then(res => {
+                dispatch({ type: ACTIONS.GET_LISTS, payload: { lists: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR, payload: { error: e } })
+            })
+    }
+}
+
+export const fetchsCardsFromBoard = (id) => {
+    return (dispatch) => {
+        dispatch({ type: ACTIONS.MAKE_REQUEST })
+        axios.get(BASE_URL + id + '/cards')
+            .then(res => {
+                dispatch({ type: ACTIONS.GET_CARDS, payload: { cards: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR, payload: { error: e } })
+            })
+    }
+}

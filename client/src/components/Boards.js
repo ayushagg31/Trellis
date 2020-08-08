@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchAllBoards, createNewBoard } from '../actions/actionCreators/BoardActions'
+import { fetchAllBoards, createNewBoard } from '../actions/actionCreators/boardActions'
 import { Link } from 'react-router-dom'
 
 export default function Boards() {

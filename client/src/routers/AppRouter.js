@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import App from '../App';
 import React from 'react'
-import ListView from '../components/ListView'
+import BoardView from '../components/BoardView'
 
 const AppRouter = () => (
     <BrowserRouter>
         <Switch>
             <Route path='/' exact component={App} />
             <Route path='/b/:id/:name?'>
-                <ListView />
+                <BoardView />
             </Route>
             {/* <Route component={NotFound} /> */}
         </Switch>
