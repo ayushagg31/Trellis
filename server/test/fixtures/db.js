@@ -19,14 +19,16 @@ const listOneId = new mongoose.Types.ObjectId()
 const listOne = {
     _id: listOneId,
     name: 'listOne',
-    boardId: boardOneId.toString()
+    boardId: boardOneId.toString(),
+    order: 'n'
 }
 
 const listTwoId = new mongoose.Types.ObjectId()
 const listTwo = {
     _id: listTwoId,
     name: 'listTwo',
-    boardId: boardTwoId.toString()
+    boardId: boardTwoId.toString(),
+    order: 'xz'
 }
 
 const cardOneId = new mongoose.Types.ObjectId()

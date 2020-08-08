@@ -4,7 +4,7 @@ const app = require('../src/app')
 const sinon = require('sinon')
 const mongoose = require('mongoose')
 const List = require('../src/models/list')
-const { boardOneId, boardOne, boardTwo,
+const { boardOneId, boardOne, boardTwo, boardTwoId,
     listOne, listTwo, listOneId, listTwoId, cardOne,
     setupList, setupCard, setupBoard } = require('./fixtures/db')
 
@@ -51,12 +51,14 @@ describe('Get@/api/lists', () => {
         const listEntries = await List.find({})
         expect(JSON.stringify(resp.body)).toEqual(JSON.stringify(listEntries))
     })
+
     it('Should show empty list-db', async () => {
         await List.deleteMany()
         const resp = await request(app).get('/api/lists').send().expect(200)
         const listEntries = await List.find({})
         expect(JSON.stringify(resp.body)).toEqual(JSON.stringify(listEntries))
     })
+
     it('Should show server error - 500 internal server error', async () => {
         sinon.stub(mongoose.Model, 'find').rejects({})
         await request(app).get('/api/lists').send().expect(500)
@@ -104,4 +106,27 @@ describe('Get@/api/lists/{id}/cards', () => {
 
 })
 
+const updateList = {
+    name: 'sampleList',
+    order: 'zza'
+}
 
+describe('PATCH@/api/lists/{id}', () => {
+    it('Should update an existing list on all valid fields', async () => {
+        await setupList(listOne, boardOne)
+        await request(app).patch(`/api/lists/${listOneId}`).send(updateList).expect(200)
+    })
+
+    it('Should not update, if list doesn\'t exist', async () => {
+        await request(app).patch(`/api/lists/${listTwoId}`).send(updateList).expect(404)
+    })
+
+    it('Should not update list on invalid fields like boardId, _id', async () => {
+        await request(app).patch(`/api/lists/${listTwoId}`).send({ boardId: boardTwoId, _id: listTwoId }).expect(400)
+    })
+
+    it('Should return internal server error when mongoose fails to connect', async () => {
+        sinon.stub(mongoose.Model, 'findByIdAndUpdate').rejects({})
+        await request(app).patch(`/api/lists/${listTwoId}`).send(updateList).expect(500)
+    })
+})

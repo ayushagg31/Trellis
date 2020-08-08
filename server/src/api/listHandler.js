@@ -54,5 +54,25 @@ router.get('/:id/cards', async (req, res, next) => {
     }
 })
 
+// update list content based on id
+router.patch('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['name', 'order']
+    const isValidOperation = updates.every(
+        (update) => allowedUpdates.includes(update))
+    if (!isValidOperation)
+        return res.status(400).send({ error: 'Invalid updates!' })
+    try {
+        const list = await List.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        if (!list)
+            return res.status(404).send({ error: 'List not found!' })
+        res.send(list)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
 module.exports = router
 

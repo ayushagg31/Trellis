@@ -7,10 +7,14 @@ const listSchema = new Schema({
         type: String,
         required: true
     },
-    boardId: { 
-        type: Schema.Types.ObjectId, 
+    boardId: {
+        type: Schema.Types.ObjectId,
         ref: 'board',
-        required: true 
+        required: true
+    },
+    order: {
+        type: String,
+        required: true
     }
 },
 {
