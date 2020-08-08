@@ -24,11 +24,3 @@ export default function midString(prev, next) {
     }
     return str + String.fromCharCode(Math.ceil((p + n) / 2))  // append middle character
 }
-
-
-// var strings = ['', '']
-// while (strings.length < 100) {
-//     var rnd = Math.floor(Math.random() * (strings.length - 1))
-//     strings.splice(rnd + 1, 0, midString(strings[rnd], strings[rnd + 1]))
-//     console.log(strings)
-// }

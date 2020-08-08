@@ -7,6 +7,8 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import List from './List'
 import _ from 'lodash'
 import styled from 'styled-components'
+import midString from '../ordering/ordering'
+import { updateCardById } from '../actions/actionCreators/cardActions'
 
 const Container = styled.div`
     display: flex;
@@ -39,7 +41,7 @@ export default function BoardView() {
                 const val = _.filter(cards, { listId: id })
                 const ans = []
                 val.forEach(v => ans.push(v._id))
-                return ans
+                return _.orderBy(ans, ['order'], ['asc'])
             }
             const setContent = () => {
                 cards.forEach(card => (
@@ -57,13 +59,21 @@ export default function BoardView() {
     }, [setInitDone, listLoading, cardLoading, setInitialData, cards, lists])
 
     const onDragEnd = (result) => {
-        // Todo - reorder our column
+        var newOrder
         const { destination, source, draggableId } = result
         if (!destination)
-            return;
+            return
         if (destination.droppableId === source.droppableId && destination.index === source.index)
             return
         const column = initialData.columns[source.droppableId]
+        if (destination.index === 0)
+            newOrder = midString('', initialData.tasks[column.taskIds[0]].order)
+        else if (destination.index === column.taskIds.length - 1)
+            newOrder = midString(initialData.tasks[column.taskIds[destination.index]].order, '')
+        else
+            newOrder = midString(initialData.tasks[column.taskIds[destination.index]].order,
+                initialData.tasks[column.taskIds[destination.index + 1]].order)
+        dispatch(updateCardById(draggableId, { order: newOrder }))
         const newTaskIds = Array.from(column.taskIds)
         newTaskIds.splice(source.index, 1)
         newTaskIds.splice(destination.index, 0, draggableId)
@@ -79,7 +89,6 @@ export default function BoardView() {
             }
         }
         setInitialData(newData)
-
     }
 
     return (

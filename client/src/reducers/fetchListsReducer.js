@@ -6,13 +6,15 @@ const initialState = {
 }
 export const fetchListsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ACTIONS.MAKE_REQUEST:
+        case ACTIONS.MAKE_REQUEST_LIST:
             return { ...state, listLoading: true }
         case ACTIONS.GET_LISTS:
             return { ...state, listLoading: false, lists: action.payload.lists }
-        case ACTIONS.ERROR:
+        case ACTIONS.ERROR_LIST:
             return { ...state, listLoading: false, listError: action.payload.error, lists: [] }
         default:
             return state
     }
 }
+
+

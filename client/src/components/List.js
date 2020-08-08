@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import CreateItem from './CreateItem'
 import { createNewCard } from '../actions/actionCreators/cardActions'
 import { useDispatch } from 'react-redux'
+import midString from '../ordering/ordering'
 
 const Container = styled.div`
     margin: 8px;
@@ -29,11 +30,12 @@ export default function Column({ column, tasks }) {
     }
 
     const submitHandler = () => {
+        const totalTasks = tasks.length
         const postCardReq = {
             name: cardTitle,
             boardId: column.boardId,
             listId: column._id,
-            order: 'aba'
+            order: totalTasks === 0 ? 'n' : midString(tasks[totalTasks - 1].order, '')
         }
         dispatch(createNewCard(postCardReq))
         setCardTitle('')
