@@ -21,5 +21,6 @@ export const VALIDATION_ERROR_BOARD = 'validationErrorBoard'
 export const VALIDATION_ERROR_LIST = 'validationErrorList'
 export const VALIDATION_ERROR_CARD = 'validationErrorCard'
 export const UPDATE_CARD = 'updateCard'
+export const UPDATE_LIST = 'updateList'
 
 

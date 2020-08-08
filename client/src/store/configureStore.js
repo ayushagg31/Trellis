@@ -1,13 +1,13 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import { boardReducer } from '../reducers/boardReducer'
-import { fetchListsReducer } from '../reducers/fetchListsReducer'
+import { listsReducer } from '../reducers/listsReducer'
 import { cardsReducer } from '../reducers/cardsReducer'
 import thunk from 'redux-thunk'
 
 
 const rootReducer = combineReducers({
     boards: boardReducer,
-    lists: fetchListsReducer,
+    lists: listsReducer,
     cards: cardsReducer,
 })
 

@@ -32,7 +32,7 @@ export const createNewBoard = (params) => {
                 dispatch({ type: ACTIONS.ADD_BOARD, payload: { board: res.data } })
             }).catch(e => {
                 if (e.message === "Network Error")
-                    dispatch({ type: ACTIONS.ERROR_BOARD })
+                    dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e } })
                 else if (e.response.status === 422)
                     dispatch({ type: ACTIONS.VALIDATION_ERROR_BOARD })
             })
