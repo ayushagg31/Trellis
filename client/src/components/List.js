@@ -6,6 +6,7 @@ import CreateItem from './CreateItem'
 import { createNewCard } from '../actions/actionCreators/cardActions'
 import { useDispatch } from 'react-redux'
 import midString from '../ordering/ordering'
+import { createNewActivity } from '../actions/actionCreators/activityActions'
 
 const Container = styled.div`
     margin: 8px;
@@ -41,7 +42,10 @@ export default function Column({ column, tasks, index }) {
             order: totalTasks === 0 ? 'n' : midString(tasks[totalTasks - 1].order, '')
         }
         dispatch(createNewCard(postCardReq))
-        console.log(`User added ${cardTitle} to this ${column.name}`)
+        dispatch(createNewActivity({
+            text: `User added ${cardTitle} to this ${column.name}`,
+            boardId: column.boardId
+        }))
         setCardTitle('')
     }
 

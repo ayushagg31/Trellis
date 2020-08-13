@@ -20,14 +20,12 @@ export default function Boards() {
     }
 
     useEffect(() => {
+        console.log(newBoard)
         if (newBoard) {
-            console.log(newBoard)
-            const temp = { text: "sdssd", boardId: "5f35711bf856225a9846b84a" }
-            dispatch(createNewActivity(temp))
-            // dispatch(createNewActivity({
-            //     text: 'User created this board',
-            //     boardId: (newBoard._id)
-            // }))
+            dispatch(createNewActivity({
+                text: 'User created this board',
+                boardId: (newBoard._id)
+            }))
         }
     }, [newBoard])
 

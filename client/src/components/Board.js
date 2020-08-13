@@ -11,6 +11,7 @@ import midString from '../ordering/ordering'
 import { updateCardById } from '../actions/actionCreators/cardActions'
 import { createNewList, updateListById } from '../actions/actionCreators/listActions'
 import CreateItem from './CreateItem'
+import { createNewActivity } from '../actions/actionCreators/activityActions'
 
 const Container = styled.div`
     display: flex;
@@ -37,7 +38,6 @@ export default function Board() {
             dispatch(fetchsCardsFromBoard(id))
         }
     }, [dispatch, id])
-
 
     useEffect(() => {
         if (!listLoading && !cardLoading) {
@@ -161,7 +161,6 @@ export default function Board() {
             newOrder = 'n'
         else {
             if (destination.index === 0) {
-                console.log('hi')
                 newOrder = midString('', initialData.tasks[endList.taskIds[0]].order)
             }
             else if (destination.index === endList.taskIds.length)
@@ -200,7 +199,11 @@ export default function Board() {
         }
         if (!cardError) {
             setInitialData(newData)
-            console.log(`User moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`)
+            const text = `User moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`
+            dispatch(createNewActivity({
+                text,
+                boardId: currBoard._id
+            }))
         }
     }
 
@@ -222,7 +225,10 @@ export default function Board() {
                 initialData.columns[initialData.columnOrder[totalLists - 1]].order, '')
         }
         dispatch(createNewList(postListReq))
-        console.log(`User added ${listTitle} to this board`)
+        dispatch(createNewActivity({
+            text: `User added ${listTitle} to this board`,
+            boardId: currBoard._id
+        }))
         setListTitle('')
     }
 
