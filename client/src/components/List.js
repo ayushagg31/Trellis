@@ -41,6 +41,7 @@ export default function Column({ column, tasks, index }) {
             order: totalTasks === 0 ? 'n' : midString(tasks[totalTasks - 1].order, '')
         }
         dispatch(createNewCard(postCardReq))
+        console.log(`User added ${cardTitle} to this ${column.name}`)
         setCardTitle('')
     }
 

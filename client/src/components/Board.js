@@ -16,7 +16,7 @@ const Container = styled.div`
     display: flex;
 `
 
-export default function BoardView() {
+export default function Board() {
     var { id, name } = useParams()
     const { loading, currBoard, error } = useSelector(state => state.boards)
     const { listLoading, lists, listError } = useSelector(state => state.lists)
@@ -27,14 +27,15 @@ export default function BoardView() {
     const dispatch = useDispatch()
 
     if (!loading && name !== currBoard.name && currBoard.name !== undefined) {
-        console.log(name)
         name = currBoard.name
     }
 
     useEffect(() => {
-        dispatch(fetchBoardById(id))
-        dispatch(fetchListsFromBoard(id))
-        dispatch(fetchsCardsFromBoard(id))
+        if (id.length === 24) {
+            dispatch(fetchBoardById(id))
+            dispatch(fetchListsFromBoard(id))
+            dispatch(fetchsCardsFromBoard(id))
+        }
     }, [dispatch, id])
 
 
@@ -76,25 +77,35 @@ export default function BoardView() {
 
         if (type === 'list') {
             const listOrder = initialData.columnOrder
-            if (destination.index === 0)
+            if (destination.index === 0) {
                 newOrder = midString('', initialData.columns[listOrder[0]].order)
-            else if (destination.index === listOrder.length - 1)
+            }
+            else if (destination.index === listOrder.length - 1) {
                 newOrder = midString(initialData.columns[listOrder[destination.index]].order, '')
+            }
             else {
-                if (destination.index < source.index)
+                if (destination.index < source.index) {
                     newOrder = midString(initialData.columns[listOrder[destination.index - 1]].order,
                         initialData.columns[listOrder[destination.index]].order)
-                else
+                }
+                else {
                     newOrder = midString(initialData.columns[listOrder[destination.index]].order,
                         initialData.columns[listOrder[destination.index + 1]].order)
+                }
             }
             dispatch(updateListById(draggableId, { order: newOrder }))
             const newListOrder = Array.from(initialData.columnOrder)
+            const destinationColumn = initialData.columns[draggableId]
+            destinationColumn.order = newOrder
             newListOrder.splice(source.index, 1)
             newListOrder.splice(destination.index, 0, draggableId)
             const newData = {
                 ...initialData,
-                columnOrder: newListOrder
+                columnOrder: newListOrder,
+                columns: {
+                    ...initialData.columns,
+                    draggableId: destinationColumn
+                }
             }
             setInitialData(newData)
             return
@@ -104,7 +115,6 @@ export default function BoardView() {
 
         if (startList === endList) {
             const column = startList
-
             if (destination.index === 0)
                 newOrder = midString('', initialData.tasks[column.taskIds[0]].order)
             else if (destination.index === column.taskIds.length - 1)
@@ -119,10 +129,11 @@ export default function BoardView() {
             }
 
             dispatch(updateCardById(draggableId, { order: newOrder }))
-
             const newTaskIds = Array.from(column.taskIds)
             newTaskIds.splice(source.index, 1)
             newTaskIds.splice(destination.index, 0, draggableId)
+            const destinationTask = initialData.tasks[draggableId]
+            destinationTask.order = newOrder
             const newColumn = {
                 ...column,
                 taskIds: newTaskIds
@@ -132,10 +143,16 @@ export default function BoardView() {
                 columns: {
                     ...initialData.columns,
                     [newColumn._id]: newColumn
+                },
+                tasks: {
+                    ...initialData.tasks,
+                    draggableId: destinationTask
                 }
             }
-            if (!cardError)
+            if (!cardError) {
                 setInitialData(newData)
+            }
+
             return
         }
 
@@ -161,7 +178,8 @@ export default function BoardView() {
             ...startList,
             taskIds: startTaskIds
         }
-
+        const destinationTask = initialData.tasks[draggableId]
+        destinationTask.order = newOrder
         const endTaskIds = Array.from(endList.taskIds)
         endTaskIds.splice(destination.index, 0, draggableId)
         const newEndList = {
@@ -174,12 +192,22 @@ export default function BoardView() {
                 ...initialData.columns,
                 [newStartList._id]: newStartList,
                 [newEndList._id]: newEndList
+            },
+            tasks: {
+                ...initialData.tasks,
+                draggableId: destinationTask
             }
         }
-        if (!cardError)
+        if (!cardError) {
             setInitialData(newData)
+            console.log(`User moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`)
+        }
     }
 
+    if (id.length < 24)
+        return (
+            <h1>Invalid URL</h1>
+        )
     const handleChange = (e) => {
         e.preventDefault()
         setListTitle(e.target.value)
@@ -194,6 +222,7 @@ export default function BoardView() {
                 initialData.columns[initialData.columnOrder[totalLists - 1]].order, '')
         }
         dispatch(createNewList(postListReq))
+        console.log(`User added ${listTitle} to this board`)
         setListTitle('')
     }
 
@@ -201,25 +230,25 @@ export default function BoardView() {
     return (
         <div>
             <Redirect to={`/b/${id}/${name}`} />
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId='all-columns' direction='horizontal' type='list'>
-                        {provided => (
-                            <Container
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                            >
-                                {initDone && initialData.columnOrder.map((columnId, index) => {
-                                    const column = initialData.columns[columnId]
-                                    const tasks = column.taskIds.map(taskId => initialData.tasks[taskId])
-                                    return <List key={column._id} column={column}
-                                        tasks={tasks} index={index} />
-                                })}
-                                {provided.placeholder}
-                            </Container>
-                        )}
-                    </Droppable>
-                    <CreateItem value={listTitle} changedHandler={handleChange} itemAdded={submitHandler} />
-                </DragDropContext>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId='all-columns' direction='horizontal' type='list'>
+                    {provided => (
+                        <Container
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
+                            {initDone && initialData.columnOrder.map((columnId, index) => {
+                                const column = initialData.columns[columnId]
+                                const tasks = column.taskIds.map(taskId => initialData.tasks[taskId])
+                                return <List key={column._id} column={column}
+                                    tasks={tasks} index={index} />
+                            })}
+                            {provided.placeholder}
+                        </Container>
+                    )}
+                </Droppable>
+                <CreateItem value={listTitle} changedHandler={handleChange} itemAdded={submitHandler} />
+            </DragDropContext>
         </div >
     )
 }
