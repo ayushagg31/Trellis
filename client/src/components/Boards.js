@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAllBoards, createNewBoard } from '../actions/actionCreators/boardActions'
+import { createNewActivity } from '../actions/actionCreators/activityActions'
 import { Link } from 'react-router-dom'
 import CreateItem from './CreateItem'
 
 export default function Boards() {
     const [boardTitle, setBoardTitle] = useState('')
-    const { boards, loading, error } = useSelector(state => state.boards)
-    // var { success, validationError } = useSelector(state => state.postBoard)
+    const { boards, loading, error, newBoard } = useSelector(state => state.boards)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -18,6 +18,19 @@ export default function Boards() {
         e.preventDefault()
         setBoardTitle(e.target.value)
     }
+
+    useEffect(() => {
+        if (newBoard) {
+            console.log(newBoard)
+            const temp = { text: "sdssd", boardId: "5f35711bf856225a9846b84a" }
+            dispatch(createNewActivity(temp))
+            // dispatch(createNewActivity({
+            //     text: 'User created this board',
+            //     boardId: (newBoard._id)
+            // }))
+        }
+    }, [newBoard])
+
 
     const submitHandler = () => {
         const postBoardReq = {

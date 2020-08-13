@@ -12,7 +12,7 @@ export const createNewCard = (params) => {
                 dispatch({ type: ACTIONS.ADD_CARD, payload: { card: res.data } })
             }).catch(e => {
                 if (e.message === "Network Error")
-                    dispatch({ type: ACTIONS.ERROR_CARD, payload: { cardError: e } })
+                    dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e } })
                 else if (e.response.status === 422)
                     dispatch({ type: ACTIONS.VALIDATION_ERROR_CARD })
             })
@@ -25,7 +25,7 @@ export const updateCardById = (id, params) => {
             .then(res => {
                 dispatch({ type: ACTIONS.UPDATE_CARD, payload: { card: res.data } })
             }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_CARD, payload: { cardError: e } })
+                dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e } })
             })
     }
 }

@@ -62,3 +62,14 @@ export const fetchsCardsFromBoard = (id) => {
             })
     }
 }
+
+export const fetchActivitiesFromBoard = (id) => {
+    return (dispatch) => {
+        axios.get(BASE_URL + id + '/activities')
+            .then(res => {
+                dispatch({ type: ACTIONS.GET_ACTIVITIES, payload: { activities: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR_ACTIVITY, payload: { error: e } })
+            })
+    }
+}

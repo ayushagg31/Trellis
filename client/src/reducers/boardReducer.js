@@ -16,7 +16,7 @@ export const boardReducer = (state = initialState, action) => {
         case ACTIONS.ERROR_BOARD:
             return { ...state, loading: false, error: action.payload.error, boards: [] }
         case ACTIONS.ADD_BOARD:
-            return { ...state, loading: false, boards: [...state.boards, action.payload.board] }
+            return { ...state, loading: false, boards: [...state.boards, action.payload.board], newBoard: action.payload.board }
         default:
             return state
     }
