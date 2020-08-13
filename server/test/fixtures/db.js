@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Board = require('../../src/models/board')
 const List = require('../../src/models/list')
 const Card = require('../../src/models/card')
+const Activity = require('../../src/models/activity')
 
 const boardOneId = new mongoose.Types.ObjectId()
 const boardOne = {
@@ -13,6 +14,12 @@ const boardTwoId = new mongoose.Types.ObjectId()
 const boardTwo = {
     _id: boardTwoId,
     name: 'boardTwo'
+}
+
+const activityOne = {
+    _id: new mongoose.Types.ObjectId(),
+    text: 'random sting',
+    boardId: boardOneId
 }
 
 const listOneId = new mongoose.Types.ObjectId()
@@ -66,6 +73,12 @@ const setupCard = async (cardData, listData, boardData) => {
     await new Card(cardData).save()
 }
 
+const setupActivity = async (activityData, boardData) => {
+    await setupBoard(boardData)
+    await Activity.deleteMany()
+    await new Activity(activityData).save()
+}
+
 module.exports = {
     boardOneId,
     boardOne,
@@ -81,6 +94,8 @@ module.exports = {
     cardTwoId,
     cardOne,
     cardTwo,
-    setupCard
+    setupCard,
+    activityOne,
+    setupActivity
 
 }

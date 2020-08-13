@@ -5,7 +5,7 @@ const app = require('../src/app')
 const Board = require('../src/models/board')
 const mongoose = require('mongoose')
 const { listOne, boardTwo, boardOne, boardOneId, boardTwoId, cardOne,
-    setupBoard, setupList, setupCard } = require('./fixtures/db')
+    setupBoard, setupList, setupCard, setupActivity, activityOne } = require('./fixtures/db')
 
 afterEach(() => {
     sinon.restore()
@@ -104,6 +104,28 @@ describe('Get@/api/boards/{id}/cards', () => {
     it('Should show empty cards', async () => {
         await setupBoard(boardTwo)
         const resp = await request(app).get(`/api/boards/${boardTwoId}/cards`).send()
+        expect(resp.body).toHaveLength(0)
+    })
+})
+
+describe('Get@/api/boards/{id}/activities', () => {
+    it('Should display all activities with valid boardId', async () => {
+        await setupActivity(activityOne, boardOne)
+        await request(app).get(`/api/boards/${boardOneId}/activities`).send().expect(200)
+    })
+
+    it('Should show 404 on invalid boardId', async () => {
+        await request(app).get(`/api/boards/${boardTwoId}/activities`).send().expect(404)
+    })
+
+    it('Should show server error on failure', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await request(app).get(`/api/boards/${boardOneId}/activities`).send().expect(500)
+    })
+
+    it('Should show empty activities', async () => {
+        await setupBoard(boardTwo)
+        const resp = await request(app).get(`/api/boards/${boardTwoId}/activities`).send()
         expect(resp.body).toHaveLength(0)
     })
 })
