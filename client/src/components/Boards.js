@@ -20,17 +20,18 @@ export default function Boards() {
     }
 
     useEffect(() => {
-        console.log(newBoard)
         if (newBoard) {
             dispatch(createNewActivity({
                 text: 'User created this board',
                 boardId: (newBoard._id)
             }))
         }
-    }, [newBoard])
+    }, [newBoard, dispatch])
 
 
     const submitHandler = () => {
+        if (boardTitle === '')
+            return
         const postBoardReq = {
             name: boardTitle
         }

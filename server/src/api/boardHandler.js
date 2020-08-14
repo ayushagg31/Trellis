@@ -83,4 +83,48 @@ router.get('/:id/activities', async (req, res, next) => {
     }
 })
 
+
+// update board content based on id
+router.patch('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['name']
+    const isValidOperation = updates.every(
+        (update) => allowedUpdates.includes(update))
+    if (!isValidOperation)
+        return res.status(400).send({ error: 'Invalid updates!' })
+    try {
+        const board = await Board.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        if (!board)
+            return res.status(404).send({ error: 'Board not found!' })
+        res.send(board)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+// delete board based on id
+router.delete('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const board = await Board.findByIdAndDelete(_id)
+        if (!board)
+            return res.status(404).send()
+        // find all lists within board and delete them as well
+        const lists = await List.find({ boardId: _id })
+        lists.forEach(async (list) => {
+            // find all cards within each lists and delete them as well
+            const cards = await Card.find({ listid: list._id })
+            cards.forEach(async (card) => (
+                await Card.deleteOne({ _id: card._id })))
+            await List.deleteOne({ _id: list._id })
+        })
+        res.send(board)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
 module.exports = router

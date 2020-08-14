@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard }
+import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard, fetchActivitiesFromBoard }
     from '../actions/actionCreators/boardActions'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import List from './List'
@@ -11,7 +11,9 @@ import midString from '../ordering/ordering'
 import { updateCardById } from '../actions/actionCreators/cardActions'
 import { createNewList, updateListById } from '../actions/actionCreators/listActions'
 import CreateItem from './CreateItem'
-import { createNewActivity } from '../actions/actionCreators/activityActions'
+import { createNewActivity, deleteActivityById } from '../actions/actionCreators/activityActions'
+import Activities from './Activities'
+import moment from 'moment'
 
 const Container = styled.div`
     display: flex;
@@ -22,6 +24,7 @@ export default function Board() {
     const { loading, currBoard, error } = useSelector(state => state.boards)
     const { listLoading, lists, listError } = useSelector(state => state.lists)
     const { cardLoading, cards, cardError } = useSelector(state => state.cards)
+    const { activities } = useSelector(state => state.activities)
     const [initialData, setInitialData] = useState({})
     const [initDone, setInitDone] = useState(false)
     const [listTitle, setListTitle] = useState('')
@@ -36,6 +39,7 @@ export default function Board() {
             dispatch(fetchBoardById(id))
             dispatch(fetchListsFromBoard(id))
             dispatch(fetchsCardsFromBoard(id))
+            dispatch(fetchActivitiesFromBoard(id))
         }
     }, [dispatch, id])
 
@@ -149,9 +153,7 @@ export default function Board() {
                     draggableId: destinationTask
                 }
             }
-            if (!cardError) {
-                setInitialData(newData)
-            }
+            setInitialData(newData)
 
             return
         }
@@ -170,6 +172,14 @@ export default function Board() {
                     initialData.tasks[endList.taskIds[destination.index]].order)
         }
         dispatch(updateCardById(draggableId, { order: newOrder, listId: endList._id }))
+        const text = `User moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`
+        const recentActivity = activities[activities.length - 1]
+        if (recentActivity.text === `User moved ${initialData.tasks[draggableId].name} from ${endList.name} to ${startList.name}` &&
+            moment(recentActivity.createdAt).fromNow().includes('second')) {
+            dispatch(deleteActivityById(recentActivity._id))
+        }
+        else
+            dispatch(createNewActivity({ text, boardId: currBoard._id }))
 
         const startTaskIds = Array.from(startList.taskIds)
         startTaskIds.splice(source.index, 1)
@@ -197,14 +207,7 @@ export default function Board() {
                 draggableId: destinationTask
             }
         }
-        if (!cardError) {
-            setInitialData(newData)
-            const text = `User moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`
-            dispatch(createNewActivity({
-                text,
-                boardId: currBoard._id
-            }))
-        }
+        setInitialData(newData)
     }
 
     if (id.length < 24)
@@ -217,6 +220,8 @@ export default function Board() {
     }
 
     const submitHandler = () => {
+        if (listTitle === '')
+            return
         const totalLists = initialData.columnOrder.length
         const postListReq = {
             name: listTitle,
@@ -255,6 +260,7 @@ export default function Board() {
                 </Droppable>
                 <CreateItem value={listTitle} changedHandler={handleChange} itemAdded={submitHandler} />
             </DragDropContext>
+            <Activities activities={activities} />
         </div >
     )
 }

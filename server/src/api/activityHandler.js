@@ -3,6 +3,16 @@ const Activity = require('../models/activity')
 
 const router = Router()
 
+// get all activities
+router.get('/', async (req, res, next) => {
+    try {
+        const activities = await Activity.find()
+        res.json(activities)
+    } catch (error) {
+        next(error)
+    }
+})
+
 // create new activity
 router.post('/', async (req, res, next) => {
     try {

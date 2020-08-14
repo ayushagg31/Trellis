@@ -25,5 +25,6 @@ export const UPDATE_LIST = 'updateList'
 export const GET_ACTIVITIES = 'getActivities'
 export const ADD_ACTIVITY = 'addActivity'
 export const ERROR_ACTIVITY = 'errorActivity'
+export const DELETE_ACTIVITY = 'deleteActivity'
 export const VALIDATION_ERROR_ACTIVITY = 'validationErrorActivity'
 

@@ -26,6 +26,8 @@ const TaskList = styled.div`
 
 export default function Column({ column, tasks, index }) {
     const [cardTitle, setCardTitle] = useState('')
+    const [addCardFlag, setAddCardFlag] = useState(false)
+    const [addFlag, setAddFlag] = useState(true)
     const dispatch = useDispatch()
 
     const handleChange = (e) => {
@@ -34,6 +36,8 @@ export default function Column({ column, tasks, index }) {
     }
 
     const submitHandler = () => {
+        if (cardTitle === '')
+            return
         const totalTasks = tasks.length
         const postCardReq = {
             name: cardTitle,
@@ -43,10 +47,16 @@ export default function Column({ column, tasks, index }) {
         }
         dispatch(createNewCard(postCardReq))
         dispatch(createNewActivity({
-            text: `User added ${cardTitle} to this ${column.name}`,
+            text: `User added ${cardTitle} to ${column.name}`,
             boardId: column.boardId
         }))
         setCardTitle('')
+        setAddFlag(true)
+        setAddCardFlag(false)
+    }
+    const handleAddition = () => {
+        setAddCardFlag(true)
+        setAddFlag(false)
     }
 
     return (
@@ -71,7 +81,11 @@ export default function Column({ column, tasks, index }) {
                             </TaskList>
                         )}
                     </Droppable>
-                    <CreateItem value={cardTitle} changedHandler={handleChange} itemAdded={submitHandler} />
+                    {addFlag && <div onClick={handleAddition}>+</div>}
+                    {
+                        addCardFlag &&
+                        <CreateItem value={cardTitle} changedHandler={handleChange} itemAdded={submitHandler} />
+                    }
                 </Container>
             )}
         </Draggable>

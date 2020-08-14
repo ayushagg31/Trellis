@@ -129,3 +129,20 @@ describe('Get@/api/boards/{id}/activities', () => {
         expect(resp.body).toHaveLength(0)
     })
 })
+
+describe('DELETE@/api/boards/{id}', () => {
+    it('Should delete an existing board', async () => {
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).delete(`/api/boards/${boardOneId}`).send().expect(200)
+    })
+
+    it('Should show 404 on deleting of non-existant board', async () => {
+        await request(app).delete(`/api/boards/${boardTwoId}`).send().expect(404)
+    })
+
+    it('Should return internal server error when mongoose fails to connect', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).delete(`/api/boards/${boardOneId}`).send().expect(500)
+    })
+})

@@ -58,7 +58,7 @@ export const fetchsCardsFromBoard = (id) => {
             .then(res => {
                 dispatch({ type: ACTIONS.GET_CARDS, payload: { cards: res.data } })
             }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e } })
+                dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e.message } })
             })
     }
 }

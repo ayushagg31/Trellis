@@ -17,3 +17,15 @@ export const createNewActivity = (params) => {
             })
     }
 }
+
+
+export const deleteActivityById = (id) => {
+    return (dispatch) => {
+        axios.delete(BASE_URL + id)
+            .then(res => {
+                dispatch({ type: ACTIONS.DELETE_ACTIVITY, payload: { activity: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR_ACTIVITY, payload: { error: e } })
+            })
+    }
+}

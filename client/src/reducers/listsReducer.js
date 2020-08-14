@@ -12,7 +12,7 @@ export const listsReducer = (state = initialState, action) => {
             return { ...state, listLoading: false, lists: action.payload.lists }
         case ACTIONS.ADD_LIST:
             return { ...state, lists: [...state.lists, action.payload.list] }
-        case ACTIONS.UPDATE_CARD:
+        case ACTIONS.UPDATE_LIST:
             const listsCopy = [...state.lists]
             const targetIndex = listsCopy.findIndex(list => list._id === action.payload.list._id)
             listsCopy[targetIndex] = action.payload.list

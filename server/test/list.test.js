@@ -130,3 +130,20 @@ describe('PATCH@/api/lists/{id}', () => {
         await request(app).patch(`/api/lists/${listTwoId}`).send(updateList).expect(500)
     })
 })
+
+describe('DELETE@/api/lists/{id}', () => {
+    it('Should delete an existing lists', async () => {
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).delete(`/api/lists/${listOneId}`).send().expect(200)
+    })
+
+    it('Should show 404 on deleting of non-existant lists', async () => {
+        await request(app).delete(`/api/lists/${listTwoId}`).send().expect(404)
+    })
+
+    it('Should return internal server error when mongoose fails to connect', async () => {
+        sinon.stub(mongoose.Model, 'find').rejects({})
+        await setupCard(cardOne, listOne, boardOne)
+        await request(app).delete(`/api/lists/${listOneId}`).send().expect(500)
+    })
+})

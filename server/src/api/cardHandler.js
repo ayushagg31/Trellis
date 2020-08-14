@@ -58,6 +58,18 @@ router.patch('/:id', async (req, res, next) => {
     }
 })
 
+// delete card based on id
+router.delete('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const card = await Card.findByIdAndDelete(_id)
+        if (!card)
+            return res.status(404).send()
+        res.send(card)
+    } catch (error) {
+        next(error)
+    }
+})
 
 
 module.exports = router

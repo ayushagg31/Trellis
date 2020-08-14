@@ -73,6 +73,22 @@ router.patch('/:id', async (req, res, next) => {
     }
 })
 
+// delete list based on id
+router.delete('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const list = await List.findByIdAndDelete(_id)
+        if (!list)
+            return res.status(404).send()
+        // find all cards within list and delete them as well
+        const cards = await Card.find({ listid: _id })
+        cards.forEach(async (card) => (
+            await Card.deleteOne({ _id: card._id })))
+        res.send(list)
+    } catch (error) {
+        next(error)
+    }
+})
 
 module.exports = router
 
