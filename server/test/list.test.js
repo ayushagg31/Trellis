@@ -16,7 +16,7 @@ afterEach(() => {
 
 describe('POST@/api/lists', () => {
     it('Should create a new list', async () => {
-        setupBoard(boardOne)
+        await setupBoard(boardOne)
         await request(app).post('/api/lists').send(listOne).expect(200)
     })
 

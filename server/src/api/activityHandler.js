@@ -16,4 +16,17 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+// delete activity based on id
+router.delete('/:id', async (req, res, next) => {
+    const _id = req.params.id
+    try {
+        const activity = await Activity.findByIdAndDelete(_id)
+        if (!activity)
+            return res.status(404).send()
+        res.send(activity)
+    } catch (error) {
+        next(error)
+    }
+})
+
 module.exports = router

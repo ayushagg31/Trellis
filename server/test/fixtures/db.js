@@ -15,9 +15,9 @@ const boardTwo = {
     _id: boardTwoId,
     name: 'boardTwo'
 }
-
+const activityOneId = new mongoose.Types.ObjectId()
 const activityOne = {
-    _id: new mongoose.Types.ObjectId(),
+    _id: activityOneId,
     text: 'random sting',
     boardId: boardOneId
 }
@@ -96,6 +96,7 @@ module.exports = {
     cardTwo,
     setupCard,
     activityOne,
+    activityOneId,
     setupActivity
 
 }
