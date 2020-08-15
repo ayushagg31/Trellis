@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard, fetchActivitiesFromBoard }
@@ -6,20 +6,28 @@ import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard, fetchActivit
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import List from './List'
 import _ from 'lodash'
-import styled from 'styled-components'
+import { makeStyles } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 import midString from '../ordering/ordering'
 import { updateCardById } from '../actions/actionCreators/cardActions'
 import { createNewList, updateListById } from '../actions/actionCreators/listActions'
-import CreateItem from './CreateItem'
+import InputCard from './InputCard'
 import { createNewActivity, deleteActivityById } from '../actions/actionCreators/activityActions'
 import Activities from './Activities'
 import moment from 'moment'
+import AddItem from './AddItem'
+import Header from './Header'
+import BoardHeader from './BoardHeader'
 
-const Container = styled.div`
-    display: flex;
-`
+const useStyles = makeStyles((theme) => ({
+    listContainer: {
+        display: 'flex',
+        alignItems: 'flex-start'
+    },
+}))
 
 export default function Board() {
+    const classes = useStyles()
     var { id, name } = useParams()
     const { loading, currBoard, error } = useSelector(state => state.boards)
     const { listLoading, lists, listError } = useSelector(state => state.lists)
@@ -27,6 +35,8 @@ export default function Board() {
     const { activities } = useSelector(state => state.activities)
     const [initialData, setInitialData] = useState({})
     const [initDone, setInitDone] = useState(false)
+    var addFlag = useRef(true)
+    const [addListFlag, setAddListFlag] = useState(false)
     const [listTitle, setListTitle] = useState('')
     const dispatch = useDispatch()
 
@@ -154,7 +164,6 @@ export default function Board() {
                 }
             }
             setInitialData(newData)
-
             return
         }
 
@@ -237,14 +246,26 @@ export default function Board() {
         setListTitle('')
     }
 
+    const closeButtonHandler = () => {
+        setAddListFlag(false)
+        addFlag.current = true
+        setListTitle('')
+    }
+
+    const handleAddition = () => {
+        setAddListFlag(true)
+        addFlag.current = false
+    }
 
     return (
         <div>
             <Redirect to={`/b/${id}/${name}`} />
+            <Header />
+            <BoardHeader title={currBoard.name} />
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId='all-columns' direction='horizontal' type='list'>
                     {provided => (
-                        <Container
+                        <div className={classes.listContainer}
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
@@ -254,13 +275,28 @@ export default function Board() {
                                 return <List key={column._id} column={column}
                                     tasks={tasks} index={index} />
                             })}
+                            <div>
+                                {addFlag.current &&
+                                    <AddItem handleClick={handleAddition}
+                                        btnText='Add another list' type='list' icon={<AddIcon />} />}
+                                {addListFlag &&
+                                    <InputCard
+                                        value={listTitle}
+                                        changedHandler={handleChange}
+                                        itemAdded={submitHandler}
+                                        closeHandler={closeButtonHandler}
+                                        type='list'
+                                        btnText='Add List'
+                                    />
+                                }
+                            </div>
                             {provided.placeholder}
-                        </Container>
+                        </div>
                     )}
                 </Droppable>
-                <CreateItem value={listTitle} changedHandler={handleChange} itemAdded={submitHandler} />
             </DragDropContext>
-            <Activities activities={activities} />
+
+            {/* <Activities activities={activities} /> */}
         </div >
     )
 }

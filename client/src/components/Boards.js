@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchAllBoards, createNewBoard } from '../actions/actionCreators/boardActions'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
 import { Link } from 'react-router-dom'
-import CreateItem from './CreateItem'
+import InputCard from './InputCard'
 
 export default function Boards() {
     const [boardTitle, setBoardTitle] = useState('')
@@ -41,7 +41,7 @@ export default function Boards() {
 
     return (
         <div>
-            <CreateItem value={boardTitle} changedHandler={handleChange} itemAdded={submitHandler} />
+            <InputCard value={boardTitle} changedHandler={handleChange} itemAdded={submitHandler} />
             {loading && <h1>Loading ....</h1>}
             {error && <h1>Error occured...Try Refreshing!!</h1>}
             {boards.map(board => {
