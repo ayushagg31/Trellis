@@ -14,7 +14,7 @@
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "client": "cd client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "start": "concurrently \"npm run start\" \"npm run client\""
+    "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "jest": {
     "testEnvironment": "node"
