@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as ACTIONS from '../actions'
 
-const BASE_URL = 'http://localhost:1337/api/activities/'
+const BASE_URL = `${REACT_APP_HOME_URL}/api/activities/`
 
 
 export const createNewActivity = (params) => {

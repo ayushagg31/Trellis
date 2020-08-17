@@ -3,6 +3,10 @@ import App from '../App';
 import React from 'react'
 import Board from '../components/Board'
 
+const NotFound = () => {
+    return (<h1>404, Page Not Found</h1>)
+}
+
 const AppRouter = () => (
     <BrowserRouter>
         <Switch>
@@ -10,7 +14,7 @@ const AppRouter = () => (
             <Route path='/b/:id/:name?'>
                 <Board />
             </Route>
-            {/* <Route component={NotFound} /> */}
+            <Route component={NotFound} />
         </Switch>
     </BrowserRouter>
 
