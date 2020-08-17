@@ -12,7 +12,7 @@ const app = express()
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false 
+    useFindAndModify: false
 })
 
 
@@ -33,5 +33,11 @@ app.get('/', (req, res) => {
 app.use('/api/', apiHandler)
 app.use(notFoundHandler)
 app.use(errorHandler)
+
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('../../client/build'))
+}
+
 
 module.exports = app

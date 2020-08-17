@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as ACTIONS from '../actions'
 
-const BASE_URL = `${REACT_APP_HOME_URL}/api/cards`
+const BASE_URL = `${process.env.REACT_APP_HOME_URL}/api/cards`
 
 
 export const createNewCard = (params) => {
