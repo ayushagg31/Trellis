@@ -88,7 +88,7 @@ router.get('/:id/activities', async (req, res, next) => {
 router.patch('/:id', async (req, res, next) => {
     const _id = req.params.id
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['name']
+    const allowedUpdates = ['name', 'image']
     const isValidOperation = updates.every(
         (update) => allowedUpdates.includes(update))
     if (!isValidOperation)

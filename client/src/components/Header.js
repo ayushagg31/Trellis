@@ -5,22 +5,23 @@ const useStyles = makeStyles((theme) => ({
     header: {
         padding: theme.spacing(0.3, 0.3, 0.3, 0.3),
         marginBottom: theme.spacing(1),
-        backgroundColor: '#ACACAC',
-        opacity: 1,
+        backgroundColor: '#EAEAEA',
+        opacity: 0.5,
         color: 'black',
         fontWeight: 'bold',
         fontSize: '23px',
         textAlign: 'center',
         fontFamily: 'Pacifico',
-
+        // position: 'fixed',
+        width: '100%'
     },
     trellis: {
-        opacity: 0.7,
+        opacity: 0.8,
+        color: 'black',
         display: 'inline-block',
-
         '&:hover': {
             opacity: 1,
-            cursor: 'pointer'
+            cursor: 'pointer',
         }
     }
 }))

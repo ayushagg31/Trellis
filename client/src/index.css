@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+	-moz-user-select: none;	   /* Firefox */
+	-ms-user-select: none;		/* IE 10+ and Edge */
+	user-select: none;	
 }
 
 code {

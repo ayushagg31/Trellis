@@ -1,36 +1,28 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import AddItem from './AddItem'
 const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        position: 'fixed',
+        width: '1405px',
+        overflow: 'hidden'
     },
     title: {
         fontWeight: 'bold',
         padding: theme.spacing(0.7, 0.7, 0.7, 0.7),
         margin: theme.spacing(0.7, 0.7, 0.7, 0.7),
         fontFamily: 'sans-serif',
-        fontSize: '20px'
-    },
-    menu: {
+        fontSize: '20px',
+        marginTop: theme.spacing(-0.5),
     }
-
 }))
-export default function BoardHeader({ title }) {
+export default function BoardHeader({ title, showHandler }) {
     const classes = useStyles()
-
-    const showHandler = () => {
-
-    }
     return (
         <div className={classes.container}>
             <div className={classes.title}>
                 {title}
-            </div>
-            <div className={classes.menu}>
-                <AddItem btnText='Show Menu' handleClick={showHandler} icon={<MoreHorizIcon />} type='menu' />
             </div>
         </div>
     )

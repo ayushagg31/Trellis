@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        minWidth: '272px',
+        width: '272px',
         backgroundColor: '#EBECF0',
         marginLeft: theme.spacing(1),
         wordWrap: 'break-word',
@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '100px',
         marginLeft: theme.spacing(1.5),
         fontWeight: 'bold',
+    },
+    wrapper: {
+        marginTop: theme.spacing(11.5)
     }
 }))
 
@@ -71,47 +74,52 @@ export default function Column({ column, tasks, index }) {
     }
 
     return (
-        <Draggable draggableId={column._id} index={index}>
-            {(provided) => (
-                <div {...provided.draggableProps}
-                    ref={provided.innerRef}>
-                    <Paper elevation={0}
-                        className={classes.root}
-                        {...provided.dragHandleProps}>
-                        <div className={classes.title} >
-                            {column.name}
-                        </div>
-                        <Droppable
-                            droppableId={column._id} type='card'>
-                            {(provided) => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}>
-                                    <div className={classes.scroll}>
-                                        {tasks.map((task, index) =>
-                                            <Card key={task._id} task={task} index={index} />)}
-                                        {provided.placeholder}
+        <div className={classes.wrapper}>
+            <Draggable draggableId={column._id} index={index}>
+                {(provided) => (
+                    <div {...provided.draggableProps}
+                        ref={provided.innerRef}>
+                        <Paper elevation={0}
+                            className={classes.root}
+                            {...provided.dragHandleProps}>
+                            <div className={classes.title} >
+                                {column.name}
+                            </div>
+                            <Droppable
+                                droppableId={column._id} type='card'>
+                                {(provided) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}>
+                                        <div className={classes.scroll}>
+                                            {tasks.map((task, index) =>
+                                                <Card key={task._id} task={task} index={index} />)}
+                                            {addCardFlag &&
+                                                <InputCard
+                                                    value={cardTitle}
+                                                    changedHandler={handleChange}
+                                                    itemAdded={submitHandler}
+                                                    closeHandler={closeButtonHandler}
+                                                    type='card'
+                                                    btnText='Add Card'
+                                                    placeholder='Enter a title for this card...'
+                                                    width='230px'
+                                                />
+                                            }
+                                            {provided.placeholder}
+                                        </div>
+                                        {addFlag.current &&
+                                            <AddItem handleClick={handleAddition} icon={<AddIcon />}
+                                                btnText='Add another card' type='card' width='256px' />
+                                        }
+
                                     </div>
-                                    {addFlag.current &&
-                                        <AddItem handleClick={handleAddition} icon={<AddIcon />}
-                                            btnText='Add another card' type='card' />
-                                    }
-                                    {addCardFlag &&
-                                        <InputCard
-                                            value={cardTitle}
-                                            changedHandler={handleChange}
-                                            itemAdded={submitHandler}
-                                            closeHandler={closeButtonHandler}
-                                            type='card'
-                                            btnText='Add Card'
-                                        />
-                                    }
-                                </div>
-                            )}
-                        </Droppable>
-                    </Paper>
-                </div>
-            )}
-        </Draggable>
+                                )}
+                            </Droppable>
+                        </Paper>
+                    </div>
+                )}
+            </Draggable>
+        </div>
     )
 }

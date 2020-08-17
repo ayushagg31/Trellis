@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close'
 const useStyles = makeStyles((theme) => ({
     card: {
         margin: theme.spacing(0.2, 1, 0.09, 1),
-        width: '230px',
+        // width: props => props.type === 'board' ? '120px' : '230px',
         wordWrap: 'break-word',
         padding: props => props.type === 'list' ? theme.spacing(0.5, 1.5, 0.5, 1.5) : theme.spacing(1, 1, 3.5, 2),
         boxShadow: props => props.type === 'list' ? 'inset 0 0 0 2px #0079bf' :
@@ -32,26 +32,25 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#EBECF0',
         marginLeft: props => props.type === 'list' ? theme.spacing(1) : 'inherit',
         paddingTop: theme.spacing(1),
-        borderRadius: theme.spacing(0.5)
-    }
+        borderRadius: theme.spacing(0.5),
+    },
+    width: props => ({
+        width: props.width
+    })
 }))
 
-export default function InputItem({ value, changedHandler, itemAdded, closeHandler, type, btnText }) {
-    const classes = useStyles({ type })
+export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder }) {
+    const classes = useStyles({ type, width })
     return (
         <div className={classes.listBackground}>
-            <Paper className={classes.card}>
+            <Paper className={`${classes.card} ${classes.width}`}>
                 <InputBase
                     onChange={changedHandler}
                     multiline
                     fullWidth
                     value={value}
                     autoFocus
-                    placeholder={
-                        type === 'card'
-                            ? 'Enter a title for this card...'
-                            : 'Enter list title...'
-                    }
+                    placeholder={placeholder}
                 />
             </Paper>
             <Button

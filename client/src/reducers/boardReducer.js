@@ -3,7 +3,7 @@ import * as ACTIONS from '../actions/actions'
 const initialState = {
     loading: true,
     boards: [],
-    currBoard: {}
+    currBoard: {},
 }
 export const boardReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -17,6 +17,11 @@ export const boardReducer = (state = initialState, action) => {
             return { ...state, loading: false, error: action.payload.error, boards: [] }
         case ACTIONS.ADD_BOARD:
             return { ...state, loading: false, boards: [...state.boards, action.payload.board], newBoard: action.payload.board }
+        case ACTIONS.UPDATE_BOARD:
+            const boardsCopy = [...state.boards]
+            const targetIndex = boardsCopy.findIndex(board => board._id === action.payload.board._id)
+            boardsCopy[targetIndex] = action.payload.board
+            return { ...state, boards: boardsCopy, loading: false }
         default:
             return state
     }

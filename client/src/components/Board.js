@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard, fetchActivitiesFromBoard }
+import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard, fetchActivitiesFromBoard, updateBoardById }
     from '../actions/actionCreators/boardActions'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import List from './List'
@@ -13,17 +13,25 @@ import { updateCardById } from '../actions/actionCreators/cardActions'
 import { createNewList, updateListById } from '../actions/actionCreators/listActions'
 import InputCard from './InputCard'
 import { createNewActivity, deleteActivityById } from '../actions/actionCreators/activityActions'
-import Activities from './Activities'
 import moment from 'moment'
 import AddItem from './AddItem'
 import Header from './Header'
 import BoardHeader from './BoardHeader'
+import SideMenu from './SideMenu'
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        minHeight: '100vh',
+        overflowY: 'auto',
+    },
     listContainer: {
         display: 'flex',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        width: '100%'
     },
+    wrapper: {
+        marginTop: theme.spacing(4.5)
+    }
 }))
 
 export default function Board() {
@@ -38,6 +46,8 @@ export default function Board() {
     var addFlag = useRef(true)
     const [addListFlag, setAddListFlag] = useState(false)
     const [listTitle, setListTitle] = useState('')
+    const [color, setColor] = useState('white')
+    const [url, setUrl] = useState('')
     const dispatch = useDispatch()
 
     if (!loading && name !== currBoard.name && currBoard.name !== undefined) {
@@ -54,9 +64,15 @@ export default function Board() {
     }, [dispatch, id])
 
     useEffect(() => {
+        if (!_.isEmpty(currBoard)) {
+            setColor(currBoard.image.color)
+            setUrl(currBoard.image.full)
+        }
+    }, [currBoard])
+
+    useEffect(() => {
         if (!listLoading && !cardLoading) {
             const prevState = { tasks: {}, columns: {}, columnOrder: [] }
-
             const getTaskIds = (id) => {
                 const filteredTasks = _.filter(cards, { listId: id })
                 const sortedTasks = _.orderBy(filteredTasks, ['order'], ['asc'])
@@ -82,6 +98,7 @@ export default function Board() {
     }, [setInitDone, listLoading, cardLoading, setInitialData, cards, lists])
 
     const onDragEnd = (result) => {
+        console.log(result)
         var newOrder
         const { destination, source, draggableId, type } = result
         if (!destination)
@@ -256,9 +273,42 @@ export default function Board() {
         setAddListFlag(true)
         addFlag.current = false
     }
+    const setBackground = (background) => {
+        if (background.thumb) {
+            setUrl(background.full)
+            setColor('white')
+            dispatch(updateBoardById(currBoard._id,
+                {
+                    image: {
+                        full: background.full,
+                        thumb: background.thumb,
+                        color: 'white'
+                    }
+                }))
+        }
+        else {
+            setColor(background)
+            setUrl('')
+            dispatch(updateBoardById(currBoard._id,
+                {
+                    image: {
+                        full: '',
+                        thumb: '',
+                        color: background
+                    }
+                }))
+        }
+    }
 
     return (
-        <div>
+        <div className={classes.root}
+            style={{
+                backgroundColor: `${color}`,
+                backgroundImage: `url(${url})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
             <Redirect to={`/b/${id}/${name}`} />
             <Header />
             <BoardHeader title={currBoard.name} />
@@ -275,28 +325,32 @@ export default function Board() {
                                 return <List key={column._id} column={column}
                                     tasks={tasks} index={index} />
                             })}
-                            <div>
-                                {addFlag.current &&
-                                    <AddItem handleClick={handleAddition}
-                                        btnText='Add another list' type='list' icon={<AddIcon />} />}
-                                {addListFlag &&
-                                    <InputCard
-                                        value={listTitle}
-                                        changedHandler={handleChange}
-                                        itemAdded={submitHandler}
-                                        closeHandler={closeButtonHandler}
-                                        type='list'
-                                        btnText='Add List'
-                                    />
-                                }
+                            <div className={classes.wrapper}>
+                                <div>
+                                    {addFlag.current &&
+                                        <AddItem handleClick={handleAddition}
+                                            btnText='Add another list' type='list' icon={<AddIcon />} width='256px' />}
+                                    {addListFlag &&
+                                        <InputCard
+                                            value={listTitle}
+                                            changedHandler={handleChange}
+                                            itemAdded={submitHandler}
+                                            closeHandler={closeButtonHandler}
+                                            type='list'
+                                            btnText='Add List'
+                                            placeholder='Enter list title...'
+                                            width='230px'
+                                        />
+                                    }
+                                </div>
                             </div>
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
             </DragDropContext>
-
-            {/* <Activities activities={activities} /> */}
+            <SideMenu setBackground={setBackground} />
+            {/* <Background /> */}
         </div >
     )
 }
