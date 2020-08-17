@@ -6,12 +6,12 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'none',
         margin: theme.spacing(0.2, 1, 1, 1),
         justifyContent: 'left',
-        opacity: 0.6,
-        backgroundColor: props => props.type !== 'card' ? 'gray' : 'inherit',
+        opacity: 0.8,
+        backgroundColor: props => props.type !== 'card' ? 'hsla(0,0%,100%,.24)' : 'inherit',
         color: props => props.type !== 'card' ? 'white' : 'inherit',
         '&:hover': {
             opacity: 1,
-            backgroundColor: 'gray'
+            backgroundColor: 'hsla(0,0%, 100%, .24)'
         },
     },
     width: props => ({

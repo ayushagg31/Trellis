@@ -6,7 +6,7 @@ import { fetchBoardById, fetchListsFromBoard, fetchsCardsFromBoard, fetchActivit
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import List from './List'
 import _ from 'lodash'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, InputBase } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import midString from '../ordering/ordering'
 import { updateCardById } from '../actions/actionCreators/cardActions'
@@ -32,7 +32,17 @@ const useStyles = makeStyles((theme) => ({
     },
     wrapper: {
         marginTop: theme.spacing(11.5)
+    },
+    editable: {
+        marginLeft: theme.spacing(1),
+        height: '38px',
+        padding: theme.spacing(0, 1, 0, 1),
+        boxShadow: 'inset 0 0 0 2px #0079bf',
+        borderRadius: 6,
+        backgroundColor: '#EBECF0',
+        width: '290px'
     }
+
 }))
 
 export default function Board() {
@@ -49,6 +59,8 @@ export default function Board() {
     const [listTitle, setListTitle] = useState('')
     const [color, setColor] = useState('white')
     const [url, setUrl] = useState('')
+    const [editable, setEditable] = useState(false)
+    const [boardTitle, setBoardTitle] = useState('')
     const dispatch = useDispatch()
 
     if (!loading && name !== currBoard.name && currBoard.name !== undefined) {
@@ -68,6 +80,8 @@ export default function Board() {
         if (!_.isEmpty(currBoard)) {
             setColor(currBoard.image.color)
             setUrl(currBoard.image.full)
+            setBoardTitle(currBoard.name)
+            document.title = `${currBoard.name} | Trellis`
         }
     }, [currBoard])
 
@@ -312,7 +326,32 @@ export default function Board() {
         >
             <Redirect to={`/b/${id}/${name}`} />
             <Header />
-            <BoardHeader title={currBoard.name} />
+            {editable ? (
+                <div className={classes.editable}>
+                    < InputBase
+                        onChange={(e) => {
+                            e.preventDefault()
+                            setBoardTitle(e.target.value)
+                        }}
+                        fullWidth
+                        value={boardTitle}
+                        style={{
+                            fontWeight: 'bold', fontFamily: 'sans-serif',
+                            fontSize: '20px'
+                        }}
+                        autoFocus
+                        onFocus={(e) => {
+                            const val = e.target.value
+                            e.target.value = ''
+                            e.target.value = val
+                        }}
+                        onBlur={() => {
+                            setEditable(false)
+                            dispatch(updateBoardById(id, { name: boardTitle }))
+                        }}
+                    />
+                </div>) : (<BoardHeader title={currBoard.name} showEditable={() => setEditable(true)} />)
+            }
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId='all-columns' direction='horizontal' type='list'>
                     {provided => (
@@ -327,24 +366,22 @@ export default function Board() {
                                     tasks={tasks} index={index} />
                             })}
                             <div className={classes.wrapper}>
-                                <div>
-                                    {addFlag.current &&
-                                        <AddItem handleClick={handleAddition}
-                                            btnText='Add another list' type='list' icon={<AddIcon />} width='256px' />}
-                                    {addListFlag &&
-                                        <InputCard
-                                            value={listTitle}
-                                            changedHandler={handleChange}
-                                            itemAdded={submitHandler}
-                                            closeHandler={closeButtonHandler}
-                                            type='list'
-                                            btnText='Add List'
-                                            placeholder='Enter list title...'
-                                            width='230px'
-                                            marginLeft='1'
-                                        />
-                                    }
-                                </div>
+                                {addFlag.current &&
+                                    <AddItem handleClick={handleAddition}
+                                        btnText='Add another list' type='list' icon={<AddIcon />} width='256px' />}
+                                {addListFlag &&
+                                    <InputCard
+                                        value={listTitle}
+                                        changedHandler={handleChange}
+                                        itemAdded={submitHandler}
+                                        closeHandler={closeButtonHandler}
+                                        type='list'
+                                        btnText='Add List'
+                                        placeholder='Enter list title...'
+                                        width='230px'
+                                        marginLeft='1'
+                                    />
+                                }
                             </div>
                             {provided.placeholder}
                         </div>

@@ -21,6 +21,10 @@ describe('POST@/api/boards', () => {
         await request(app).post('/api/boards').send({}).expect(422)
     })
 
+    it('Should not create board without imageColor', async () => {
+        await request(app).post('/api/boards').send({ name: 'karma' }).expect(422)
+    })
+
     it('Should return internal server error when mongoose fails to save', async () => {
         sinon.stub(mongoose.Model.prototype, 'save').rejects({})
         await request(app).post('/api/boards').send(boardTwo).expect(500)
@@ -144,5 +148,34 @@ describe('DELETE@/api/boards/{id}', () => {
         sinon.stub(mongoose.Model, 'find').rejects({})
         await setupCard(cardOne, listOne, boardOne)
         await request(app).delete(`/api/boards/${boardOneId}`).send().expect(500)
+    })
+})
+
+const updateBoard = {
+    name: 'karma2',
+    image: {
+        color: 'green',
+        full: 'sample2',
+        thumb: 'image2_thumb',
+    }
+}
+
+describe('PATCH@/api/boards/{id}', () => {
+    it('Should update an existing board on all valid fields', async () => {
+        await setupBoard(boardOne)
+        await request(app).patch(`/api/boards/${boardOneId}`).send(updateBoard).expect(200)
+    })
+
+    it('Should not update, if board doesn\'t exist', async () => {
+        await request(app).patch(`/api/boards/${boardTwoId}`).send(updateBoard).expect(404)
+    })
+
+    it('Should not update board on invalid fields like  _id', async () => {
+        await request(app).patch(`/api/boards/${boardOneId}`).send({ _id: boardTwoId }).expect(400)
+    })
+
+    it('Should return internal server error when mongoose fails to connect', async () => {
+        sinon.stub(mongoose.Model, 'findByIdAndUpdate').rejects({})
+        await request(app).patch(`/api/boards/${boardOneId}`).send(updateBoard).expect(500)
     })
 })

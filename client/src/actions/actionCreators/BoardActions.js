@@ -41,6 +41,7 @@ export const createNewBoard = (params) => {
 
 export const updateBoardById = (id, params) => {
     return (dispatch) => {
+        dispatch({ type: ACTIONS.MAKE_REQUEST_BOARD })
         axios.patch(BASE_URL + id, params)
             .then(res => {
                 dispatch({ type: ACTIONS.UPDATE_BOARD, payload: { board: res.data } })

@@ -7,13 +7,23 @@ const Activity = require('../../src/models/activity')
 const boardOneId = new mongoose.Types.ObjectId()
 const boardOne = {
     _id: boardOneId,
-    name: 'boardOne'
+    name: 'boardOne',
+    image: {
+        color: 'white',
+        full: 'sample',
+        thumb: 'image_thumb',
+    }
 }
 
 const boardTwoId = new mongoose.Types.ObjectId()
 const boardTwo = {
     _id: boardTwoId,
-    name: 'boardTwo'
+    name: 'boardTwo',
+    image: {
+        color: 'white',
+        full: 'sample',
+        thumb: 'image_thumb',
+    }
 }
 const activityOneId = new mongoose.Types.ObjectId()
 const activityOne = {

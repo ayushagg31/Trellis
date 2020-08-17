@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Activities() {
     const classes = useStyles()
+    // eslint-disable-next-line
     const [dt, setDt] = useState(new Date().toLocaleString());
     const { activities } = useSelector(state => state.activities)
 

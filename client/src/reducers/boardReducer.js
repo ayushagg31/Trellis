@@ -21,7 +21,7 @@ export const boardReducer = (state = initialState, action) => {
             const boardsCopy = [...state.boards]
             const targetIndex = boardsCopy.findIndex(board => board._id === action.payload.board._id)
             boardsCopy[targetIndex] = action.payload.board
-            return { ...state, boards: boardsCopy, loading: false }
+            return { ...state, boards: boardsCopy, currBoard: action.payload.board, loading: false }
         default:
             return state
     }

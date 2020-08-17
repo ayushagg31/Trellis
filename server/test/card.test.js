@@ -117,12 +117,12 @@ describe('PATCH@/api/cards/{id}', () => {
     })
 
     it('Should not update card on invalid fields like boardId, _id', async () => {
-        await request(app).patch(`/api/cards/${cardTwoId}`).send({ boardId: boardTwoId, _id: cardTwoId }).expect(400)
+        await request(app).patch(`/api/cards/${cardOneId}`).send({ boardId: boardTwoId, _id: cardTwoId }).expect(400)
     })
 
     it('Should return internal server error when mongoose fails to connect', async () => {
         sinon.stub(mongoose.Model, 'findByIdAndUpdate').rejects({})
-        await request(app).patch(`/api/cards/${cardTwoId}`).send(updateCard).expect(500)
+        await request(app).patch(`/api/cards/${cardOneId}`).send(updateCard).expect(500)
     })
 })
 

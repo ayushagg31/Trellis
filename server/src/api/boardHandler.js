@@ -120,6 +120,11 @@ router.delete('/:id', async (req, res, next) => {
                 await Card.deleteOne({ _id: card._id })))
             await List.deleteOne({ _id: list._id })
         })
+        // find all activities within board and delete them as well
+        const activities = await Activity.find({ boardId: _id })
+        activities.forEach(async (activity) => {
+            await Activity.deleteOne({ _id: activity._id })
+        })
         res.send(board)
     } catch (error) {
         next(error)

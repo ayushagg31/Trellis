@@ -6,9 +6,10 @@ import { createNewCard } from '../actions/actionCreators/cardActions'
 import { useDispatch } from 'react-redux'
 import midString from '../ordering/ordering'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
-import { Paper, makeStyles } from '@material-ui/core'
+import { Paper, makeStyles, InputBase } from '@material-ui/core'
 import AddItem from './AddItem'
 import AddIcon from '@material-ui/icons/Add'
+import { updateListById } from '../actions/actionCreators/listActions'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,20 +24,30 @@ const useStyles = makeStyles((theme) => ({
         overflowX: 'hidden'
     },
     title: {
-        padding: theme.spacing(1),
+        padding: theme.spacing(1, 1, 1, 1),
         minWidth: '100px',
         marginLeft: theme.spacing(1.5),
         fontWeight: 'bold',
     },
     wrapper: {
         marginTop: theme.spacing(11.5)
+    },
+    editable: {
+        marginLeft: theme.spacing(-1),
+        wordWrap: 'break-word',
+        padding: theme.spacing(0, 1, 0, 1),
+        boxShadow: 'inset 0 0 0 2px #0079bf',
+        width: '210px',
+        borderRadius: 4,
     }
 }))
 
 export default function Column({ column, tasks, index }) {
     const classes = useStyles()
     const [cardTitle, setCardTitle] = useState('')
+    const [listTitle, setListTitle] = useState(column.name)
     const [addCardFlag, setAddCardFlag] = useState(false)
+    const [editable, setEditable] = useState(false)
     var addFlag = useRef(true)
     const dispatch = useDispatch()
 
@@ -72,6 +83,14 @@ export default function Column({ column, tasks, index }) {
         addFlag.current = true
         setCardTitle('')
     }
+    const changedHandler = (e) => {
+        e.preventDefault()
+        setListTitle(e.target.value)
+    }
+    const updateListTitle = () => {
+        dispatch(updateListById(column._id, { name: listTitle }))
+        setEditable(false)
+    }
 
     return (
         <div className={classes.wrapper}>
@@ -82,8 +101,28 @@ export default function Column({ column, tasks, index }) {
                         <Paper elevation={0}
                             className={classes.root}
                             {...provided.dragHandleProps}>
-                            <div className={classes.title} >
-                                {column.name}
+                            <div className={classes.title} onClick={() => setEditable(true)} >
+                                {!editable && <div>
+                                    {column.name}
+                                </div>}
+                                {editable &&
+                                    <div className={classes.editable}>
+                                        < InputBase
+                                            onChange={changedHandler}
+                                            multiline
+                                            fullWidth
+                                            value={listTitle}
+                                            style={{ fontWeight: 'bold' }}
+                                            autoFocus
+                                            onFocus={(e) => {
+                                                const val = e.target.value
+                                                e.target.value = ''
+                                                e.target.value = val
+                                            }}
+                                            onBlur={updateListTitle}
+                                        />
+                                    </div>
+                                }
                             </div>
                             <Droppable
                                 droppableId={column._id} type='card'>
@@ -120,6 +159,6 @@ export default function Column({ column, tasks, index }) {
                     </div>
                 )}
             </Draggable>
-        </div>
+        </div >
     )
 }
