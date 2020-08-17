@@ -32,16 +32,13 @@ app.use(express.json())
 //     })
 // })
 app.use('/api/', apiHandler)
-app.use(notFoundHandler)
-app.use(errorHandler)
-
-
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('../client/build'))
     app.get('/', (req, res) => {
         res.sendFile(path.join(__dirname, '../client/build/index.html'))
     })
 }
-
+app.use(errorHandler)
+app.use(notFoundHandler)
 
 module.exports = app
