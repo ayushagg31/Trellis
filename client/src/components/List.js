@@ -110,7 +110,11 @@ export default function Column({ column, tasks, index }) {
                                         </div>
                                         <IconButton
                                             style={{ right: 0, position: 'absolute', marginTop: '-10px', zIndex: '100' }}
-                                            onClick={() => (dispatch(deleteListById(column._id)))}
+                                            onClick={() => {
+                                                dispatch(deleteListById(column._id))
+                                                const text = `User deleted list ${column.name}`
+                                                dispatch(createNewActivity({ text, boardId: column.boardId }))
+                                            }}
                                         >
                                             <DeleteIcon fontSize='small' />
                                         </IconButton>

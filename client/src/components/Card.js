@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateCardById, deleteCardById } from '../actions/actionCreators/cardActions'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import { createNewActivity } from '../actions/actionCreators/activityActions'
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -62,7 +63,11 @@ export default function Card({ task, index }) {
                                 </div>
                                 <IconButton
                                     style={{ right: 0, position: 'absolute', marginTop: '-10px', zIndex: '100' }}
-                                    onClick={() => (dispatch(deleteCardById(task._id)))}
+                                    onClick={() => {
+                                        dispatch(deleteCardById(task._id))
+                                        const text = `User deleted card ${task.name}`
+                                        dispatch(createNewActivity({ text, boardId: task.boardId }))
+                                    }}
                                 >
                                     <DeleteForeverIcon fontSize='small' />
                                 </IconButton>
