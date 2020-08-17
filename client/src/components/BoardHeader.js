@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         justifyContent: 'space-between',
-        // position: 'fixed',
+        position: 'fixed',
         width: '1405px',
         overflow: 'hidden',
         opacity: 0.8,
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0.7, 0.7, 0.7, 0.7),
         fontFamily: 'sans-serif',
         fontSize: '20px',
-        marginTop: theme.spacing(0),
+        marginTop: theme.spacing(6.5),
         '&:hover': {
             opacity: 1,
             backgroundColor: 'hsla(0,0%,100%,.24)',

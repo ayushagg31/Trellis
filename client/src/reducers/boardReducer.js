@@ -22,6 +22,11 @@ export const boardReducer = (state = initialState, action) => {
             const targetIndex = boardsCopy.findIndex(board => board._id === action.payload.board._id)
             boardsCopy[targetIndex] = action.payload.board
             return { ...state, boards: boardsCopy, currBoard: action.payload.board, loading: false }
+        case ACTIONS.DELETE_BOARD:
+            const boardPrev = [...state.boards]
+            const index = boardPrev.findIndex(board => board._id === action.payload.board._id)
+            boardPrev.splice(index, 1)
+            return { ...state, boards: boardPrev, loading: false }
         default:
             return state
     }

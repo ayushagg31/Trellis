@@ -6,10 +6,11 @@ import { createNewCard } from '../actions/actionCreators/cardActions'
 import { useDispatch } from 'react-redux'
 import midString from '../ordering/ordering'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
-import { Paper, makeStyles, InputBase } from '@material-ui/core'
+import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
 import AddItem from './AddItem'
 import AddIcon from '@material-ui/icons/Add'
-import { updateListById } from '../actions/actionCreators/listActions'
+import { updateListById, deleteListById } from '../actions/actionCreators/listActions'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,9 +103,19 @@ export default function Column({ column, tasks, index }) {
                             className={classes.root}
                             {...provided.dragHandleProps}>
                             <div className={classes.title} onClick={() => setEditable(true)} >
-                                {!editable && <div>
-                                    {column.name}
-                                </div>}
+                                {!editable &&
+                                    <div style={{ display: 'flex', position: 'relative' }}>
+                                        <div>
+                                            {column.name}
+                                        </div>
+                                        <IconButton
+                                            style={{ right: 0, position: 'absolute', marginTop: '-10px', zIndex: '100' }}
+                                            onClick={() => (dispatch(deleteListById(column._id)))}
+                                        >
+                                            <DeleteIcon fontSize='small' />
+                                        </IconButton>
+                                    </div>
+                                }
                                 {editable &&
                                     <div className={classes.editable}>
                                         < InputBase

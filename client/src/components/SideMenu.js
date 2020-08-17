@@ -7,6 +7,9 @@ import Activities from './Activities'
 import Hr from './Hr'
 import MenuHeader from './MenuHeader'
 import Background from './Background'
+import { useDispatch } from 'react-redux'
+import { deleteBoardById } from '../actions/actionCreators/boardActions'
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep'
 const useStyles = makeStyles((theme) => ({
     container: {
         backgroundColor: '#F4F5F7',
@@ -33,10 +36,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(0.5)
     },
 }))
-export default function SideMenu({ setBackground }) {
+export default function SideMenu({ setBackground, board }) {
     const [showMenu, setShowMenu] = useState(false)
     const [showBackground, setShowBackground] = useState(false)
     const classes = useStyles({ showMenu })
+    const dispatch = useDispatch()
     return (
         <>
             <div className={classes.menu}>
@@ -48,7 +52,25 @@ export default function SideMenu({ setBackground }) {
                     <Hr />
                     <AddItem btnText='Change Background'
                         handleClick={() => (setShowBackground(true))}
-                        type='background' width='310px' />
+                        type='background' width='310px'
+                        icon={<span style={{
+                            marginRight: '13px',
+                            backgroundColor: `${board.color}`,
+                            backgroundImage: `url(${board.url})`,
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '2px'
+                        }} ></span>}
+                    />
+                    <AddItem btnText='  Delete Board'
+                        handleClick={() => {
+                            dispatch(deleteBoardById(board.id))
+                            window.location.href = 'http://localhost:3000/'
+                        }}
+                        type='background' width='310px'
+                        icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />} />
                     <div style={{ display: 'flex', marginTop: '20px' }}>
                         <AccountTreeIcon fontSize='small'
                             style={{ paddingLeft: '20px', color: '#172B4D', opacity: '0.8' }} />

@@ -28,3 +28,14 @@ export const updateListById = (id, params) => {
             })
     }
 }
+
+export const deleteListById = (id) => {
+    return (dispatch) => {
+        axios.delete(BASE_URL + id)
+            .then(res => {
+                dispatch({ type: ACTIONS.DELETE_LIST, payload: { list: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR_LIST, payload: { error: e.message } })
+            })
+    }
+}

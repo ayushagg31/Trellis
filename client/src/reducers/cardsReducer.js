@@ -17,6 +17,11 @@ export const cardsReducer = (state = initialState, action) => {
             const targetIndex = cardsCopy.findIndex(card => card._id === action.payload.card._id)
             cardsCopy[targetIndex] = action.payload.card
             return { ...state, cards: cardsCopy, cardLoading: false }
+        case ACTIONS.DELETE_CARD:
+            const cardPrev = [...state.cards]
+            const index = cardPrev.findIndex(card => card._id === action.payload.card._id)
+            cardPrev.splice(index, 1)
+            return { ...state, cards: cardPrev, cardLoading: false }
         case ACTIONS.ERROR_CARD:
             return { ...state, cardLoading: false, cardError: action.payload.error }
         default:

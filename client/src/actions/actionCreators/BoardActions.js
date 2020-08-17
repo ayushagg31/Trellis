@@ -51,6 +51,17 @@ export const updateBoardById = (id, params) => {
     }
 }
 
+export const deleteBoardById = (id) => {
+    return (dispatch) => {
+        axios.delete(BASE_URL + id)
+            .then(res => {
+                dispatch({ type: ACTIONS.DELETE_BOARD, payload: { board: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e.message } })
+            })
+    }
+}
+
 export const fetchListsFromBoard = (id) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.MAKE_REQUEST_LIST })

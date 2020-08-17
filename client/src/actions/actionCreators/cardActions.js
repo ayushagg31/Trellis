@@ -1,6 +1,5 @@
 import axios from 'axios'
 import * as ACTIONS from '../actions'
-
 const BASE_URL = 'http://localhost:1337/api/cards/'
 
 
@@ -24,6 +23,17 @@ export const updateCardById = (id, params) => {
         axios.patch(BASE_URL + id, params)
             .then(res => {
                 dispatch({ type: ACTIONS.UPDATE_CARD, payload: { card: res.data } })
+            }).catch(e => {
+                dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e.message } })
+            })
+    }
+}
+
+export const deleteCardById = (id) => {
+    return (dispatch) => {
+        axios.delete(BASE_URL + id)
+            .then(res => {
+                dispatch({ type: ACTIONS.DELETE_CARD, payload: { card: res.data } })
             }).catch(e => {
                 dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e.message } })
             })

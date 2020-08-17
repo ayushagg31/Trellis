@@ -1,9 +1,10 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { Paper, makeStyles, InputBase } from '@material-ui/core'
+import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateCardById } from '../actions/actionCreators/cardActions'
+import { updateCardById, deleteCardById } from '../actions/actionCreators/cardActions'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -31,7 +32,9 @@ export default function Card({ task, index }) {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
-                    <Paper className={classes.card} onClick={() => setEditable(true)}>
+                    <Paper className={classes.card} onClick={() => {
+                        setEditable(true)
+                    }}>
                         {editable ?
                             (< InputBase
                                 onChange={(e) => {
@@ -53,9 +56,18 @@ export default function Card({ task, index }) {
                                     dispatch(updateCardById(task._id, { name: title }))
                                 }}
                             />) :
-                            (<div>
-                                {task.name}
-                            </div>)
+                            (<div style={{ display: 'flex', position: 'relative' }}>
+                                <div>
+                                    {task.name}
+                                </div>
+                                <IconButton
+                                    style={{ right: 0, position: 'absolute', marginTop: '-10px', zIndex: '100' }}
+                                    onClick={() => (dispatch(deleteCardById(task._id)))}
+                                >
+                                    <DeleteForeverIcon fontSize='small' />
+                                </IconButton>
+                            </div>
+                            )
                         }
                     </ Paper>
                 </div>

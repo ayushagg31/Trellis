@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'flex-start',
         width: '100%',
-        marginTop: theme.spacing(-10.5)
+        marginTop: theme.spacing(0.5)
     },
     wrapper: {
         marginTop: theme.spacing(11.5)
@@ -40,7 +40,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: 'inset 0 0 0 2px #0079bf',
         borderRadius: 6,
         backgroundColor: '#EBECF0',
-        width: '290px'
+        width: '290px',
+        position: 'fixed',
+        marginTop: theme.spacing(6.5)
     }
 
 }))
@@ -328,7 +330,7 @@ export default function Board() {
             <Header />
             {editable ? (
                 <div className={classes.editable}>
-                    < InputBase
+                    <InputBase
                         onChange={(e) => {
                             e.preventDefault()
                             setBoardTitle(e.target.value)
@@ -388,8 +390,7 @@ export default function Board() {
                     )}
                 </Droppable>
             </DragDropContext>
-            <SideMenu setBackground={setBackground} />
-            {/* <Background /> */}
+            <SideMenu setBackground={setBackground} board={{ id, color, url }} />
         </div >
     )
 }
