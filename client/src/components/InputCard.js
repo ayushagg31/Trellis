@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder, marginLeft }) {
     const classes = useStyles({ type, width, marginLeft })
+    const handleBlur = () => {
+        itemAdded()
+        closeHandler()
+    }
     return (
         <div className={classes.listBackground}>
             <Paper className={`${classes.card} ${classes.width}`}>
@@ -51,7 +55,7 @@ export default function InputItem({ value, changedHandler, itemAdded, closeHandl
                     value={value}
                     autoFocus
                     placeholder={placeholder}
-                />
+                    onBlur={handleBlur} />
             </Paper>
             <Button
                 className={classes.btn}

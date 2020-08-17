@@ -151,7 +151,6 @@ export default function Column({ column, tasks, index }) {
                                             <AddItem handleClick={handleAddition} icon={<AddIcon />}
                                                 btnText='Add another card' type='card' width='256px' />
                                         }
-
                                     </div>
                                 )}
                             </Droppable>

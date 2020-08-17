@@ -46,7 +46,9 @@ export default function SideMenu({ setBackground }) {
                 <Paper className={classes.container} elevation={1} variant='outlined' >
                     <MenuHeader text='Menu' closeHandler={() => (setShowMenu(false))} type='menu' />
                     <Hr />
-                    <AddItem btnText='Change Background' handleClick={() => (setShowBackground(true))} type='background' width='310px' />
+                    <AddItem btnText='Change Background'
+                        handleClick={() => (setShowBackground(true))}
+                        type='background' width='310px' />
                     <div style={{ display: 'flex', marginTop: '20px' }}>
                         <AccountTreeIcon fontSize='small'
                             style={{ paddingLeft: '20px', color: '#172B4D', opacity: '0.8' }} />

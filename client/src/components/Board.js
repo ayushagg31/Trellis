@@ -368,7 +368,7 @@ export default function Board() {
                             <div className={classes.wrapper}>
                                 {addFlag.current &&
                                     <AddItem handleClick={handleAddition}
-                                        btnText='Add another list' type='list' icon={<AddIcon />} width='256px' />}
+                                        btnText='Add another list' type='list' icon={<AddIcon />} width='256px' color='white' />}
                                 {addListFlag &&
                                     <InputCard
                                         value={listTitle}
