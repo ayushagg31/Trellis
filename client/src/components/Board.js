@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Board() {
     const classes = useStyles()
     var { id, name } = useParams()
-    const { loading, currBoard, error } = useSelector(state => state.boards)
-    const { listLoading, lists, listError } = useSelector(state => state.lists)
-    const { cardLoading, cards, cardError } = useSelector(state => state.cards)
+    const { loading, currBoard } = useSelector(state => state.boards)
+    const { listLoading, lists } = useSelector(state => state.lists)
+    const { cardLoading, cards } = useSelector(state => state.cards)
     const { activities } = useSelector(state => state.activities)
     const [initialData, setInitialData] = useState({})
     const [initDone, setInitDone] = useState(false)
@@ -65,9 +65,10 @@ export default function Board() {
     const [boardTitle, setBoardTitle] = useState('')
     const dispatch = useDispatch()
 
-    if (!loading && name !== currBoard.name && currBoard.name !== undefined) {
+    if (!loading && name !== currBoard.name && currBoard.name !== undefined)
         name = currBoard.name
-    }
+    else if (name === undefined)
+        name = ''
 
     useEffect(() => {
         if (id.length === 24) {

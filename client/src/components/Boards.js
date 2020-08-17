@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Boards() {
     const classes = useStyles()
     const [boardTitle, setBoardTitle] = useState('')
-    const { boards, loading, error, newBoard } = useSelector(state => state.boards)
+    const { boards, newBoard } = useSelector(state => state.boards)
     const [showInput, setShowInput] = useState(false)
     const dispatch = useDispatch()
 

@@ -67,7 +67,7 @@ export default function SideMenu({ setBackground, board }) {
                     <AddItem btnText='  Delete Board'
                         handleClick={() => {
                             dispatch(deleteBoardById(board.id))
-                            window.location.href = 'http://localhost:3000/'
+                            window.location.href = process.env.REACT_APP_HOME_URL
                         }}
                         type='background' width='310px'
                         icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />} />
