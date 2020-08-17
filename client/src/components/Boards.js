@@ -90,7 +90,7 @@ export default function Boards() {
             <Header />
             <div style={{ paddingTop: '80px' }}>
                 <div className={classes.menuContainer}>
-                    {boards.map(board => {
+                    { boards.map(board => {
                         return (
                             < div className={classes.card}
                                 key={board._id}
