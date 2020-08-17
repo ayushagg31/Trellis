@@ -1,11 +1,12 @@
 const express = require('express')
-/* eslint-disable no-unused-vars */
 const cors = require('cors')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const mongoose = require('mongoose')
+const path = require('path')
 const apiHandler = require('./api/apiHandler')
 const { notFoundHandler, errorHandler } = require('./middleware')
+
 
 const app = express()
 
@@ -37,6 +38,9 @@ app.use(errorHandler)
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('../../client/build'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/build/index.html'))
+    })
 }
 
 

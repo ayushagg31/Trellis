@@ -8,6 +8,7 @@
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
     "lint": "eslint src/",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
+    "heroku-postbuild": "cd ../client && npm install && npm run build"
   },
   "jest": {
     "testEnvironment": "node"
