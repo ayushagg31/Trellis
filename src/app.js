@@ -25,12 +25,12 @@ app.use(cors({
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.json({
-        message: 'success',
-        staus: res.statusCode
-    })
-})
+// app.get('/', (req, res) => {
+//     res.json({
+//         message: 'success',
+//         staus: res.statusCode
+//     })
+// })
 app.use('/api/', apiHandler)
 app.use(notFoundHandler)
 app.use(errorHandler)
