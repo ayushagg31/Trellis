@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         justifyContent: 'space-between',
-        position: 'fixed',
+        // position: 'fixed',
         width: '1405px',
         overflow: 'hidden'
     },

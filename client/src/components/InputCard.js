@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     },
     listBackground: {
         backgroundColor: '#EBECF0',
-        marginLeft: props => props.type === 'list' ? theme.spacing(1) : 'inherit',
-        paddingTop: theme.spacing(1),
+        marginLeft: props => props.marginLeft ? theme.spacing(1) : theme.spacing(0),
+        paddingTop: props => props.type === 'list' ? theme.spacing(1) : 'inherit',
         borderRadius: theme.spacing(0.5),
     },
     width: props => ({
@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
     })
 }))
 
-export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder }) {
-    const classes = useStyles({ type, width })
+export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder, marginLeft }) {
+    const classes = useStyles({ type, width, marginLeft })
     return (
         <div className={classes.listBackground}>
             <Paper className={`${classes.card} ${classes.width}`}>

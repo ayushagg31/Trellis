@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchAllBoards, createNewBoard, updateBoardById } from '../actions/actionCreators/boardActions'
+import { fetchAllBoards, createNewBoard } from '../actions/actionCreators/boardActions'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
 import InputCard from './InputCard'
 import { makeStyles } from '@material-ui/core'
@@ -115,7 +115,7 @@ export default function Boards() {
                         style={{ backgroundColor: '#E7E9ED' }}
                         onClick={() => setShowInput(true)}
                     >
-                        <div style={{ fontSize: '14px', opacity: 0.8, textAlign:'center', marginTop: '35px' }}>
+                        <div style={{ fontSize: '14px', opacity: 0.8, textAlign: 'center', marginTop: '35px' }}>
                             Create new board
                         </div>
                     </div>}

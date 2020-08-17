@@ -4,7 +4,6 @@ import Hr from './Hr'
 import MenuHeader from './MenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchImages } from '../actions/actionCreators/imageActions'
-import { updateBoardById } from '../actions/actionCreators/boardActions'
 
 const useStyles = makeStyles((theme) => ({
     container: {

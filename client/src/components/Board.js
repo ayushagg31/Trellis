@@ -27,10 +27,11 @@ const useStyles = makeStyles((theme) => ({
     listContainer: {
         display: 'flex',
         alignItems: 'flex-start',
-        width: '100%'
+        width: '100%',
+        marginTop: theme.spacing(-10.5)
     },
     wrapper: {
-        marginTop: theme.spacing(4.5)
+        marginTop: theme.spacing(11.5)
     }
 }))
 
@@ -340,6 +341,7 @@ export default function Board() {
                                             btnText='Add List'
                                             placeholder='Enter list title...'
                                             width='230px'
+                                            marginLeft='1'
                                         />
                                     }
                                 </div>
