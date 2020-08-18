@@ -55,6 +55,7 @@ export default function Card({ task, index }) {
                                 onBlur={() => {
                                     setEditable(false)
                                     dispatch(updateCardById(task._id, { name: title }))
+                                    task.name = title
                                 }}
                             />) :
                             (<div style={{ display: 'flex', position: 'relative' }}>

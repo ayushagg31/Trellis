@@ -90,6 +90,7 @@ export default function Column({ column, tasks, index }) {
     }
     const updateListTitle = () => {
         dispatch(updateListById(column._id, { name: listTitle }))
+        column.name = listTitle
         setEditable(false)
     }
 
