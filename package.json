@@ -14,7 +14,7 @@
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "client": "cd client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"npm run dev\" \"npm run client\""
   },
   "jest": {
     "testEnvironment": "node"
@@ -23,7 +23,6 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^5.3.0",
-    "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "mongoose": "^5.9.24",
