@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -24,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
             opacity: 1,
             cursor: 'pointer',
         },
-        
-        
+
+
     }
 }))
 
@@ -33,8 +34,10 @@ export default function Header() {
     const classes = useStyles()
     return (
         <div className={classes.header}>
-            <div className={classes.trellis}
-            >Trellis</div>
+            <Link to='/' style={{ textDecoration: 'none' }}>
+                <div className={classes.trellis}>
+                    Trellis</div>
+            </Link>
         </div>
     )
 }

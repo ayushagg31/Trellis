@@ -10,6 +10,7 @@ import Background from './Background'
 import { useDispatch } from 'react-redux'
 import { deleteBoardById } from '../actions/actionCreators/boardActions'
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep'
+import { Link } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
     container: {
         backgroundColor: '#F4F5F7',
@@ -64,13 +65,14 @@ export default function SideMenu({ setBackground, board }) {
                             borderRadius: '2px'
                         }} ></span>}
                     />
-                    <AddItem btnText='  Delete Board'
-                        handleClick={() => {
-                            dispatch(deleteBoardById(board.id))
-                            window.location.href = process.env.REACT_APP_HOME_URL
-                        }}
-                        type='background' width='310px'
-                        icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />} />
+                    <Link to='/' style={{ textDecoration: 'none' }}>
+                        <AddItem btnText='  Delete Board'
+                            handleClick={() => {
+                                dispatch(deleteBoardById(board.id))
+                            }}
+                            type='background' width='310px'
+                            icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />} />
+                    </Link>
                     <div style={{ display: 'flex', marginTop: '20px' }}>
                         <AccountTreeIcon fontSize='small'
                             style={{ paddingLeft: '20px', color: '#172B4D', opacity: '0.8' }} />

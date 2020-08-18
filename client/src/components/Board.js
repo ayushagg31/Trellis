@@ -351,6 +351,7 @@ export default function Board() {
                         onBlur={() => {
                             setEditable(false)
                             dispatch(updateBoardById(id, { name: boardTitle }))
+                            currBoard.name = boardTitle
                         }}
                     />
                 </div>) : (<BoardHeader title={currBoard.name} showEditable={() => setEditable(true)} />)

@@ -13,17 +13,18 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         width: '230px',
         wordWrap: 'break-word',
+        zIndex: '-100',
         '&:hover': {
             backgroundColor: '#EBECF0'
         }
-
-    },
+    }
 }))
 
 export default function Card({ task, index }) {
     const classes = useStyles()
     const [editable, setEditable] = useState(false)
     const [title, setTitle] = useState(task.name)
+    const [card, setCard] = useState(true)
     const dispatch = useDispatch()
     return (
         <Draggable draggableId={task._id} index={index}>
@@ -33,7 +34,7 @@ export default function Card({ task, index }) {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
-                    <Paper className={classes.card} onClick={() => {
+                    {card && <Paper className={classes.card} onClick={() => {
                         setEditable(true)
                     }}>
                         {editable ?
@@ -55,15 +56,17 @@ export default function Card({ task, index }) {
                                 onBlur={() => {
                                     setEditable(false)
                                     dispatch(updateCardById(task._id, { name: title }))
+                                    task.name = title
                                 }}
                             />) :
-                            (<div style={{ display: 'flex', position: 'relative' }}>
+                            (<div style={{ position: 'relative' }}>
                                 <div>
                                     {task.name}
                                 </div>
                                 <IconButton
-                                    style={{ right: 0, position: 'absolute', marginTop: '-10px', zIndex: '100' }}
+                                    style={{ right: -10, position: 'absolute', marginTop: '-33px', zIndex: '200' }}
                                     onClick={() => {
+                                        setCard(false)
                                         dispatch(deleteCardById(task._id))
                                         const text = `User deleted card ${task.name}`
                                         dispatch(createNewActivity({ text, boardId: task.boardId }))
@@ -75,9 +78,9 @@ export default function Card({ task, index }) {
                             )
                         }
                     </ Paper>
+                    }
                 </div>
-            )
-            }
+            )}
         </Draggable >
     )
 }
