@@ -49,6 +49,7 @@ export default function Column({ column, tasks, index }) {
     const [listTitle, setListTitle] = useState(column.name)
     const [addCardFlag, setAddCardFlag] = useState(false)
     const [editable, setEditable] = useState(false)
+    const [list, setList] = useState(true)
     var addFlag = useRef(true)
     const dispatch = useDispatch()
 
@@ -95,8 +96,8 @@ export default function Column({ column, tasks, index }) {
     }
 
     return (
-        <div className={classes.wrapper}>
-            <Draggable draggableId={column._id} index={index}>
+        < div className={classes.wrapper} >
+            {list && <Draggable draggableId={column._id} index={index}>
                 {(provided) => (
                     <div {...provided.draggableProps}
                         ref={provided.innerRef}>
@@ -105,13 +106,14 @@ export default function Column({ column, tasks, index }) {
                             {...provided.dragHandleProps}>
                             <div className={classes.title} onClick={() => setEditable(true)} >
                                 {!editable &&
-                                    <div style={{ display: 'flex', position: 'relative' }}>
+                                    <div style={{ position: 'relative' }}>
                                         <div>
                                             {column.name}
                                         </div>
                                         <IconButton
-                                            style={{ right: 0, position: 'absolute', marginTop: '-10px', zIndex: '100' }}
+                                            style={{ right: 0, position: 'absolute', marginTop: '-30px', zIndex: '100' }}
                                             onClick={() => {
+                                                setList(false)
                                                 dispatch(deleteListById(column._id))
                                                 const text = `User deleted list ${column.name}`
                                                 dispatch(createNewActivity({ text, boardId: column.boardId }))
@@ -174,6 +176,7 @@ export default function Column({ column, tasks, index }) {
                     </div>
                 )}
             </Draggable>
+            }
         </div >
     )
 }
