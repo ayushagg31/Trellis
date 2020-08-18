@@ -41,5 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://trellis-app.herokuapp.com"
+  "proxy": "http://localhost:1313"
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as ACTIONS from '../actions'
 
-const BASE_URL = '/api/cards'
+const BASE_URL = '/api/cards/'
 
 
 export const createNewCard = (params) => {

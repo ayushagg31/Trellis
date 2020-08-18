@@ -8,13 +8,13 @@
     "npm": "6.14.4"
   },
   "scripts": {
-    "server": "node src/index.js",
-    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+    "start": "node index.js",
+    "dev": "env-cmd -f ./config/dev.env nodemon index.js",
     "lint": "eslint src/",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "client": "cd client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "start": "concurrently \"npm run dev\" \"npm run client\""
+    "trellis": "concurrently \"npm run dev\" \"npm run client\""
   },
   "jest": {
     "testEnvironment": "node"
