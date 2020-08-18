@@ -1,4 +1,4 @@
 node_modules/
 *.env
-*.eslintrc.json
+.eslintrc.json
 /client/build
