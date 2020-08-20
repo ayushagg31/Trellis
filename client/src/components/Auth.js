@@ -28,7 +28,17 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#F9FAFC',
     },
     submit: {
-
+        backgroundColor: '#61BD4F',
+        color: 'white',
+        fontWeight: 'bold',
+        opacity: 0.9,
+        all: 'unset',
+        borderRadius: 5,
+        width: '80px',
+        padding: theme.spacing(0.6),
+        '&:hover': {
+            opacity: 1.6
+        }
     }
 }))
 
