@@ -16,16 +16,21 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         textAlign: 'center',
         width: '280px',
-        backgroundColor: '#F9FAFC',
+        backgroundColor: '#EAEAEA',
 
     },
     input: {
+        outline: 'none',
         marginBottom: theme.spacing(2),
-        borderRadius: 5,
-        padding: theme.spacing(0.6),
+        padding: theme.spacing(1),
         marginRight: '90px',
         marginLeft: '55px',
-        backgroundColor: '#F9FAFC',
+        backgroundColor: '#EAEAEA',
+        border: '2px solid #DFE1E6',
+        boxSizing: 'border-box',
+        '&:focus': {
+            border: '2px solid #4C9AFF',
+        }
     },
     submit: {
         backgroundColor: '#61BD4F',
@@ -34,8 +39,9 @@ const useStyles = makeStyles(theme => ({
         opacity: 0.9,
         all: 'unset',
         borderRadius: 5,
-        width: '80px',
-        padding: theme.spacing(0.6),
+        width: '150px',
+        padding: theme.spacing(0.8),
+        margin: theme.spacing(2,2,7,2),
         '&:hover': {
             opacity: 1.6
         }
@@ -53,7 +59,7 @@ export default function Auth({ btnText, path, authName, icon, error, clearError,
                     <ErrorNotice message={error} clearError={clearError} />
                 )}
                 <Paper elevation={1} className={classes.form}>
-                    <div style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 'bold', paddingBottom: '30px' }}>
+                    <div style={{ fontFamily: 'Arial, Helvetica, sans-serif', marginTop: '35px', color: '#5E6C84', fontSize: '18px', fontWeight: 'bold', paddingBottom: '30px' }}>
                         {authName} to Trellis
                     </div>
                     <form onSubmit={submitHandler} >

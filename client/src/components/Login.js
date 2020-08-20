@@ -12,7 +12,6 @@ export default function Login() {
     const [error, setError] = useState()
     const dispatch = useDispatch()
     const history = useHistory()
-    console.log(error)
     useEffect(() => {
         if (user.username !== undefined)
             history.push(`/${user.username}/boards`)
