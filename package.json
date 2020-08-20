@@ -22,9 +22,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "concurrently": "^5.3.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.24",
     "morgan": "^1.10.0"
   },

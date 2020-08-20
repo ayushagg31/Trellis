@@ -2,7 +2,7 @@ import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateCardById, deleteCardById } from '../actions/actionCreators/cardActions'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
@@ -25,6 +25,7 @@ export default function Card({ task, index }) {
     const [editable, setEditable] = useState(false)
     const [title, setTitle] = useState(task.name)
     const [card, setCard] = useState(true)
+    const { token } = useSelector(state => state.user)
     const dispatch = useDispatch()
     return (
         <Draggable draggableId={task._id} index={index}>
@@ -69,7 +70,7 @@ export default function Card({ task, index }) {
                                         setCard(false)
                                         dispatch(deleteCardById(task._id))
                                         const text = `User deleted card ${task.name}`
-                                        dispatch(createNewActivity({ text, boardId: task.boardId }))
+                                        dispatch(createNewActivity({ text, boardId: task.boardId }, token))
                                     }}
                                 >
                                     <DeleteForeverIcon fontSize='small' />

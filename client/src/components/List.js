@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Card from './Card'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import InputCard from './InputCard'
 import { createNewCard } from '../actions/actionCreators/cardActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import midString from '../ordering/ordering'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
 import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold',
     },
     wrapper: {
-        marginTop: theme.spacing(11.5)
+        marginTop: theme.spacing(4.3)
     },
     editable: {
         marginLeft: theme.spacing(-1),
@@ -50,14 +50,13 @@ export default function Column({ column, tasks, index }) {
     const [addCardFlag, setAddCardFlag] = useState(false)
     const [editable, setEditable] = useState(false)
     const [list, setList] = useState(true)
-    var addFlag = useRef(true)
+    const { token, user } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     const handleChange = (e) => {
         e.preventDefault()
         setCardTitle(e.target.value)
     }
-
     const submitHandler = () => {
         if (cardTitle === '')
             return
@@ -68,21 +67,20 @@ export default function Column({ column, tasks, index }) {
             listId: column._id,
             order: totalTasks === 0 ? 'n' : midString(tasks[totalTasks - 1].order, '')
         }
-        dispatch(createNewCard(postCardReq))
+        dispatch(createNewCard(postCardReq, token))
         dispatch(createNewActivity({
-            text: `User added ${cardTitle} to ${column.name}`,
+            text: `${user.username} added ${cardTitle} to ${column.name}`,
             boardId: column.boardId
-        }))
+        }, token))
         setCardTitle('')
-        setAddCardFlag(true)
+        // setAddCardFlag(true)
+        // console.log(addFlag.current)
     }
     const handleAddition = () => {
         setAddCardFlag(true)
-        addFlag.current = false
     }
     const closeButtonHandler = () => {
         setAddCardFlag(false)
-        addFlag.current = true
         setCardTitle('')
     }
     const changedHandler = (e) => {
@@ -115,8 +113,8 @@ export default function Column({ column, tasks, index }) {
                                             onClick={() => {
                                                 setList(false)
                                                 dispatch(deleteListById(column._id))
-                                                const text = `User deleted list ${column.name}`
-                                                dispatch(createNewActivity({ text, boardId: column.boardId }))
+                                                const text = `${user.username} deleted list ${column.name}`
+                                                dispatch(createNewActivity({ text, boardId: column.boardId }, token))
                                             }}
                                         >
                                             <DeleteIcon fontSize='small' />
@@ -165,7 +163,7 @@ export default function Column({ column, tasks, index }) {
                                             }
                                             {provided.placeholder}
                                         </div>
-                                        {addFlag.current &&
+                                        {!addCardFlag &&
                                             <AddItem handleClick={handleAddition} icon={<AddIcon />}
                                                 btnText='Add another card' type='card' width='256px' />
                                         }

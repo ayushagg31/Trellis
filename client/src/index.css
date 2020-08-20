@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 	-moz-user-select: none;	  
 	-ms-user-select: none;	
-	user-select: none;	
+  user-select: none;	
 }
 
 

@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.8,
         fontWeight: props => props.type === 'background' ? 'bold' : 'inherit',
         backgroundColor: props => props.type !== 'card' ? 'hsla(0,0%,100%,.24)' : 'inherit',
-        // color: props => props.type !== 'card' ? 'white' : 'inherit',
         '&:hover': {
             opacity: 1,
             backgroundColor: 'rgba(9,30,66,.08)',

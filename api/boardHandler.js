@@ -3,19 +3,21 @@ const Board = require('../models/board')
 const List = require('../models/list')
 const Card = require('../models/card')
 const Activity = require('../models/activity')
+const { auth } = require('../middleware')
 const router = Router()
 
-// fetch all the board entries
-router.get('/', async (req, res, next) => {
+// fetch all the boards for a user
+router.get('/', auth, async (req, res, next) => {
     try {
-        const boardsList = await Board.find()
+        const boardsList = await Board.find({ userId: req.user })
         res.json(boardsList)
     } catch (error) {
+        console.log(error)
         next(error)
     }
 })
 
-// create new board entry
+// create new board for a user
 router.post('/', async (req, res, next) => {
     try {
         const board = new Board(req.body)
@@ -28,11 +30,11 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-// get board based on id
-router.get('/:id', async (req, res, next) => {
+// get board based on id for a user
+router.get('/:id', auth, async (req, res, next) => {
     const _id = req.params.id
     try {
-        const board = await Board.findById(_id)
+        const board = await Board.findOne({ _id, userId: req.user })
         if (!board)
             return res.status(404).send()
         res.send(board)
@@ -42,10 +44,10 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // get lists based on boardId
-router.get('/:id/lists', async (req, res, next) => {
+router.get('/:id/lists', auth, async (req, res, next) => {
     const _id = req.params.id
     try {
-        const board = await Board.findById(_id)
+        const board = await Board.findOne({ _id, userId: req.user })
         if (!board)
             return res.status(404).send()
         const lists = await List.find({ boardId: _id })
@@ -56,10 +58,10 @@ router.get('/:id/lists', async (req, res, next) => {
 })
 
 // get cards based on boardId
-router.get('/:id/cards', async (req, res, next) => {
+router.get('/:id/cards', auth, async (req, res, next) => {
     const _id = req.params.id
     try {
-        const board = await Board.findById(_id)
+        const board = await Board.findOne({ _id, userId: req.user })
         if (!board)
             return res.status(404).send()
         const cards = await Card.find({ boardId: _id })
@@ -70,10 +72,10 @@ router.get('/:id/cards', async (req, res, next) => {
 })
 
 // get activities based on boardId
-router.get('/:id/activities', async (req, res, next) => {
+router.get('/:id/activities', auth, async (req, res, next) => {
     const _id = req.params.id
     try {
-        const board = await Board.findById(_id)
+        const board = await Board.findOne({ _id, userId: req.user })
         if (!board)
             return res.status(404).send()
         const activities = await Activity.find({ boardId: _id })
@@ -83,9 +85,8 @@ router.get('/:id/activities', async (req, res, next) => {
     }
 })
 
-
 // update board content based on id
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', auth, async (req, res, next) => {
     const _id = req.params.id
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'image']
@@ -94,7 +95,8 @@ router.patch('/:id', async (req, res, next) => {
     if (!isValidOperation)
         return res.status(400).send({ error: 'Invalid updates!' })
     try {
-        const board = await Board.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        const board = await Board.
+            findOneAndUpdate({ _id, userId: req.user }, req.body, { new: true, runValidators: true })
         if (!board)
             return res.status(404).send({ error: 'Board not found!' })
         res.send(board)
@@ -105,10 +107,10 @@ router.patch('/:id', async (req, res, next) => {
 
 
 // delete board based on id
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', auth, async (req, res, next) => {
     const _id = req.params.id
     try {
-        const board = await Board.findByIdAndDelete(_id)
+        const board = await Board.findOneAndDelete({ _id, userId: req.user })
         if (!board)
             return res.status(404).send()
         // find all lists within board and delete them as well

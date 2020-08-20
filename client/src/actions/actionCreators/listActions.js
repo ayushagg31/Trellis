@@ -3,18 +3,19 @@ import * as ACTIONS from '../actions'
 
 const BASE_URL = '/api/lists/'
 
-export const createNewList = (params) => {
+export const createNewList = (params, token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.POST_REQUEST_LIST })
-        axios.post(BASE_URL, params)
-            .then(res => {
-                dispatch({ type: ACTIONS.ADD_LIST, payload: { list: res.data } })
-            }).catch(e => {
-                if (e.message === "Network Error")
-                    dispatch({ type: ACTIONS.ERROR_LIST, payload: { error: e } })
-                else if (e.response.status === 422)
-                    dispatch({ type: ACTIONS.VALIDATION_ERROR_LIST })
-            })
+        axios.post(BASE_URL, params, {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.ADD_LIST, payload: { list: res.data } })
+        }).catch(e => {
+            if (e.message === "Network Error")
+                dispatch({ type: ACTIONS.ERROR_LIST, payload: { error: e } })
+            else if (e.response.status === 422)
+                dispatch({ type: ACTIONS.VALIDATION_ERROR_LIST })
+        })
     }
 }
 

@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
 export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder, marginLeft }) {
     const classes = useStyles({ type, width, marginLeft })
     const handleBlur = () => {
-        itemAdded()
         closeHandler()
+        itemAdded()
     }
     return (
         <div className={classes.listBackground}>

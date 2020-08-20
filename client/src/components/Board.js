@@ -18,6 +18,7 @@ import AddItem from './AddItem'
 import Header from './Header'
 import BoardHeader from './BoardHeader'
 import SideMenu from './SideMenu'
+import NotFound from './NotFound'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(0.5)
     },
     wrapper: {
-        marginTop: theme.spacing(11.5)
+        marginTop: theme.spacing(4.3)
     },
     editable: {
         marginLeft: theme.spacing(1),
@@ -50,10 +51,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Board() {
     const classes = useStyles()
     var { id, name } = useParams()
-    const { loading, currBoard } = useSelector(state => state.boards)
+    const { loading, currBoard, error } = useSelector(state => state.boards)
     const { listLoading, lists } = useSelector(state => state.lists)
     const { cardLoading, cards } = useSelector(state => state.cards)
     const { activities } = useSelector(state => state.activities)
+    const { isValid, user, token } = useSelector(state => state.user)
     const [initialData, setInitialData] = useState({})
     const [initDone, setInitDone] = useState(false)
     var addFlag = useRef(true)
@@ -64,20 +66,21 @@ export default function Board() {
     const [editable, setEditable] = useState(false)
     const [boardTitle, setBoardTitle] = useState('')
     const dispatch = useDispatch()
-
     if (!loading && name !== currBoard.name && currBoard.name !== undefined)
         name = currBoard.name
     else if (name === undefined)
         name = ''
 
     useEffect(() => {
-        if (id.length === 24) {
-            dispatch(fetchBoardById(id))
-            dispatch(fetchListsFromBoard(id))
-            dispatch(fetchsCardsFromBoard(id))
-            dispatch(fetchActivitiesFromBoard(id))
+        if (isValid && !error) {
+            if (id.length === 24) {
+                dispatch(fetchBoardById(id, token))
+                dispatch(fetchListsFromBoard(id, token))
+                dispatch(fetchsCardsFromBoard(id, token))
+                dispatch(fetchActivitiesFromBoard(id, token))
+            }
         }
-    }, [dispatch, id])
+    }, [dispatch, id, isValid, token, error])
 
     useEffect(() => {
         if (!_.isEmpty(currBoard)) {
@@ -116,7 +119,6 @@ export default function Board() {
     }, [setInitDone, listLoading, cardLoading, setInitialData, cards, lists])
 
     const onDragEnd = (result) => {
-        console.log(result)
         var newOrder
         const { destination, source, draggableId, type } = result
         if (!destination)
@@ -216,14 +218,14 @@ export default function Board() {
                     initialData.tasks[endList.taskIds[destination.index]].order)
         }
         dispatch(updateCardById(draggableId, { order: newOrder, listId: endList._id }))
-        const text = `User moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`
+        const text = `${user.username} moved ${initialData.tasks[draggableId].name} from ${startList.name} to ${endList.name}`
         const recentActivity = activities[activities.length - 1]
-        if (recentActivity.text === `User moved ${initialData.tasks[draggableId].name} from ${endList.name} to ${startList.name}` &&
+        if (recentActivity.text === `${user.username} moved ${initialData.tasks[draggableId].name} from ${endList.name} to ${startList.name}` &&
             moment(recentActivity.createdAt).fromNow().includes('second')) {
             dispatch(deleteActivityById(recentActivity._id))
         }
         else
-            dispatch(createNewActivity({ text, boardId: currBoard._id }))
+            dispatch(createNewActivity({ text, boardId: currBoard._id }, token))
 
         const startTaskIds = Array.from(startList.taskIds)
         startTaskIds.splice(source.index, 1)
@@ -273,11 +275,11 @@ export default function Board() {
             order: totalLists === 0 ? 'n' : midString(
                 initialData.columns[initialData.columnOrder[totalLists - 1]].order, '')
         }
-        dispatch(createNewList(postListReq))
+        dispatch(createNewList(postListReq, token))
         dispatch(createNewActivity({
-            text: `User added ${listTitle} to this board`,
+            text: `${user.username} added ${listTitle} to this board`,
             boardId: currBoard._id
-        }))
+        }, token))
         setListTitle('')
     }
 
@@ -302,7 +304,7 @@ export default function Board() {
                         thumb: background.thumb,
                         color: 'white'
                     }
-                }))
+                }, token))
         }
         else {
             setColor(background)
@@ -314,85 +316,89 @@ export default function Board() {
                         thumb: '',
                         color: background
                     }
-                }))
+                }, token))
         }
     }
 
     return (
-        <div className={classes.root}
-            style={{
-                backgroundColor: `${color}`,
-                backgroundImage: `url(${url})`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-            }}
-        >
-            <Redirect to={`/b/${id}/${name}`} />
-            <Header />
-            {editable ? (
-                <div className={classes.editable}>
-                    <InputBase
-                        onChange={(e) => {
-                            e.preventDefault()
-                            setBoardTitle(e.target.value)
-                        }}
-                        fullWidth
-                        value={boardTitle}
-                        style={{
-                            fontWeight: 'bold', fontFamily: 'sans-serif',
-                            fontSize: '20px'
-                        }}
-                        autoFocus
-                        onFocus={(e) => {
-                            const val = e.target.value
-                            e.target.value = ''
-                            e.target.value = val
-                        }}
-                        onBlur={() => {
-                            setEditable(false)
-                            dispatch(updateBoardById(id, { name: boardTitle }))
-                            currBoard.name = boardTitle
-                        }}
-                    />
-                </div>) : (<BoardHeader title={currBoard.name} showEditable={() => setEditable(true)} />)
-            }
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId='all-columns' direction='horizontal' type='list'>
-                    {provided => (
-                        <div className={classes.listContainer}
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            {initDone && initialData.columnOrder.map((columnId, index) => {
-                                const column = initialData.columns[columnId]
-                                const tasks = column.taskIds.map(taskId => initialData.tasks[taskId])
-                                return <List key={column._id} column={column}
-                                    tasks={tasks} index={index} />
-                            })}
-                            <div className={classes.wrapper}>
-                                {addFlag.current &&
-                                    <AddItem handleClick={handleAddition}
-                                        btnText='Add another list' type='list' icon={<AddIcon />} width='256px' color='white' />}
-                                {addListFlag &&
-                                    <InputCard
-                                        value={listTitle}
-                                        changedHandler={handleChange}
-                                        itemAdded={submitHandler}
-                                        closeHandler={closeButtonHandler}
-                                        type='list'
-                                        btnText='Add List'
-                                        placeholder='Enter list title...'
-                                        width='230px'
-                                        marginLeft='1'
-                                    />
-                                }
-                            </div>
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-            <SideMenu setBackground={setBackground} board={{ id, color, url }} />
-        </div >
+        <>
+            {!error ? (
+
+                <div className={classes.root}
+                    style={{
+                        backgroundColor: `${color}`,
+                        backgroundImage: `url(${url})`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                    }}
+                >
+                    <Redirect to={`/b/${id}/${name}`} />
+                    <Header loggedIn />
+                    {editable ? (
+                        <div className={classes.editable}>
+                            <InputBase
+                                onChange={(e) => {
+                                    e.preventDefault()
+                                    setBoardTitle(e.target.value)
+                                }}
+                                fullWidth
+                                value={boardTitle}
+                                style={{
+                                    fontWeight: 'bold', fontFamily: 'sans-serif',
+                                    fontSize: '20px'
+                                }}
+                                autoFocus
+                                onFocus={(e) => {
+                                    const val = e.target.value
+                                    e.target.value = ''
+                                    e.target.value = val
+                                }}
+                                onBlur={() => {
+                                    setEditable(false)
+                                    dispatch(updateBoardById(id, { name: boardTitle }, token))
+                                    currBoard.name = boardTitle
+                                }}
+                            />
+                        </div>) : (<BoardHeader title={currBoard.name} showEditable={() => setEditable(true)} />)
+                    }
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId='all-columns' direction='horizontal' type='list'>
+                            {provided => (
+                                <div className={classes.listContainer}
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {initDone && initialData.columnOrder.map((columnId, index) => {
+                                        const column = initialData.columns[columnId]
+                                        const tasks = column.taskIds.map(taskId => initialData.tasks[taskId])
+                                        return <List key={column._id} column={column}
+                                            tasks={tasks} index={index} />
+                                    })}
+                                    <div className={classes.wrapper}>
+                                        {addFlag.current &&
+                                            <AddItem handleClick={handleAddition}
+                                                btnText='Add another list' type='list' icon={<AddIcon />} width='256px' color='white' />}
+                                        {addListFlag &&
+                                            <InputCard
+                                                value={listTitle}
+                                                changedHandler={handleChange}
+                                                itemAdded={submitHandler}
+                                                closeHandler={closeButtonHandler}
+                                                type='list'
+                                                btnText='Add List'
+                                                placeholder='Enter list title...'
+                                                width='230px'
+                                                marginLeft='1'
+                                            />
+                                        }
+                                    </div>
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    <SideMenu setBackground={setBackground} board={{ id, color, url }} />
+                </div >) : <NotFound />}
+        </>
     )
 }
