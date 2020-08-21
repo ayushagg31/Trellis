@@ -5,6 +5,7 @@ const BASE_URL = '/api/user/'
 
 export const fetchUserInfo = (token) => {
     return (dispatch) => {
+        dispatch({ type: ACTIONS.USER_REQUEST })
         axios.get(BASE_URL, {
             headers: { 'x-auth-token': token }
         }).then(res => {
@@ -17,6 +18,7 @@ export const fetchUserInfo = (token) => {
 
 export const checkTokenValidity = (token) => {
     return (dispatch) => {
+        dispatch({ type: ACTIONS.TOKEN_REQUEST })
         axios.post(BASE_URL + 'tokenIsValid', null, {
             headers: { 'x-auth-token': token }
         }).then(res => {

@@ -10,6 +10,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const { token, user, successLogin, requestLogin, loginError } = useSelector(state => state.user)
     const [error, setError] = useState()
+    const [success, setSuccess] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
     useEffect(() => {
@@ -20,11 +21,15 @@ export default function Login() {
     useEffect(() => {
         if (!requestLogin) {
             if (token && successLogin) {
+                setError('Logged In successfully ✔')
+                setSuccess(true)
                 localStorage.setItem('auth-token', token)
                 history.push(`/${user.username}/boards`)
             }
-            else if (!successLogin && !token)
+            else if (!successLogin && !token) {
                 setError(loginError)
+                setSuccess(false)
+            }
         }
     }, [token, user, successLogin, requestLogin, loginError, history])
 
@@ -55,7 +60,8 @@ export default function Login() {
                 passwordChangeHandler={(e) => {
                     e.preventDefault()
                     setPassword(e.target.value)
-                }} />
+                }}
+                success={success} />
         </>
     )
 }

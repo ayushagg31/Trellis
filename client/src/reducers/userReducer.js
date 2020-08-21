@@ -10,15 +10,21 @@ const initialState = {
     successLogin: false,
     requestLogin: true,
     successRegister: false,
-    requestRegister: true
+    requestRegister: true,
+    userRequest: true,
+    tokenRequest: true
 }
 
 export const userReducer = (state = initialState, action) => {
     switch (action.type) {
+        case ACTIONS.TOKEN_REQUEST:
+            return { ...state, tokenRequest: true }
         case ACTIONS.TOKEN_RESPONSE:
-            return { ...state, isValid: action.payload.isTokenValid, token: action.payload.token }
+            return { ...state, isValid: action.payload.isTokenValid, token: action.payload.token, tokenRequest: false }
+        case ACTIONS.USER_REQUEST:
+            return { ...state, userRequest: true }
         case ACTIONS.GET_USER:
-            return { ...state, user: action.payload.user, token: action.payload.token }
+            return { ...state, user: action.payload.user, token: action.payload.token, userRequest: false }
         case ACTIONS.LOGIN_REQUEST:
             return { ...state, requestLogin: true, successLogin: false }
         case ACTIONS.REGISTER_REQUEST:

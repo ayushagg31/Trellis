@@ -17,14 +17,22 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: '#EBECF0'
         }
+    },
+    delete: {
+        position: 'absolute',
+        right: 0,
+        zIndex: 1000,
+        top: 0,
+        backgroundColor: '#EBECF0'
     }
 }))
 
 export default function Card({ task, index }) {
-    const classes = useStyles()
     const [editable, setEditable] = useState(false)
     const [title, setTitle] = useState(task.name)
     const [card, setCard] = useState(true)
+    const [showDelete, setShowDelete] = useState(false)
+    const classes = useStyles()
     const { token } = useSelector(state => state.user)
     const dispatch = useDispatch()
     return (
@@ -35,9 +43,12 @@ export default function Card({ task, index }) {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
-                    {card && <Paper className={classes.card} onClick={() => {
-                        setEditable(true)
-                    }}>
+                    {card && <Paper className={classes.card}
+                        onMouseEnter={() => setShowDelete(true)}
+                        onMouseLeave={() => setShowDelete(false)}
+                        onClick={() => {
+                            setEditable(true)
+                        }}>
                         {editable ?
                             (< InputBase
                                 onChange={(e) => {
@@ -56,16 +67,23 @@ export default function Card({ task, index }) {
                                 }}
                                 onBlur={() => {
                                     setEditable(false)
-                                    dispatch(updateCardById(task._id, { name: title }))
-                                    task.name = title
+                                    const text = title.trim().replace(/\s+/g, ' ')
+                                    if (text === '') {
+                                        setTitle(task.name)
+                                        return
+                                    }
+                                    setTitle(text)
+                                    dispatch(updateCardById(task._id, { name: text }))
+                                    task.name = text
                                 }}
                             />) :
                             (<div style={{ position: 'relative' }}>
                                 <div>
                                     {task.name}
                                 </div>
-                                <IconButton
-                                    style={{ right: -10, position: 'absolute', marginTop: '-33px', zIndex: '200' }}
+                                {showDelete && (<IconButton
+                                    className={classes.delete}
+                                    size='small'
                                     onClick={() => {
                                         setCard(false)
                                         dispatch(deleteCardById(task._id))
@@ -73,11 +91,10 @@ export default function Card({ task, index }) {
                                         dispatch(createNewActivity({ text, boardId: task.boardId }, token))
                                     }}
                                 >
-                                    <DeleteForeverIcon fontSize='small' />
-                                </IconButton>
+                                    <DeleteForeverIcon fontSize='small' style={{ backgroundColor: '#EBECF0' }} />
+                                </IconButton>)}
                             </div>
-                            )
-                        }
+                            )}
                     </ Paper>
                     }
                 </div>

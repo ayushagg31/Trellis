@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorNotice from './ErrorNotice'
+import Notice from './Notice'
 import Header from './Header'
 import { makeStyles, Paper } from '@material-ui/core'
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         textAlign: 'center',
         width: '280px',
-        backgroundColor: '#EAEAEA',
+        backgroundColor: 'black',
 
     },
     input: {
@@ -25,11 +25,13 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1),
         marginRight: '90px',
         marginLeft: '55px',
-        backgroundColor: '#EAEAEA',
+        backgroundColor: '#FDFCFA',
         border: '2px solid #DFE1E6',
+        borderRadius: 3,
         boxSizing: 'border-box',
         '&:focus': {
             border: '2px solid #4C9AFF',
+            backgroundColor: '#FFFFFF',
         }
     },
     submit: {
@@ -41,14 +43,14 @@ const useStyles = makeStyles(theme => ({
         borderRadius: 5,
         width: '150px',
         padding: theme.spacing(0.8),
-        margin: theme.spacing(2,2,7,2),
+        margin: theme.spacing(2, 2, 7, 2),
         '&:hover': {
             opacity: 1.6
         }
     }
 }))
 
-export default function Auth({ btnText, path, authName, icon, error, clearError, passwordCheckChangeHandler, passwordCheck, submitHandler, username, nameChangeHandler, password, passwordChangeHandler, register }) {
+export default function Auth({ btnText, path, authName, icon, error, clearError, passwordCheckChangeHandler, passwordCheck, submitHandler, username, nameChangeHandler, password, passwordChangeHandler, register, success }) {
     const classes = useStyles()
 
     return (
@@ -56,7 +58,7 @@ export default function Auth({ btnText, path, authName, icon, error, clearError,
             <Header btnText={btnText} path={path} icon={icon} />
             <div className={classes.wrapper}>
                 {error && (
-                    <ErrorNotice message={error} clearError={clearError} />
+                    <Notice message={error} success={success} clearError={clearError} />
                 )}
                 <Paper elevation={1} className={classes.form}>
                     <div style={{ fontFamily: 'Arial, Helvetica, sans-serif', marginTop: '35px', color: '#5E6C84', fontSize: '18px', fontWeight: 'bold', paddingBottom: '30px' }}>

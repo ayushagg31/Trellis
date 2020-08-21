@@ -12,11 +12,13 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         fontWeight: 'bold',
+        color: 'white',
+        textShadow: '2px 2px #000000',
         padding: theme.spacing(0.7, 0.7, 0.7, 0.7),
         margin: theme.spacing(0.7, 0.7, 0.7, 0.7),
         fontFamily: 'sans-serif',
         fontSize: '20px',
-        marginTop: theme.spacing(6.5),
+        marginTop: theme.spacing(4.5),
         '&:hover': {
             opacity: 1,
             backgroundColor: 'hsla(0,0%,100%,.24)',

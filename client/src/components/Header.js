@@ -16,11 +16,14 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '23px',
         textAlign: 'center',
         fontFamily: 'Pacifico',
+        top: '0',
         position: 'fixed',
         width: '100%',
         zIndex: 1,
     },
     trellis: {
+        color: 'black',
+        textShadow: '2px 2px white',
         zIndex: 100,
         opacity: 0.7,
         color: 'black',
@@ -46,18 +49,25 @@ export default function Header({ loggedIn, btnText, path, icon }) {
                 </Link>
             </div>
             {loggedIn ?
-                (<div style={{ display: 'flex', float: 'right', margin: '10px' }}>
+                (<div style={{ display: 'flex', margin: '10px' }}>
                     <div
-                        style={{ width: '500px', height: '30px', fontFamily: 'Pacifico', overflow: 'hidden', fontWeight: 'bold', textAlign: 'right' }}>
-                        Hi! {user.username}
+                        style={{
+                            width: '500px', textShadow: '2px 2px white', height: '30px', position: 'fixed', fontFamily: 'Pacifico', zIndex: 500,
+                            overflowX: 'hidden', overflowY: 'hidden', fontWeight: 'bold', color: 'black', textAlign: 'right', textShadow: '2px 2px white',
+                            right: 110
+                        }}>
+                        {user.username}
                     </div>
-                    <div style={{ marginTop: '-5px', zIndex: 200, marginLeft: '10px' }}>
+                    <div style={{
+                        position: 'fixed', zIndex: 200, marginTop: '-5px',
+                        right: 0, marginLeft: '10px', zIndex: 200,
+                    }}>
                         <AddItem
                             btnText='Logout'
                             type='menu'
                             icon={<ExitToAppIcon fontSize='small' />}
                             width='85px'
-                            color='black'
+                            color='white'
                             handleClick={() => {
                                 dispatch(logoutUser())
                                 localStorage.setItem('auth-token', '')
@@ -74,10 +84,11 @@ export default function Header({ loggedIn, btnText, path, icon }) {
                             type='menu'
                             icon={icon}
                             width='85px'
-                            color='black'
+                            color='white'
                             handleClick={() => {
                                 history.push(`${path}`)
                             }}
+                            noshadow
                         />
                     </div>
                 </div>) : null}

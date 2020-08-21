@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Paper, InputBase, makeStyles, Button, IconButton } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
@@ -41,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder, marginLeft }) {
     const classes = useStyles({ type, width, marginLeft })
+    const divRef = useRef(null)
+
+    useEffect(() => {
+        if (divRef.current != null) {
+            divRef.current.scrollIntoView({ behaviour: 'smooth' })
+        }
+    })
     const handleBlur = () => {
         closeHandler()
         itemAdded()
@@ -58,6 +65,7 @@ export default function InputItem({ value, changedHandler, itemAdded, closeHandl
                     onBlur={handleBlur} />
             </Paper>
             <Button
+                ref={divRef}
                 className={classes.btn}
                 variant='contained'
                 onClick={itemAdded}>{btnText}</Button>

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(0.5)
     },
     wrapper: {
-        marginTop: theme.spacing(4.3)
+        marginTop: theme.spacing(10.3)
     },
     editable: {
         marginLeft: theme.spacing(1),
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#EBECF0',
         width: '290px',
         position: 'fixed',
-        marginTop: theme.spacing(6.5)
+        marginTop: theme.spacing(4.5)
     }
 
 }))
@@ -55,7 +55,7 @@ export default function Board() {
     const { listLoading, lists } = useSelector(state => state.lists)
     const { cardLoading, cards } = useSelector(state => state.cards)
     const { activities } = useSelector(state => state.activities)
-    const { isValid, user, token } = useSelector(state => state.user)
+    const { isValid, user, token, tokenRequest } = useSelector(state => state.user)
     const [initialData, setInitialData] = useState({})
     const [initDone, setInitDone] = useState(false)
     var addFlag = useRef(true)
@@ -66,10 +66,13 @@ export default function Board() {
     const [editable, setEditable] = useState(false)
     const [boardTitle, setBoardTitle] = useState('')
     const dispatch = useDispatch()
+
+
     if (!loading && name !== currBoard.name && currBoard.name !== undefined)
         name = currBoard.name
     else if (name === undefined)
         name = ''
+
 
     useEffect(() => {
         if (isValid && !error) {
@@ -268,9 +271,14 @@ export default function Board() {
     const submitHandler = () => {
         if (listTitle === '')
             return
+        const text = listTitle.trim().replace(/\s+/g, ' ')
+        if (text === '') {
+            setTitle(listTitle)
+            return
+        }
         const totalLists = initialData.columnOrder.length
         const postListReq = {
-            name: listTitle,
+            name: text,
             boardId: currBoard._id,
             order: totalLists === 0 ? 'n' : midString(
                 initialData.columns[initialData.columnOrder[totalLists - 1]].order, '')
@@ -322,8 +330,7 @@ export default function Board() {
 
     return (
         <>
-            {!error ? (
-
+            {isValid || (tokenRequest) ? (
                 <div className={classes.root}
                     style={{
                         backgroundColor: `${color}`,
@@ -355,7 +362,12 @@ export default function Board() {
                                 }}
                                 onBlur={() => {
                                     setEditable(false)
-                                    dispatch(updateBoardById(id, { name: boardTitle }, token))
+                                    const text = boardTitle.trim().replace(/\s+/g, ' ')
+                                    if (text === '') {
+                                        setBoardTitle(currBoard.name)
+                                        return
+                                    }
+                                    dispatch(updateBoardById(id, { name: text }, token))
                                     currBoard.name = boardTitle
                                 }}
                             />
@@ -377,7 +389,11 @@ export default function Board() {
                                     <div className={classes.wrapper}>
                                         {addFlag.current &&
                                             <AddItem handleClick={handleAddition}
-                                                btnText='Add another list' type='list' icon={<AddIcon />} width='256px' color='white' />}
+                                                btnText='Add another list'
+                                                type='list'
+                                                icon={<AddIcon />}
+                                                width='256px'
+                                                color='white' />}
                                         {addListFlag &&
                                             <InputCard
                                                 value={listTitle}
@@ -398,7 +414,8 @@ export default function Board() {
                         </Droppable>
                     </DragDropContext>
                     <SideMenu setBackground={setBackground} board={{ id, color, url }} />
-                </div >) : <NotFound />}
+                </div >) : <NotFound />
+            }
         </>
     )
 }

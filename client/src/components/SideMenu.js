@@ -46,7 +46,9 @@ export default function SideMenu({ setBackground, board }) {
     return (
         <>
             <div className={classes.menu}>
-                <AddItem btnText='Show Menu' handleClick={() => (setShowMenu(true))} icon={<MoreHorizIcon />} type='menu' width='120px' />
+                <AddItem btnText='Show Menu'
+                    handleClick={() => (setShowMenu(true))} icon={<MoreHorizIcon />}
+                    type='menu' width='120px' color='white' />
             </div>
             {!showBackground &&
                 <Paper className={classes.container} elevation={1} variant='outlined' >
@@ -67,7 +69,7 @@ export default function SideMenu({ setBackground, board }) {
                         }} ></span>}
                     />
                     <Link to='/' style={{ textDecoration: 'none' }}>
-                        <AddItem btnText='  Delete Board'
+                        <AddItem btnText='Delete Board'
                             handleClick={() => {
                                 dispatch(deleteBoardById(board.id, token))
                             }}
@@ -85,7 +87,13 @@ export default function SideMenu({ setBackground, board }) {
                 </Paper >
             }
             <div  >
-                {showBackground && <Background closeHandler={() => (setShowBackground(false))} setColorBackground={setBackground} />}
+                {showBackground &&
+                    <Background backHandler={() => (setShowBackground(false))}
+                        closeHandler={() => {
+                            setShowMenu(false)
+                            setShowBackground(false)
+                        }}
+                        setColorBackground={setBackground} />}
             </div>
         </>
     )

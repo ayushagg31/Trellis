@@ -10,14 +10,18 @@ export default function Register() {
     const [passwordCheck, setPasswordCheck] = useState('')
     const { requestRegister, successRegister, registerError } = useSelector(state => state.user)
     const [error, setError] = useState()
+    const [success, setSuccess] = useState(false)
     const dispatch = useDispatch()
     useEffect(() => {
         if (!requestRegister && successRegister) {
+            setError('Successfully Registered ✔')
             localStorage.setItem('auth-token', '')
             window.location.href = '/'
+            setSuccess(true)
         }
         else if (!requestRegister && !successRegister) {
             setError(registerError)
+            setSuccess(false)
         }
     }, [requestRegister, successRegister, registerError])
 
@@ -55,6 +59,7 @@ export default function Register() {
                     setPasswordCheck(e.target.value)
                 }}
                 register
+                success={success}
             />
         </>
     )

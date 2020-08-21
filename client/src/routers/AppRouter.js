@@ -11,7 +11,7 @@ import NotFound from '../components/NotFound'
 import { checkTokenValidity, fetchUserInfo } from '../actions/actionCreators/userActions'
 
 const AppRouter = () => {
-    const { isValid, token, user } = useSelector(state => state.user)
+    const { isValid, userRequest, token, user } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -31,17 +31,21 @@ const AppRouter = () => {
     }, [])
 
     return (
-        <BrowserRouter>
-            <Switch>
-                <Route path='/' exact component={Login} />
-                <Route path='/register' component={Register} />
-                <Route path={`/${user.username}/boards`} component={App} />
-                <Route path='/b/:id/:name'>
-                    <Board />
-                </Route>
-                <Route component={NotFound} />
-            </Switch>
-        </BrowserRouter>
+        <>
+            <BrowserRouter>
+                <Switch>
+                    <Route path='/' exact component={Login} />
+                    <Route path='/register' component={Register} />
+                    <Route path={`/:user/boards`} component={App} />
+                    <Route path='/b/:id/:name?'>
+                        <Board />
+                    </Route>
+                    {!userRequest || !isValid ?
+                        (<Route component={NotFound} />)
+                        : null}
+                </Switch>
+            </BrowserRouter>
+        </>
     )
 }
 
