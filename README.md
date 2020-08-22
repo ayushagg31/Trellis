@@ -7,7 +7,29 @@
 A Trello Clone - Built with React, Redux, Express, and MongoDB. 
 
 ## Demo
-[Trellis-app](https://trellis-app.herokuapp.com/)  **[Desktop Only]**
+[Trellis-app](https://trellis-app.herokuapp.com/)  **[Desktop Only]** 
+
+**Demo Account Credentials** <br/>
+**Username** - *gozmit* <br/>
+**Password** - *gozmit*
+
+## Screenshots
+**Login**
+![Login](../master/images/Trellis-Login.png)
+**Register**
+![Register](../master/images/Trellis-Register.png)
+**Home**
+![Home](../master/images/Trellis-board1.png)
+**Create Board**
+![Create Board](../master/images/Trellis-board2.png)
+**Trellis**
+![Trellis Board](../master/images/Trellis.png)
+
+ ## GIF
+![Trellis-gif](../master/images/Trellis.gif)
+
+[**Demo Video**](https://drive.google.com/file/d/1eP41BKh8LLL7ScSnhGlSd3FJRKXazva3/view)
+
 
 ## Features
 - Create, Modify and Delete boards
