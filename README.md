@@ -8,6 +8,40 @@ A Trello Clone
 ## Features
 - 
 
+## Installing
+1. Clone the repository
+```
+git clone https://github.com/ayushagg31/Trellis.git
+cd Trellis
+```
+2. Install dependencies
+```
+npm i && cd client && npm i
+```
+3. Create .env file 
+```
+REACT_APP_CLIENT_KEY="YOUR API KEY" // Unsplash API Key
+```
+4. Create dev.env for development and test.env for testing purpose  
+```
+cd ../config
+mkdir dev.env 
+========================================
+PORT=1313
+DATABASE_URL="MongoDB Connection String"
+JWT_SECRET="YOUR JWT TOKEN"
+NODE_ENV=development
+```
+5. Go into ```client/package.json``` and replace **proxy** with your server port 
+```
+"proxy": "http://localhost:1313"
+```
+6. Run the project
+```
+npm run trellis
+```
+
+
 ## Built With
 #### Frontend 
 - [React](https://reactjs.org/) -  A JavaScript library for building user interfaces
@@ -28,4 +62,8 @@ A Trello Clone
 - [Supertest](https://www.npmjs.com/package/supertest) - HTTP APIs Testing library
 - [Jest](https://jestjs.io/) - JavaScript Testing Framework
 - [sinon](https://sinonjs.org/) - Standalone test fakes, spies, stubs and mocks library
+
+## Contribute
+Show your support by ⭐ the project.
+
 
