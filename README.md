@@ -6,7 +6,15 @@ A Trello Clone
 [Trellis-app](https://trellis-app.herokuapp.com/)  **[Desktop Only]**
 
 ## Features
-- 
+- Create, Modify and Delete boards
+- Create, Modify and Delete cards
+- Create, Modify and Delete lists
+- Move card items within lists
+- Move card items across lists
+- Ordering of list items
+- Activity log with active timestamps for each user events
+- Customize background images or color for individual boards
+- User Authentication
 
 ## Installing
 1. Clone the repository
@@ -64,6 +72,7 @@ npm run trellis
 - [sinon](https://sinonjs.org/) - Standalone test fakes, spies, stubs and mocks library
 
 ## Contribute
-Show your support by ⭐ the project.
+- Show your support by ⭐ the project.
+- Submit pull requests and improve the repo overall quality
 
 
