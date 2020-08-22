@@ -7,7 +7,7 @@ import Activities from './Activities'
 import Hr from './Hr'
 import MenuHeader from './MenuHeader'
 import Background from './Background'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteBoardById } from '../actions/actionCreators/boardActions'
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep'
 import { Link } from 'react-router-dom'
@@ -42,10 +42,13 @@ export default function SideMenu({ setBackground, board }) {
     const [showBackground, setShowBackground] = useState(false)
     const classes = useStyles({ showMenu })
     const dispatch = useDispatch()
+    const { token } = useSelector(state => state.user)
     return (
         <>
             <div className={classes.menu}>
-                <AddItem btnText='Show Menu' handleClick={() => (setShowMenu(true))} icon={<MoreHorizIcon />} type='menu' width='120px' />
+                <AddItem btnText='Show Menu'
+                    handleClick={() => (setShowMenu(true))} icon={<MoreHorizIcon />}
+                    type='menu' width='120px' color='white' />
             </div>
             {!showBackground &&
                 <Paper className={classes.container} elevation={1} variant='outlined' >
@@ -66,9 +69,9 @@ export default function SideMenu({ setBackground, board }) {
                         }} ></span>}
                     />
                     <Link to='/' style={{ textDecoration: 'none' }}>
-                        <AddItem btnText='  Delete Board'
+                        <AddItem btnText='Delete Board'
                             handleClick={() => {
-                                dispatch(deleteBoardById(board.id))
+                                dispatch(deleteBoardById(board.id, token))
                             }}
                             type='background' width='310px'
                             icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />} />
@@ -84,7 +87,13 @@ export default function SideMenu({ setBackground, board }) {
                 </Paper >
             }
             <div  >
-                {showBackground && <Background closeHandler={() => (setShowBackground(false))} setColorBackground={setBackground} />}
+                {showBackground &&
+                    <Background backHandler={() => (setShowBackground(false))}
+                        closeHandler={() => {
+                            setShowMenu(false)
+                            setShowBackground(false)
+                        }}
+                        setColorBackground={setBackground} />}
             </div>
         </>
     )

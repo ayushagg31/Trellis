@@ -1,11 +1,14 @@
 import axios from 'axios'
 import * as ACTIONS from '../actions'
 
-const BASE_URL ='/api/boards/'
-export const fetchAllBoards = () => {
+const BASE_URL = '/api/boards/'
+
+export const fetchAllBoards = (token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.MAKE_REQUEST_BOARD })
-        axios.get(BASE_URL).then(res => {
+        axios.get(BASE_URL, {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
             dispatch({ type: ACTIONS.GET_BOARDS, payload: { boards: res.data } })
         }).catch(e => {
             dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e } })
@@ -13,10 +16,12 @@ export const fetchAllBoards = () => {
     }
 }
 
-export const fetchBoardById = (id) => {
+export const fetchBoardById = (id, token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.MAKE_REQUEST_BOARD })
-        axios.get(BASE_URL + id).then(res => {
+        axios.get(BASE_URL + id, {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
             dispatch({ type: ACTIONS.GET_BOARD_BY_ID, payload: { currBoard: res.data } })
         }).catch(e => {
             dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e } })
@@ -24,75 +29,81 @@ export const fetchBoardById = (id) => {
     }
 }
 
-export const createNewBoard = (params) => {
+export const createNewBoard = (params, token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.POST_REQUEST_BOARD })
-        axios.post(BASE_URL, params)
-            .then(res => {
-                dispatch({ type: ACTIONS.ADD_BOARD, payload: { board: res.data } })
-            }).catch(e => {
-                if (e.message === "Network Error")
-                    dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e } })
-                else if (e.response.status === 422)
-                    dispatch({ type: ACTIONS.VALIDATION_ERROR_BOARD })
-            })
+        axios.post(BASE_URL, params, {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.ADD_BOARD, payload: { board: res.data } })
+        }).catch(e => {
+            if (e.message === "Network Error")
+                dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e } })
+            else if (e.response.status === 422)
+                dispatch({ type: ACTIONS.VALIDATION_ERROR_BOARD })
+        })
     }
 }
 
-export const updateBoardById = (id, params) => {
+export const updateBoardById = (id, params, token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.MAKE_REQUEST_BOARD })
-        axios.patch(BASE_URL + id, params)
-            .then(res => {
-                dispatch({ type: ACTIONS.UPDATE_BOARD, payload: { board: res.data } })
-            }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e.message } })
-            })
+        axios.patch(BASE_URL + id, params, {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.UPDATE_BOARD, payload: { board: res.data } })
+        }).catch(e => {
+            dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e.message } })
+        })
     }
 }
 
-export const deleteBoardById = (id) => {
+export const deleteBoardById = (id, token) => {
     return (dispatch) => {
-        axios.delete(BASE_URL + id)
-            .then(res => {
-                dispatch({ type: ACTIONS.DELETE_BOARD, payload: { board: res.data } })
-            }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e.message } })
-            })
+        axios.delete(BASE_URL + id, {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.DELETE_BOARD, payload: { board: res.data } })
+        }).catch(e => {
+            dispatch({ type: ACTIONS.ERROR_BOARD, payload: { error: e.message } })
+        })
     }
 }
 
-export const fetchListsFromBoard = (id) => {
+export const fetchListsFromBoard = (id, token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.MAKE_REQUEST_LIST })
-        axios.get(BASE_URL + id + '/lists')
-            .then(res => {
-                dispatch({ type: ACTIONS.GET_LISTS, payload: { lists: res.data } })
-            }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_LIST, payload: { error: e } })
-            })
+        axios.get(BASE_URL + id + '/lists', {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.GET_LISTS, payload: { lists: res.data } })
+        }).catch(e => {
+            dispatch({ type: ACTIONS.ERROR_LIST, payload: { error: e } })
+        })
     }
 }
 
-export const fetchsCardsFromBoard = (id) => {
+export const fetchsCardsFromBoard = (id, token) => {
     return (dispatch) => {
         dispatch({ type: ACTIONS.MAKE_REQUEST_CARD })
-        axios.get(BASE_URL + id + '/cards')
-            .then(res => {
-                dispatch({ type: ACTIONS.GET_CARDS, payload: { cards: res.data } })
-            }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e.message } })
-            })
+        axios.get(BASE_URL + id + '/cards', {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.GET_CARDS, payload: { cards: res.data } })
+        }).catch(e => {
+            dispatch({ type: ACTIONS.ERROR_CARD, payload: { error: e.message } })
+        })
     }
 }
 
-export const fetchActivitiesFromBoard = (id) => {
+export const fetchActivitiesFromBoard = (id, token) => {
     return (dispatch) => {
-        axios.get(BASE_URL + id + '/activities')
-            .then(res => {
-                dispatch({ type: ACTIONS.GET_ACTIVITIES, payload: { activities: res.data } })
-            }).catch(e => {
-                dispatch({ type: ACTIONS.ERROR_ACTIVITY, payload: { error: e } })
-            })
+        axios.get(BASE_URL + id + '/activities', {
+            headers: { 'x-auth-token': token }
+        }).then(res => {
+            dispatch({ type: ACTIONS.GET_ACTIVITIES, payload: { activities: res.data } })
+        }).catch(e => {
+            dispatch({ type: ACTIONS.ERROR_ACTIVITY, payload: { error: e } })
+        })
     }
 }

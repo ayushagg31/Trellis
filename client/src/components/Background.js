@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const colors = ['rgb(0, 121, 191)', 'rgb(210, 144, 52)', 'rgb(81, 152, 57)',
     'rgb(176, 70, 50)', 'rgb(137, 96, 158)', 'rgb(205, 90, 145)',
     'rgb(75, 191, 107)', 'rgb(0, 174, 204)']
-export default function Background({ closeHandler, setColorBackground }) {
+export default function Background({ closeHandler, setColorBackground, backHandler }) {
     const classes = useStyles()
     const [showColor, setShowColor] = useState(false)
     const [showImage, setShowImage] = useState(false)
@@ -49,7 +49,7 @@ export default function Background({ closeHandler, setColorBackground }) {
     }, [dispatch])
     return (
         <Paper className={classes.container}>
-            <MenuHeader text='Change Background' closeHandler={closeHandler} />
+            <MenuHeader text='Background' closeHandler={closeHandler} backHandler={backHandler} type='background' />
             <Hr />
             <div className={classes.menuContainer} >
                 <div className={classes.card}

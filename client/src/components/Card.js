@@ -2,7 +2,7 @@ import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateCardById, deleteCardById } from '../actions/actionCreators/cardActions'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
@@ -17,14 +17,23 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: '#EBECF0'
         }
+    },
+    delete: {
+        position: 'absolute',
+        right: 0,
+        zIndex: 1000,
+        top: 0,
+        backgroundColor: '#EBECF0'
     }
 }))
 
 export default function Card({ task, index }) {
-    const classes = useStyles()
     const [editable, setEditable] = useState(false)
     const [title, setTitle] = useState(task.name)
     const [card, setCard] = useState(true)
+    const [showDelete, setShowDelete] = useState(false)
+    const classes = useStyles()
+    const { token } = useSelector(state => state.user)
     const dispatch = useDispatch()
     return (
         <Draggable draggableId={task._id} index={index}>
@@ -34,9 +43,12 @@ export default function Card({ task, index }) {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
-                    {card && <Paper className={classes.card} onClick={() => {
-                        setEditable(true)
-                    }}>
+                    {card && <Paper className={classes.card}
+                        onMouseEnter={() => setShowDelete(true)}
+                        onMouseLeave={() => setShowDelete(false)}
+                        onClick={() => {
+                            setEditable(true)
+                        }}>
                         {editable ?
                             (< InputBase
                                 onChange={(e) => {
@@ -55,28 +67,34 @@ export default function Card({ task, index }) {
                                 }}
                                 onBlur={() => {
                                     setEditable(false)
-                                    dispatch(updateCardById(task._id, { name: title }))
-                                    task.name = title
+                                    const text = title.trim().replace(/\s+/g, ' ')
+                                    if (text === '') {
+                                        setTitle(task.name)
+                                        return
+                                    }
+                                    setTitle(text)
+                                    dispatch(updateCardById(task._id, { name: text }))
+                                    task.name = text
                                 }}
                             />) :
                             (<div style={{ position: 'relative' }}>
                                 <div>
                                     {task.name}
                                 </div>
-                                <IconButton
-                                    style={{ right: -10, position: 'absolute', marginTop: '-33px', zIndex: '200' }}
+                                {showDelete && (<IconButton
+                                    className={classes.delete}
+                                    size='small'
                                     onClick={() => {
                                         setCard(false)
                                         dispatch(deleteCardById(task._id))
                                         const text = `User deleted card ${task.name}`
-                                        dispatch(createNewActivity({ text, boardId: task.boardId }))
+                                        dispatch(createNewActivity({ text, boardId: task.boardId }, token))
                                     }}
                                 >
-                                    <DeleteForeverIcon fontSize='small' />
-                                </IconButton>
+                                    <DeleteForeverIcon fontSize='small' style={{ backgroundColor: '#EBECF0' }} />
+                                </IconButton>)}
                             </div>
-                            )
-                        }
+                            )}
                     </ Paper>
                     }
                 </div>

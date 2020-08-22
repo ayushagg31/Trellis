@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Card from './Card'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import InputCard from './InputCard'
 import { createNewCard } from '../actions/actionCreators/cardActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import midString from '../ordering/ordering'
 import { createNewActivity } from '../actions/actionCreators/activityActions'
 import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
@@ -22,7 +22,23 @@ const useStyles = makeStyles((theme) => ({
     scroll: {
         maxHeight: '500px',
         overflow: 'auto',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        // overflowY: 'auto',
+        margin: 0,
+        padding: 0,
+        listStyle: 'none',
+        height: '100%',
+        '&::-webkit-scrollbar': {
+            width: '0.4em'
+        },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,.1)',
+            outline: '1px solid green'
+        }
     },
     title: {
         padding: theme.spacing(1, 1, 1, 1),
@@ -31,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold',
     },
     wrapper: {
-        marginTop: theme.spacing(11.5)
+        marginTop: theme.spacing(10.3),
     },
     editable: {
         marginLeft: theme.spacing(-1),
@@ -50,7 +66,8 @@ export default function Column({ column, tasks, index }) {
     const [addCardFlag, setAddCardFlag] = useState(false)
     const [editable, setEditable] = useState(false)
     const [list, setList] = useState(true)
-    var addFlag = useRef(true)
+    const [showDelete, setShowDelete] = useState(false)
+    const { token, user } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     const handleChange = (e) => {
@@ -61,28 +78,27 @@ export default function Column({ column, tasks, index }) {
     const submitHandler = () => {
         if (cardTitle === '')
             return
+        const text = cardTitle.trim().replace(/\s+/g, ' ')
+        setCardTitle(text)
         const totalTasks = tasks.length
         const postCardReq = {
-            name: cardTitle,
+            name: text,
             boardId: column.boardId,
             listId: column._id,
             order: totalTasks === 0 ? 'n' : midString(tasks[totalTasks - 1].order, '')
         }
-        dispatch(createNewCard(postCardReq))
+        dispatch(createNewCard(postCardReq, token))
         dispatch(createNewActivity({
-            text: `User added ${cardTitle} to ${column.name}`,
+            text: `${user.username} added ${text} to ${column.name}`,
             boardId: column.boardId
-        }))
+        }, token))
         setCardTitle('')
-        setAddCardFlag(true)
     }
     const handleAddition = () => {
         setAddCardFlag(true)
-        addFlag.current = false
     }
     const closeButtonHandler = () => {
         setAddCardFlag(false)
-        addFlag.current = true
         setCardTitle('')
     }
     const changedHandler = (e) => {
@@ -90,8 +106,15 @@ export default function Column({ column, tasks, index }) {
         setListTitle(e.target.value)
     }
     const updateListTitle = () => {
+        const text = listTitle.trim().replace(/\s+/g, ' ')
+        if (text === '') {
+            setListTitle(column.name)
+            setEditable(false)
+            return
+        }
+        setListTitle(text)
         dispatch(updateListById(column._id, { name: listTitle }))
-        column.name = listTitle
+        column.name = text
         setEditable(false)
     }
 
@@ -102,25 +125,29 @@ export default function Column({ column, tasks, index }) {
                     <div {...provided.draggableProps}
                         ref={provided.innerRef}>
                         <Paper elevation={0}
+                            onMouseEnter={() => setShowDelete(true)}
+                            onMouseLeave={() => setShowDelete(false)}
                             className={classes.root}
                             {...provided.dragHandleProps}>
-                            <div className={classes.title} onClick={() => setEditable(true)} >
+                            <div className={classes.title} onClick={() => setEditable(true)}>
                                 {!editable &&
                                     <div style={{ position: 'relative' }}>
                                         <div>
                                             {column.name}
                                         </div>
-                                        <IconButton
-                                            style={{ right: 0, position: 'absolute', marginTop: '-30px', zIndex: '100' }}
+                                        {showDelete && (<IconButton
+                                            size='small'
+                                            style={{ right: 0, top: 0, position: 'absolute', backgroundColor: '#EBECF0', zIndex: 100 }}
                                             onClick={() => {
                                                 setList(false)
                                                 dispatch(deleteListById(column._id))
-                                                const text = `User deleted list ${column.name}`
-                                                dispatch(createNewActivity({ text, boardId: column.boardId }))
+                                                const text = `${user.username} deleted list ${column.name}`
+                                                dispatch(createNewActivity({ text, boardId: column.boardId }, token))
                                             }}
                                         >
-                                            <DeleteIcon fontSize='small' />
+                                            <DeleteIcon fontSize='small' style={{ backgroundColor: '#EBECF0' }} />
                                         </IconButton>
+                                        )}
                                     </div>
                                 }
                                 {editable &&
@@ -152,6 +179,7 @@ export default function Column({ column, tasks, index }) {
                                             {tasks.map((task, index) =>
                                                 <Card key={task._id} task={task} index={index} />)}
                                             {addCardFlag &&
+
                                                 <InputCard
                                                     value={cardTitle}
                                                     changedHandler={handleChange}
@@ -165,7 +193,7 @@ export default function Column({ column, tasks, index }) {
                                             }
                                             {provided.placeholder}
                                         </div>
-                                        {addFlag.current &&
+                                        {!addCardFlag &&
                                             <AddItem handleClick={handleAddition} icon={<AddIcon />}
                                                 btnText='Add another card' type='card' width='256px' />
                                         }
@@ -177,6 +205,6 @@ export default function Column({ column, tasks, index }) {
                 )}
             </Draggable>
             }
-        </div >
+        </ div >
     )
 }

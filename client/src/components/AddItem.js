@@ -7,13 +7,13 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0.2, 1, 1, 1),
         justifyContent: 'left',
         opacity: 0.8,
-        fontWeight: props => props.type === 'background' ? 'bold' : 'inherit',
+        fontWeight: props => (props.type === 'background' || props.type === 'menu' || props.type === 'list') ? 'bold' : 'inherit',
         backgroundColor: props => props.type !== 'card' ? 'hsla(0,0%,100%,.24)' : 'inherit',
-        // color: props => props.type !== 'card' ? 'white' : 'inherit',
         '&:hover': {
             opacity: 1,
             backgroundColor: 'rgba(9,30,66,.08)',
         },
+        textShadow: props => (!props.noshadow && (props.type === 'menu' || props.type === 'list')) && '2px 2px black',
     },
     width: props => ({
         width: props.width,
@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     }),
 }))
 
-export default function AddItem({ btnText, handleClick, type, icon, width, color }) {
-    const classes = useStyles({ type, width, color })
+export default function AddItem({ btnText, handleClick, type, icon, width, color, noshadow }) {
+    const classes = useStyles({ type, width, color, noshadow })
     return (
         <Button className={`${classes.add} ${classes.width}`}
             onClick={handleClick}>

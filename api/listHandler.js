@@ -1,21 +1,27 @@
 const { Router } = require('express')
+const Board = require('../models/board')
 const List = require('../models/list')
 const Card = require('../models/card')
+const { auth } = require('../middleware')
 const router = Router()
 
-// fetch all the list entries from the db
-router.get('/', async (req, res, next) => {
-    try {
-        const listEntries = await List.find()
-        res.json(listEntries)
-    } catch (error) {
-        next(error)
-    }
-})
+// // fetch all the list entries from the db
+// router.get('/', async (req, res, next) => {
+//     try {
+//         const listEntries = await List.find()
+//         res.json(listEntries)
+//     } catch (error) {
+//         next(error)
+//     }
+// })
 
 // create new entry of list
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
     try {
+        const boardId = req.body.boardId
+        const board = await Board.findOne({ _id: boardId, userId: req.user })
+        if (!board)
+            return res.status(404).send()
         const list = new List(req.body)
         const respData = await list.save()
         res.send(respData)

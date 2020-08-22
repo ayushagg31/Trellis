@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         fontFamily: 'Arial, Helvetica, sans-serif',
-        marginBottom: theme.spacing(25),
+        marginBottom: theme.spacing(32),
         paddingTop: theme.spacing(1),
         paddingLeft: theme.spacing(2),
     },
