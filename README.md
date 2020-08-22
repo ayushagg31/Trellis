@@ -1,6 +1,10 @@
 # Trellis
+[![website](https://img.shields.io/badge/website-up-%2338B2AC)](https://trellis-app.herokuapp.com/)
+[![HitCount](http://hits.dwyl.com/ayushagg31/Trellis.svg)](http://hits.dwyl.com/ayushagg31/Trellis)
+![](https://img.shields.io/david/ayushagg31/Trellis)
+![repo-size](https://img.shields.io/github/repo-size/ayushagg31/Trellis)
 
-A Trello Clone 
+A Trello Clone - Built with React, Redux, Express, and MongoDB. 
 
 ## Demo
 [Trellis-app](https://trellis-app.herokuapp.com/)  **[Desktop Only]**
