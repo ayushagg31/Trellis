@@ -13,6 +13,11 @@ export default function Login() {
     const [success, setSuccess] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
+
+    useEffect(() => {
+        document.title = `Login | Trellis`
+    }, [])
+
     useEffect(() => {
         if (user.username !== undefined)
             history.push(`/${user.username}/boards`)

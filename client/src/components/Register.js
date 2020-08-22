@@ -12,6 +12,11 @@ export default function Register() {
     const [error, setError] = useState()
     const [success, setSuccess] = useState(false)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        document.title = `Register | Trellis`
+    }, [])
+
     useEffect(() => {
         if (!requestRegister && successRegister) {
             setError('Successfully Registered ✔')

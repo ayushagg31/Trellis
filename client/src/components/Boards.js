@@ -66,6 +66,10 @@ export default function Boards() {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        document.title = `Home | Trellis`
+    }, [])
+
+    useEffect(() => {
         if (isValid) {
             dispatch(fetchAllBoards(token))
         }
