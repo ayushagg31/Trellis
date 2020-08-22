@@ -24,7 +24,7 @@ export default function Login() {
                 setError('Logged In successfully ✔')
                 setSuccess(true)
                 localStorage.setItem('auth-token', token)
-                history.push(`/${user.username}/boards`)
+                // history.push(`/${user.username}/boards`)
             }
             else if (!successLogin && !token) {
                 setError(loginError)
