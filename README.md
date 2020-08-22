@@ -1,6 +1,6 @@
 # Trellis
 [![website](https://img.shields.io/badge/website-up-%2338B2AC)](https://trellis-app.herokuapp.com/)
-[![HitCount](http://hits.dwyl.com/ayushagg31/Trellis.svg)](http://hits.dwyl.com/ayushagg31/Trellis)
+![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fayushagg31%2FTrellis)
 ![](https://img.shields.io/david/ayushagg31/Trellis)
 ![repo-size](https://img.shields.io/github/repo-size/ayushagg31/Trellis)
 
