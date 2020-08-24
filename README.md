@@ -1,8 +1,9 @@
 # Trellis
 [![website](https://img.shields.io/badge/website-up-%2338B2AC)](https://trellis-app.herokuapp.com/)
 ![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fayushagg31%2FTrellis)
-![](https://img.shields.io/david/ayushagg31/Trellis)
 ![repo-size](https://img.shields.io/github/repo-size/ayushagg31/Trellis)
+[![LinkedIn](https://img.shields.io/badge/linkedin-connect-blue)](https://www.linkedin.com/in/ayush-aggarwal-b13a92120/)
+
 
 A Trello Clone - Built with React, Redux, Express, and MongoDB. 
 
