@@ -14,7 +14,14 @@ const imageUrls = {
 const useStyles = makeStyles((theme) => ({
     card: {
         height: '90px',
+        // width: '7.5rem',
         width: '12.8%',
+        '@media (max-width: 768px)': {
+            width: '20.8%',
+        },
+        '@media (max-width: 430px)': {
+            width: '40.8%',
+        },
         margin: theme.spacing(1),
         borderRadius: theme.spacing(0.7),
         '&:hover': {
@@ -27,7 +34,13 @@ const useStyles = makeStyles((theme) => ({
     menuContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        marginLeft: theme.spacing(30),
+        marginLeft: theme.spacing(25),
+        '@media only screen and (min-device-width : 768px) and (max-device-width : 1024px)': {
+            marginLeft: theme.spacing(10),
+        },
+        '@media (max-width: 768px)': {
+            marginLeft: theme.spacing(5),
+        },
         marginBottom: '100px'
     },
     title: {

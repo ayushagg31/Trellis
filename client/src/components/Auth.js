@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         textAlign: 'center',
         width: '280px',
-        backgroundColor: 'black',
+        backgroundColor:  'rgba(9,30,66,.08)'
 
     },
     input: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1),
         marginRight: '90px',
         marginLeft: '55px',
-        backgroundColor: '#FDFCFA',
+        backgroundColor: 'hsla(0,0%,100%,.24)',
         border: '2px solid #DFE1E6',
         borderRadius: 3,
         boxSizing: 'border-box',
@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme => ({
         opacity: 0.9,
         all: 'unset',
         borderRadius: 5,
-        width: '150px',
+        alignItems: 'center',
+        width: '100px',
         padding: theme.spacing(0.8),
         margin: theme.spacing(2, 2, 7, 2),
         '&:hover': {

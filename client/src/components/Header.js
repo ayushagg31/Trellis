@@ -33,6 +33,24 @@ const useStyles = makeStyles((theme) => ({
             cursor: 'pointer',
         },
     },
+    username: {
+        width: '500px',
+        textShadow: '2px 2px white',
+        height: '30px',
+        position: 'fixed',
+        fontFamily: 'Pacifico',
+        zIndex: 500,
+        overflowX: 'hidden',
+        overflowY: 'hidden',
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'right',
+        textShadow: '2px 2px white',
+        right: 110,
+        '@media (max-width: 768px)': {
+            display: 'none'
+        },
+    }
 }))
 
 export default function Header({ loggedIn, btnText, path, icon }) {
@@ -50,12 +68,7 @@ export default function Header({ loggedIn, btnText, path, icon }) {
             </div>
             {loggedIn ?
                 (<div style={{ display: 'flex', margin: '10px' }}>
-                    <div
-                        style={{
-                            width: '500px', textShadow: '2px 2px white', height: '30px', position: 'fixed', fontFamily: 'Pacifico', zIndex: 500,
-                            overflowX: 'hidden', overflowY: 'hidden', fontWeight: 'bold', color: 'black', textAlign: 'right', textShadow: '2px 2px white',
-                            right: 110
-                        }}>
+                    <div className={classes.username}>
                         {user.username}
                     </div>
                     <div style={{
