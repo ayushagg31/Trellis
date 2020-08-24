@@ -7,7 +7,7 @@
 A Trello Clone - Built with React, Redux, Express, and MongoDB. 
 
 ## Demo
-[Trellis-app](https://trellis-app.herokuapp.com/)  **[Desktop Only]** 
+[Trellis-app](https://trellis-app.herokuapp.com/)  
 
 **Demo Account Credentials** <br/>
 **Username** - *gozmit* <br/>
