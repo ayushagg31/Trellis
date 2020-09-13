@@ -11,6 +11,7 @@ const JSX = (
   </Provider>
 )
 
+
 ReactDOM.render(
   <React.StrictMode>
     {JSX}
