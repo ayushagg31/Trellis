@@ -14,7 +14,10 @@ A Trello Clone - Built with React, Redux, Express, and MongoDB.
 **Username** - *gozmit* <br/>
 **Password** - *gozmit*
 
-## Screenshots
+## 📷 Screenshots
+<details>
+<summary>View Screenshots</summary>
+ 
 **Login**
 ![Login](../master/images/Trellis-Login.png)
 **Register**
@@ -25,6 +28,8 @@ A Trello Clone - Built with React, Redux, Express, and MongoDB.
 ![Create Board](../master/images/Trellis-board2.png)
 **Trellis**
 ![Trellis Board](../master/images/Trellis.png)
+ 
+</details>
 
  ## GIF
 ![Trellis-gif](../master/images/Trellis.gif)
@@ -32,7 +37,7 @@ A Trello Clone - Built with React, Redux, Express, and MongoDB.
 [**Demo Video**](https://drive.google.com/file/d/1eP41BKh8LLL7ScSnhGlSd3FJRKXazva3/view)
 
 
-## Features
+## ⚡ Features
 - Create, Modify and Delete boards
 - Create, Modify and Delete cards
 - Create, Modify and Delete lists
