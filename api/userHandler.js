@@ -8,7 +8,6 @@ const router = Router()
 // register a new user
 router.post('/register', async (req, res, next) => {
     const { password, passwordCheck, username } = req.body
-    console.lo
     try {
         if (!password || !passwordCheck || !username)
             return res.status(400).json({ msg: 'Don\'t be lazy 🦥, enter all fields value' })
@@ -31,7 +30,6 @@ router.post('/register', async (req, res, next) => {
     } catch (error) {
         if (error.name === 'ValidationError')
             return res.status(422)
-        console.log(error)
         next(error)
     }
 })
