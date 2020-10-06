@@ -106,5 +106,5 @@ npm run trellis
 ## Contribute
 - Show your support by ⭐ the project.
 - Submit pull requests and improve the repo overall quality
-- 📢 Submit your pull requests to **develop** branch or create your new branch, I'll be putting up a details contributor guidelines soon.
+- 📢 Submit your pull requests to **develop** branch or create your new branch, I'll be putting up a detailed contributor guidelines soon.
 
