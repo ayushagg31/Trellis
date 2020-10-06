@@ -13,13 +13,15 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: props => props.loggedIn ? 'hsla(0,0%,100%,.24)' : 'rgba(0,0,0,.32)',
         color: 'black',
         fontWeight: 'bold',
-        fontSize: '23px',
+        fontSize: '22px',
         textAlign: 'center',
         fontFamily: 'Pacifico',
         top: '0',
         position: 'fixed',
         width: '100%',
         zIndex: 1,
+        paddingTop: '8px',
+        paddingBottom: '8px',
     },
     trellis: {
         color: 'black',
@@ -79,7 +81,7 @@ export default function Header({ loggedIn, btnText, path, icon }) {
                             btnText='Logout'
                             type='menu'
                             icon={<ExitToAppIcon fontSize='small' />}
-                            width='85px'
+                            width='auto'
                             color='white'
                             handleClick={() => {
                                 dispatch(logoutUser())
@@ -90,13 +92,13 @@ export default function Header({ loggedIn, btnText, path, icon }) {
                     </div>
                 </div>) : null}
             {!loggedIn ?
-                (<div style={{ display: 'flex', float: 'right', margin: '10px' }}>
+                (<div style={{ display: 'flex', float: 'right', margin: '12px' }}>
                     <div style={{ marginTop: '-5px', zIndex: 200, marginLeft: '10px' }}>
                         <AddItem
                             btnText={btnText}
                             type='menu'
                             icon={icon}
-                            width='85px'
+                            width='auto'
                             color='white'
                             handleClick={() => {
                                 history.push(`${path}`)
