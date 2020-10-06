@@ -59,7 +59,7 @@ export default function SideMenu({ setBackground, board }) {
                         type='background' width='310px'
                         icon={<span style={{
                             marginRight: '13px',
-                            backgroundColor: `${board.color}`,
+                            backgroundColor: board.color,
                             backgroundImage: `url(${board.url})`,
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat',
@@ -70,9 +70,7 @@ export default function SideMenu({ setBackground, board }) {
                     />
                     <Link to='/' style={{ textDecoration: 'none' }}>
                         <AddItem btnText='Delete Board'
-                            handleClick={() => {
-                                dispatch(deleteBoardById(board.id, token))
-                            }}
+                            handleClick={() => dispatch(deleteBoardById(board.id, token))}
                             type='background' width='310px'
                             icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />} />
                     </Link>
