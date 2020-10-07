@@ -109,4 +109,5 @@ npm run trellis
 - Show your support by ⭐ the project.
 - Submit pull requests and improve the repo overall quality
 - Read [Contributors guidelines](https://github.com/ayushagg31/Trellis/blob/master/CONTRIBUTING.md) before submitting a PR or creating a new issue.
-
+## Please follow our Contributors guideline.
+## Happy coding!😀
