@@ -9,6 +9,8 @@ A Trello Clone - Built with React, Redux, Express, and MongoDB.
 
 **📢: I'm looking for maintainers, feel free to react out to me on `hello@ayushaggarwal.com` if you're interested.**
 
+First, check our [code of conduct](https://github.com/ayushagg31/Trellis/blob/master/CODE_OF_CONDUCT.md)
+
 ## Demo
 [Trellis-app](https://trellis-app.herokuapp.com/)  
 
