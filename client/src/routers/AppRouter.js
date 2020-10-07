@@ -28,7 +28,7 @@ const AppRouter = () => {
         }
         dispatch(checkTokenValidity(token))
 
-    }, [])
+    }, [dispatch])
 
     return (
         <>
