@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         fontFamily: "Pacifico",
         top: "0",
-        position: "relative",
+        position: "absolute",
         width: "100%",
         zIndex: 1,
         display: "flex",
