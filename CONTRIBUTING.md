@@ -70,6 +70,8 @@ When filing an issue, please use this template:
  - Provide detailed description about the changes you have made and the expected outcome, feel free to share images/gif for the outcome.
  - Don't submit independent PR's. First create issue, once approved, submit your PR.
  
+ **📢 Submit your pull requests to develop branch or create your new branch.**
+ 
  ## Pull Request Template
  
  When submitting PR, please use this template:
