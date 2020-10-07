@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column'
     },
     form: {
         // padding: '10px',
@@ -23,6 +24,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#fff',
         border: '1px solid #e8e8e8',
         padding: '32px',
+        boxSizing: 'border-box',
         '& > form': {
             display: 'flex',
             flexWrap: 'wrap',

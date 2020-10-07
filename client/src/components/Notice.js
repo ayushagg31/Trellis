@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: props => props.success === true ? '#43A047' : '#f8d6d6',
-        width: '320px',
+        width: '400px',
         padding: theme.spacing(0.5),
-        marginLeft: theme.spacing(-1.75)
-
+        marginBottom: '16px',
+        boxSizing: 'border-box',
     },
     button: {
         all: 'unset',
