@@ -50,18 +50,17 @@ npm run trellis
 When filing an issue, please use this template:
 
 ```
-### Overview Description
-# Steps to Reproduce
-
+## Overview Description
+### Steps to Reproduce
 1.
 2.
 3.
 
-# Actual Results
+### Actual Results
 
-# Expected Results
+### Expected Results
 
-# Additional Information:
+### Additional Information
 ```
 
  ## Submitting Pull Requests
@@ -77,15 +76,15 @@ When filing an issue, please use this template:
  When submitting PR, please use this template:
  
  ```
- ### Overview Description
+ ## Overview Description
  
- # Issue Reference: 
+ ### Issue Reference
  
- # Changes
+ ### Changes
  
- # Expected Outcome
+ ### Expected Outcome
  
- # Additional Information
+ ### Additional Information
  
  ```
  
