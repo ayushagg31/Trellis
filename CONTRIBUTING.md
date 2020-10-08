@@ -1,6 +1,6 @@
 # Contributing
 
-Welcome to Trellis, a simplified Trello clone built with React, Redux, Node, Express and MongoDB. The following guidelines will give you a short overview over how we handle issues and PRs in this repository.
+Welcome to Trellis, a simplified Trello clone built with React, Redux, Node, Express and MongoDB. The following guidelines will give you a short overview of how we handle issues and PRs in this repository.
 
 We appreciate all valuable contributions - bug reports, documentation and design enhancements, issues as well as Pull Requests to make Trellis more convenient, functional and bug free.
 
@@ -45,24 +45,6 @@ npm run trellis
  - If it's a feature request, share your thoughts about the final outcome.
  - Don't create duplicate issues, checkout the issue section before reporting it.
  
- ## Issue Template
-
-When filing an issue, please use this template:
-
-```
-## Overview Description
-### Steps to Reproduce
-1.
-2.
-3.
-
-### Actual Results
-
-### Expected Results
-
-### Additional Information
-```
-
  ## Submitting Pull Requests
  - Request assignment to the issue before working
  - Provide the reference to the issue, for which pull request is created
@@ -70,23 +52,6 @@ When filing an issue, please use this template:
  - Don't submit independent PR's. First create issue, once approved, submit your PR.
  
  **📢 Submit your pull requests to develop branch or create your new branch.**
- 
- ## Pull Request Template
- 
- When submitting PR, please use this template:
- 
- ```
- ## Overview Description
- 
- ### Issue Reference
- 
- ### Changes
- 
- ### Expected Outcome
- 
- ### Additional Information
- 
- ```
  
 ## Assigning issues
 - Only start working on issues, once assigned by the maintainers.
