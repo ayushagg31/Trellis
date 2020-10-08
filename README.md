@@ -64,7 +64,7 @@ npm i && cd client && npm i
 ```
 REACT_APP_CLIENT_KEY="YOUR API KEY" // Unsplash API Key
 ```
-4. Create dev.env for development and test.env for testing purpose  
+4. Create dev.env for **development** and **test.env** for testing purpose  
 ```
 cd ../config
 (
