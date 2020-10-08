@@ -1,8 +1,8 @@
 # Contributing
 
-Welcome to Trellis!, a simplified Trello clone built with React, Redux, Node, Express and MongoDB. The following guidelines will give you a short overview over how we handle issues and PRs in this repository.
+Welcome to Trellis, a simplified Trello clone built with React, Redux, Node, Express and MongoDB. The following guidelines will give you a short overview over how we handle issues and PRs in this repository.
 
-We appreciate all valuable contributions - bug reports, documentation and design enhancements issues as well as pull Requests to make Trellis more convenient, functional and bug free.
+We appreciate all valuable contributions - bug reports, documentation and design enhancements, issues as well as Pull Requests to make Trellis more convenient, functional and bug free.
 
 To begin contributing have a look at the open issues [here](https://github.com/ayushagg31/Trellis/issues).
 
@@ -20,15 +20,15 @@ npm i && cd client && npm i
 ```
 REACT_APP_CLIENT_KEY="YOUR API KEY" // Unsplash API Key
 ```
-4. Create dev.env for development and test.env for testing purpose  
+4. Create dev.env for **development** and **test.env** for testing purpose  
 ```
 cd ../config
-mkdir dev.env 
-========================================
-PORT=1313
-DATABASE_URL="MongoDB Connection String"
-JWT_SECRET="YOUR JWT TOKEN"
-NODE_ENV=development
+(
+echo PORT=1313
+echo DATABASE_URL="MongoDB Connection String"
+echo JWT_SECRET="YOUR JWT TOKEN"
+echo NODE_ENV=development
+) > dev.env
 ```
 5. Go into ```client/package.json``` and replace **proxy** with your server port 
 ```
