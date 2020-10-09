@@ -14,5 +14,5 @@ Fixes # (issue reference)
 **Expected Outcome**
 Provide information about the expected outcome of your changes, share screenshots if possible
 
-**Additiona Information**
+**Additional Information**
 
