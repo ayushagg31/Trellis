@@ -50,9 +50,7 @@ npm run trellis
  - Provide the reference to the issue, for which pull request is created
  - Provide detailed description about the changes you have made and the expected outcome, feel free to share images/gif for the outcome.
  - Don't submit independent PR's. First create issue, once approved, submit your PR.
- 
- **📢 Submit your pull requests to develop branch or create your new branch.**
- 
+  
 ## Assigning issues
 - Only start working on issues, once assigned by the maintainers.
 - Don't request assignment on more than one issue at a time.
