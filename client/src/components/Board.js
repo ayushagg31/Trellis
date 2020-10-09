@@ -273,7 +273,7 @@ export default function Board() {
             return
         const text = listTitle.trim().replace(/\s+/g, ' ')
         if (text === '') {
-            setTitle(listTitle)
+            setListTitle(listTitle)
             return
         }
         const totalLists = initialData.columnOrder.length
