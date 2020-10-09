@@ -10,6 +10,9 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Contribution Guidelines**
+Please read through the [Contribution Guidelines](https://github.com/ayushagg31/Trellis/blob/master/CONTRIBUTING.md)
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
