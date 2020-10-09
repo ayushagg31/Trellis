@@ -2,7 +2,9 @@
 
 Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
 
-Fixes # (issue reference)
+**Contribution Guidelines** Please read through the [Contribution Guidelines](https://github.com/ayushagg31/Trellis/blob/master/CONTRIBUTING.md)
+
+**Fixes** # (issue reference)
 
 **Type of change**
 
