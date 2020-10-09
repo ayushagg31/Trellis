@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         right: theme.spacing(0),
         marginTop: theme.spacing(0.5)
     },
+    
 }))
 export default function SideMenu({ setBackground, board }) {
     const [showMenu, setShowMenu] = useState(false)

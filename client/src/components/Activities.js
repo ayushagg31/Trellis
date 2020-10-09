@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import moment from 'moment'
+// import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from "dayjs/plugin/relativeTime"
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
@@ -10,7 +12,12 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: theme.spacing(2),
     },
     text: {
-        fontSize: '15px'
+        fontSize: '15px',
+        backgroundColor: '#091e4214',
+        padding: theme.spacing(0.8),
+        paddingLeft: theme.spacing(1),
+        marginBottom: theme.spacing(2),
+        borderRadius: '4px',
     },
     timestamp: {
         fontSize: '10px',
@@ -37,29 +44,32 @@ export default function Activities() {
             {
                 activities.map((intialActivity, index) => {
                     const activity = activities[activities.length - 1 - index]
-                    const date = new Date(activity.createdAt)
-                    const str = moment(date).fromNow();
                     var timestampString
+                    dayjs.extend(relativeTime)
+                    const date = new Date(activity.createdAt)
+                    const str = dayjs(date).fromNow();
                     const userName = activity.text.split(' ')[0]
                     const activityText = activity.text.replace(userName, '')
                     if (str.includes('second') || str.includes('minute') || str.includes('hour'))
                         timestampString = str
                     else if (str.includes('day') && (str.split(' ')[0] === 'a' || str.split(' ')[0] < 7)) {
                         if (str === 'a day ago') {
-                            const timeString = moment().subtract(1, 'days').calendar().split(' at ')[0]
-                            timestampString = timeString + ' at ' + moment(date).format('LT')
+                            const timeString = dayjs().subtract(1, 'days').calendar().split(' at ')[0]
+                            timestampString = timeString + ' at ' + dayjs(date).format('LT')
                         }
                         else {
-                            const timeString = moment().subtract(str.split(' ')[0], 'days').calendar().split(' at ')[0]
-                            timestampString = timeString + ' at ' + moment(date).format('LT')
+                            const timeString = dayjs().subtract(str.split(' ')[0], 'days').calendar().split(' at ')[0]
+                            timestampString = timeString + ' at ' + dayjs(date).format('LT')
                         }
                     }
                     else
-                        timestampString = moment(date).format('LLL')
-                    return (<div key={activity._id} className={classes.text}>
-                        <strong>{userName}</strong>{activityText}
-                        <p className={classes.timestamp} >{timestampString}</p>
-                    </div>)
+                        timestampString = dayjs(date).format('LLL')
+                    return (
+                        <div key={activity._id} className={classes.text}>
+                            <strong>{userName}</strong>{activityText}
+                            <p className={classes.timestamp} >{timestampString}</p>
+                        </div>
+                    )
                 })
             }
         </div>

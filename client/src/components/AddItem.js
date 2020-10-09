@@ -6,12 +6,12 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'none',
         margin: theme.spacing(0.2, 1, 1, 1),
         justifyContent: 'left',
-        opacity: 0.8,
+        opacity: 1,
         fontWeight: props => (props.type === 'background' || props.type === 'menu' || props.type === 'list') ? 'bold' : 'inherit',
-        backgroundColor: props => props.type !== 'card' ? 'hsla(0,0%,100%,.24)' : 'inherit',
+        backgroundColor: props => props.type !== 'card' ? '#091e4214' : 'inherit',
         '&:hover': {
-            opacity: 1,
-            backgroundColor: 'rgba(9,30,66,.08)',
+            opacity: 0.8,
+            backgroundColor: '#ffffff3d',
         },
         textShadow: props => (!props.noshadow && (props.type === 'menu' || props.type === 'list')) && '2px 2px black',
     },
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
         width: props.width,
         color: props.color
     }),
+    
 }))
 
 export default function AddItem({ btnText, handleClick, type, icon, width, color, noshadow }) {
