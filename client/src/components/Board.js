@@ -291,6 +291,13 @@ export default function Board() {
         setListTitle('')
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            submitHandler();
+        }
+    }
+
     const closeButtonHandler = () => {
         setAddListFlag(false)
         addFlag.current = true
@@ -400,6 +407,7 @@ export default function Board() {
                                                 changedHandler={handleChange}
                                                 itemAdded={submitHandler}
                                                 closeHandler={closeButtonHandler}
+                                                keyDownHandler={handleKeyDown}
                                                 type='list'
                                                 btnText='Add List'
                                                 placeholder='Enter list title...'

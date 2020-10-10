@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     })
 }))
 
-export default function InputItem({ value, changedHandler, itemAdded, closeHandler, width, type, btnText, placeholder, marginLeft }) {
+export default function InputItem({ value, changedHandler, keyDownHandler, itemAdded, closeHandler, width, type, btnText, placeholder, marginLeft }) {
     const classes = useStyles({ type, width, marginLeft })
     const divRef = useRef(null)
 
@@ -62,7 +62,8 @@ export default function InputItem({ value, changedHandler, itemAdded, closeHandl
                     value={value}
                     autoFocus
                     placeholder={placeholder}
-                    onBlur={handleBlur} />
+                    onBlur={handleBlur} 
+                    onKeyDown={keyDownHandler} />
             </Paper>
             <Button
                 ref={divRef}
