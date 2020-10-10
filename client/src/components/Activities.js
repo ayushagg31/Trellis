@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
+
     wrapper: {
         fontFamily: 'Arial, Helvetica, sans-serif',
         marginBottom: theme.spacing(32),
@@ -27,17 +28,17 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Activities() {
-    const classes = useStyles()
-    // eslint-disable-next-line
-    const [dt, setDt] = useState(new Date().toLocaleString());
-    const { activities } = useSelector(state => state.activities)
+  const classes = useStyles()
+  // eslint-disable-next-line
+  const [dt, setDt] = useState(new Date().toLocaleString())
+  const { activities } = useSelector((state) => state.activities)
 
-    useEffect(() => {
-        let secTimer = setInterval(() => {
-            setDt(new Date().toLocaleString())
-        }, 60000)
-        return () => clearInterval(secTimer);
-    }, []);
+  useEffect(() => {
+    const secTimer = setInterval(() => {
+      setDt(new Date().toLocaleString())
+    }, 60000)
+    return () => clearInterval(secTimer)
+  }, [])
 
     return (
         <div className={classes.wrapper}>
@@ -74,4 +75,5 @@ export default function Activities() {
             }
         </div>
     )
+
 }

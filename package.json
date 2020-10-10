@@ -10,8 +10,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "env-cmd -f ./config/dev.env nodemon index.js",
-    "lint": "eslint src/",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
+    "lint": "eslint ./api ./models ./test ./*js ",
+    "lint:fix": "npm run lint -- --fix",
     "client": "cd client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "trellis": "concurrently \"npm run dev\" \"npm run client\""
@@ -32,6 +33,8 @@
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.4",
     "sinon": "^9.0.2",
     "supertest": "^4.0.2"

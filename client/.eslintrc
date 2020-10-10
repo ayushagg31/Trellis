@@ -1,0 +1,10 @@
+{
+    "extends": [
+        "@imaginary-cloud/react"
+    ],
+    "rules": {
+        "react/prop-types": 0,
+        "no-underscore-dangle": 0,
+        "no-return-assign": 0
+    }
+}

@@ -25,10 +25,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ./ --ignore-path .gitignore",
+    "lint:fix": "npm run lint --fix",
+    "format": "prettier --write \"{,!(node_modules)/**/}*.js\""
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "@imaginary-cloud/react"
   },
   "browserslist": {
     "production": [
@@ -42,5 +45,19 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:1313"
+  "proxy": "http://localhost:1313",
+  "devDependencies": {
+    "@imaginary-cloud/eslint-config-react": "^1.0.1",
+    "@imaginary-cloud/prettier-config": "^1.0.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.21.4",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "prettier": "^2.1.2"
+  },
+  "prettier": "@imaginary-cloud/prettier-config"
 }

@@ -8,7 +8,8 @@ assignees: ''
 ---
 
 **Contribution Guidelines**
-Please read through the [Contribution Guidelines](https://github.com/ayushagg31/Trellis/blob/master/CONTRIBUTING.md)
+Please read through the [Contribution Guidelines](https://github.com/ayushagg31/Trellis/blob/master/CONTRIBUTING.md). 
+Also add the appropriate label for your issue.
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

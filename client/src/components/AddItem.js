@@ -20,15 +20,22 @@ const useStyles = makeStyles((theme) => ({
         color: props.color
     }),
     
+
 }))
 
-export default function AddItem({ btnText, handleClick, type, icon, width, color, noshadow }) {
-    const classes = useStyles({ type, width, color, noshadow })
-    return (
-        <Button className={`${classes.add} ${classes.width}`}
-            onClick={handleClick}>
-            {icon} {btnText}
-        </Button>
-
-    )
+export default function AddItem({
+  btnText,
+  handleClick,
+  type,
+  icon,
+  width,
+  color,
+  noshadow,
+}) {
+  const classes = useStyles({ type, width, color, noshadow })
+  return (
+    <Button className={`${classes.add} ${classes.width}`} onClick={handleClick}>
+      {icon} {btnText}
+    </Button>
+  )
 }

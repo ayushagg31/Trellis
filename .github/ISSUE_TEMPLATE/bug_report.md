@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is. Also add the appropriate label for your issue.
 
 **Contribution Guidelines**
 Please read through the [Contribution Guidelines](https://github.com/ayushagg31/Trellis/blob/master/CONTRIBUTING.md)
