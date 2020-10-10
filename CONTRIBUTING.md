@@ -16,11 +16,11 @@ cd Trellis
 ```
 npm i && cd client && npm i
 ```
-3. Create .env file 
+3. Create `.env` file 
 ```
 REACT_APP_CLIENT_KEY="YOUR API KEY" // Unsplash API Key
 ```
-4. Create dev.env for **development** and **test.env** for testing purpose  
+4. Create `dev.env` for **development** and **test.env** for testing purpose  
 ```
 cd ../config
 (
@@ -30,7 +30,7 @@ echo JWT_SECRET="YOUR JWT TOKEN"
 echo NODE_ENV=development
 ) > dev.env
 ```
-5. Go into ```client/package.json``` and replace **proxy** with your server port 
+5. Go into `client/package.json` and replace **proxy** with your server port 
 ```
 "proxy": "http://localhost:1313"
 ```
@@ -50,16 +50,14 @@ npm run trellis
  - Provide the reference to the issue, for which pull request is created
  - Provide detailed description about the changes you have made and the expected outcome, feel free to share images/gif for the outcome.
  - Don't submit independent PR's. First create issue, once approved, submit your PR.
+ - Don't submit un-linted code, read instructions for linting below.
   
 ## Assigning issues
 - Only start working on issues, once assigned by the maintainers.
 - Don't request assignment on more than one issue at a time.
 - Issues will be unassigned, if there's no action/updates from the assignee.
 
- ## Priority Issues
- Issues which needs to be resolved on priority basis
-
- - [ ] [Setup the eslint for whole project](https://github.com/ayushagg31/Trellis/issues/26)
- - [ ] [Improve Readme and add file structure information to make it more open-source friendly](https://github.com/ayushagg31/Trellis/issues/9)
- 
+## How to Lint and Format code
+- If you are making changes in frontend (client directory), run `npm run format` to format the code.
+- If you are making changes in backend, run `npm run lint:fix` to lint the code.
  
