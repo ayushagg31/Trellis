@@ -6,5 +6,11 @@
         "react/prop-types": 0,
         "no-underscore-dangle": 0,
         "no-return-assign": 0
-    }
+    },
+    "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ]
 }
