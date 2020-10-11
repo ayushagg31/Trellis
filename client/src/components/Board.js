@@ -322,9 +322,9 @@ export default function Board() {
   }
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      submitHandler();
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      submitHandler()
     }
   }
 

@@ -114,9 +114,9 @@ export default function Column({ column, tasks, index }) {
     setListTitle(e.target.value)
   }
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      submitHandler();
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      submitHandler()
     }
   }
   const updateListTitle = () => {
