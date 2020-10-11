@@ -100,6 +100,13 @@ export default function Boards() {
     setBoardTitle(e.target.value)
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submitHandler();
+    }
+  }
+
   useEffect(() => {
     if (newBoard) {
       dispatch(
@@ -196,6 +203,7 @@ export default function Boards() {
                       fullWidth
                       value={boardTitle}
                       onChange={handleChange}
+                      onKeyDown={handleKeyDown}
                       onBlur={() => {
                         submitHandler()
                         setShowInput(false)

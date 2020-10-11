@@ -113,6 +113,12 @@ export default function Column({ column, tasks, index }) {
     e.preventDefault()
     setListTitle(e.target.value)
   }
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submitHandler();
+    }
+  }
   const updateListTitle = () => {
     const text = listTitle.trim().replace(/\s+/g, ' ')
     if (text === '') {
@@ -208,6 +214,7 @@ export default function Column({ column, tasks, index }) {
                             changedHandler={handleChange}
                             itemAdded={submitHandler}
                             closeHandler={closeButtonHandler}
+                            keyDownHandler={handleKeyDown}
                             type="card"
                             btnText="Add Card"
                             placeholder="Enter a title for this card..."
