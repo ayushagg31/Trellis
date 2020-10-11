@@ -84,6 +84,9 @@ echo NODE_ENV=development
 npm run trellis
 ```
 
+## ER Diagram
+![Trellis-ERD](../master/ERD.png)
+
 
 ## Built With
 #### Frontend 
