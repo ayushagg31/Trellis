@@ -55,7 +55,8 @@ npm run trellis
 ## Assigning issues
 - Only start working on issues, once assigned by the maintainers.
 - Don't request assignment on more than one issue at a time.
-- Issues will be unassigned, if there's no action/updates from the assignee.
+- ❗ Please provide progress update after a week, if you're not working on the issue, request to unassign.
+- ❗ Issues will be unassigned, if there's no activity/updates from the assignee within a week.
 
 ## How to Lint and Format code
 - If you are making changes in frontend (client directory), run `npm run format` to format the code.
