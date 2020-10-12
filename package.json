@@ -17,7 +17,7 @@
     "client": "cd client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "trellis": "concurrently \"npm run dev\" \"npm run client\"",
-    "ci:build": "npm run ci && cd client && npm run ci"
+    "ci:build": "npm ci && cd client && npm ci"
   },
   "jest": {
     "testEnvironment": "node"
