@@ -38,9 +38,10 @@ const errorHandler = (error, req, res, next) => {
     })
 }
 
-module.exports =
-    module.exports = {
-        auth,
-        notFoundHandler,
-        errorHandler,
-    }
+
+module.exports = {
+    auth,
+    notFoundHandler,
+    errorHandler
+}
+
