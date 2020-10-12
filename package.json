@@ -13,9 +13,11 @@
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "lint": "eslint ./api ./models ./test ./*js ",
     "lint:fix": "npm run lint -- --fix",
+    "lint:all": "npm run lint && cd client && npm run lint",
     "client": "cd client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "trellis": "concurrently \"npm run dev\" \"npm run client\""
+    "trellis": "concurrently \"npm run dev\" \"npm run client\"",
+    "ci:build": "npm ci && cd client && npm ci"
   },
   "jest": {
     "testEnvironment": "node"
