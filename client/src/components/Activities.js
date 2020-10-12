@@ -38,6 +38,7 @@ export default function Activities() {
         const activity = activities[activities.length - 1 - index]
         const date = new Date(activity.createdAt)
         const str = moment(date).fromNow()
+        /* eslint-disable-next-line  */
         var timestampString
         const userName = activity.text.split(' ')[0]
         const activityText = activity.text.replace(userName, '')

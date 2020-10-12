@@ -24,6 +24,7 @@ const AppRouter = () => {
   }, [isValid, token, dispatch])
 
   useEffect(() => {
+    // eslint-disable-next-line no-shadow
     let token = localStorage.getItem('auth-token')
     if (token === null) {
       localStorage.setItem('auth-token', '')

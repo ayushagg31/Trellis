@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Board() {
   const classes = useStyles()
+  /* eslint-disable-next-line */
   var { id, name } = useParams()
   const { loading, currBoard, error } = useSelector((state) => state.boards)
   const { listLoading, lists } = useSelector((state) => state.lists)
@@ -106,6 +107,7 @@ export default function Board() {
   useEffect(() => {
     if (!listLoading && !cardLoading) {
       const prevState = { tasks: {}, columns: {}, columnOrder: [] }
+      // eslint-disable-next-line no-shadow
       const getTaskIds = (id) => {
         const filteredTasks = _.filter(cards, { listId: id })
         const sortedTasks = _.orderBy(filteredTasks, ['order'], ['asc'])
@@ -132,6 +134,7 @@ export default function Board() {
   }, [setInitDone, listLoading, cardLoading, setInitialData, cards, lists])
 
   const onDragEnd = (result) => {
+    // eslint-disable-next-line no-var
     var newOrder
     const { destination, source, draggableId, type } = result
     if (!destination) return

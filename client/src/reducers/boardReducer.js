@@ -38,7 +38,7 @@ export const boardReducer = (state = initialState, action) => {
         boards: [...state.boards, action.payload.board],
         newBoard: action.payload.board,
       }
-    case ACTIONS.UPDATE_BOARD:
+    case ACTIONS.UPDATE_BOARD: {
       const boardsCopy = [...state.boards]
       const targetIndex = boardsCopy.findIndex(
         (board) => board._id === action.payload.board._id,
@@ -51,7 +51,8 @@ export const boardReducer = (state = initialState, action) => {
         loading: false,
         newBoard: undefined,
       }
-    case ACTIONS.DELETE_BOARD:
+    }
+    case ACTIONS.DELETE_BOARD: {
       const boardPrev = [...state.boards]
       const index = boardPrev.findIndex(
         (board) => board._id === action.payload.board._id,
@@ -63,6 +64,7 @@ export const boardReducer = (state = initialState, action) => {
         loading: false,
         newBoard: undefined,
       }
+    }
     default:
       return state
   }

@@ -128,6 +128,7 @@ export default function Column({ column, tasks, index }) {
     }
     setListTitle(text)
     dispatch(updateListById(column._id, { name: listTitle }))
+    // eslint-disable-next-line no-param-reassign
     column.name = text
     setEditable(false)
   }
@@ -202,38 +203,42 @@ export default function Column({ column, tasks, index }) {
                   )}
                 </div>
                 <Droppable droppableId={column._id} type="card">
-                  {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                      <div className={classes.scroll}>
-                        {tasks.map((task, index) => (
-                          <Card key={task._id} task={task} index={index} />
-                        ))}
-                        {addCardFlag && (
-                          <InputCard
-                            value={cardTitle}
-                            changedHandler={handleChange}
-                            itemAdded={submitHandler}
-                            closeHandler={closeButtonHandler}
-                            keyDownHandler={handleKeyDown}
+                  {
+                    // eslint-disable-next-line no-shadow
+                    (provided) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        <div className={classes.scroll}>
+                          {/* eslint-disable-next-line no-shadow */}
+                          {tasks.map((task, index) => (
+                            <Card key={task._id} task={task} index={index} />
+                          ))}
+                          {addCardFlag && (
+                            <InputCard
+                              value={cardTitle}
+                              changedHandler={handleChange}
+                              itemAdded={submitHandler}
+                              closeHandler={closeButtonHandler}
+                              keyDownHandler={handleKeyDown}
+                              type="card"
+                              btnText="Add Card"
+                              placeholder="Enter a title for this card..."
+                              width="230px"
+                            />
+                          )}
+                          {provided.placeholder}
+                        </div>
+                        {!addCardFlag && (
+                          <AddItem
+                            handleClick={handleAddition}
+                            icon={<AddIcon />}
+                            btnText="Add another card"
                             type="card"
-                            btnText="Add Card"
-                            placeholder="Enter a title for this card..."
-                            width="230px"
+                            width="256px"
                           />
                         )}
-                        {provided.placeholder}
                       </div>
-                      {!addCardFlag && (
-                        <AddItem
-                          handleClick={handleAddition}
-                          icon={<AddIcon />}
-                          btnText="Add another card"
-                          type="card"
-                          width="256px"
-                        />
-                      )}
-                    </div>
-                  )}
+                    )
+                  }
                 </Droppable>
               </Paper>
             </div>
