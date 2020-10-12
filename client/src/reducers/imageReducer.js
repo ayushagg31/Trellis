@@ -5,7 +5,7 @@ const initialState = {
 }
 export const imageReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ACTIONS.GET_URLS:
+    case ACTIONS.GET_URLS: {
       const images = action.payload.images.map((img) => ({
         id: img.id,
         thumb: img.urls.thumb,
@@ -16,6 +16,7 @@ export const imageReducer = (state = initialState, action) => {
         },
       }))
       return { images }
+    }
     default:
       return state
   }

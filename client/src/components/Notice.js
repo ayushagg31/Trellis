@@ -31,6 +31,7 @@ export default function Notice({ message, clearError, success }) {
   return (
     <div className={classes.errorNotice}>
       <span>{message}</span>
+      {/* eslint-disable-next-line react/button-has-type */}
       <button className={classes.button} onClick={clearError}>
         <CancelIcon className={classes.cancel} />
       </button>

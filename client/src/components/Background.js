@@ -107,10 +107,10 @@ export default function Background({
       )}
       {showImage && (
         <div className={classes.menuContainer}>
-          {images.map((image, index) => (
+          {images.map((image) => (
             <div
               className={classes.card}
-              key={index}
+              key={image.id}
               style={{
                 backgroundImage: `url(${image.thumb})`,
                 positon: 'relative',

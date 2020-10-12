@@ -1,3 +1,6 @@
+/* eslint-disable no-cond-assign */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-var */
 export default function midString(prev, next) {
   var p
   var n

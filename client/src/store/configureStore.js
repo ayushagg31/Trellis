@@ -19,6 +19,7 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === ACTIONS.LOGOUT_USER) {
+    // eslint-disable-next-line no-param-reassign
     state = undefined
   }
   return appReducer(state, action)

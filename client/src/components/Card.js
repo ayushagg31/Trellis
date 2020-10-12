@@ -80,6 +80,7 @@ export default function Card({ task, index }) {
                     }
                     setTitle(text)
                     dispatch(updateCardById(task._id, { name: text }))
+                    // eslint-disable-next-line no-param-reassign
                     task.name = text
                   }}
                 />
