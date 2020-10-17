@@ -5,6 +5,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useSelector, useDispatch } from 'react-redux'
 import { logoutUser } from '../actions/actionCreators/userActions'
 import AddItem from './AddItem'
+import Search from './Search'
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -59,6 +60,9 @@ export default function Header({ loggedIn, btnText, path, icon }) {
   const dispatch = useDispatch()
   return (
     <>
+      <div>
+				<Search/>
+			</div>
       <div className={classes.header}>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div className={classes.trellis}>Trellis</div>
