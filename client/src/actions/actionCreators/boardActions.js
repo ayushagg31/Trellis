@@ -106,15 +106,20 @@ export const fetchsCardsFromBoard = (id, token) => (dispatch) => {
     })
 }
 
-export const fetchActivitiesFromBoard = (id, token) => (dispatch) => {
+export const fetchActivitiesFromBoard = (id, token, skip, limit) => (
+  dispatch,
+) => {
   axios
-    .get(`${BASE_URL + id}/activities`, {
+    .get(`${BASE_URL + id}/activities?skip=${skip || 0}&limit=${limit || 10}`, {
       headers: { 'x-auth-token': token },
     })
     .then((res) => {
       dispatch({
         type: ACTIONS.GET_ACTIVITIES,
-        payload: { activities: res.data },
+        payload: {
+          activities: res.data,
+          activityCount: parseInt(res.headers['x-total-count'], 10) || 1,
+        },
       })
     })
     .catch((e) => {

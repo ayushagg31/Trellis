@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
+import AddItem from './AddItem'
+import { fetchActivitiesFromBoard } from '../actions/actionCreators/boardActions'
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     fontFamily: 'Arial, Helvetica, sans-serif',
@@ -19,11 +21,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Activities() {
+export default function Activities({ board }) {
   const classes = useStyles()
   // eslint-disable-next-line
   const [dt, setDt] = useState(new Date().toLocaleString())
-  const { activities } = useSelector((state) => state.activities)
+  const { activities, activityCount } = useSelector((state) => state.activities)
+  const dispatch = useDispatch()
+  const { token } = useSelector((state) => state.user)
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
     const secTimer = setInterval(() => {
@@ -32,10 +37,16 @@ export default function Activities() {
     return () => clearInterval(secTimer)
   }, [])
 
+  const loadMoreActivities = () => {
+    const currentPage = page + 1
+    const skip = currentPage * 10
+    dispatch(fetchActivitiesFromBoard(board.id, token, skip, 10))
+    setPage(currentPage)
+  }
+
   return (
     <div className={classes.wrapper}>
-      {activities.map((intialActivity, index) => {
-        const activity = activities[activities.length - 1 - index]
+      {activities.map((activity) => {
         const date = new Date(activity.createdAt)
         const str = moment(date).fromNow()
         /* eslint-disable-next-line  */
@@ -74,6 +85,14 @@ export default function Activities() {
           </div>
         )
       })}
+      {(page + 1) * 10 < activityCount && (
+        <AddItem
+          btnText="Load more"
+          handleClick={() => loadMoreActivities()}
+          type="background"
+          width="310px"
+        />
+      )}
     </div>
   )
 }
