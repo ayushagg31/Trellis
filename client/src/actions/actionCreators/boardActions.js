@@ -121,7 +121,7 @@ export const fetchActivitiesFromBoard = (id, token, last, limit) => (
         type: ACTIONS.GET_ACTIVITIES,
         payload: {
           activities: res.data,
-          activityCount: parseInt(res.headers['x-total-count'], 10) || 1,
+          hasMore: res.headers['x-has-more'] === 'true',
           add: !!last,
         },
       })

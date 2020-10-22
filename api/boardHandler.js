@@ -83,9 +83,9 @@ router.get('/:id/activities', auth, async (req, res, next) => {
         const query = { boardId: _id }
         if (_last)
             query._id = {'$lt': _last}
-        const activities = await Activity.find(query, null, { limit: _limit, sort: { _id: 'desc' } })
-        res.append('X-Total-Count', await Activity.countDocuments({ boardId: _id }))
-        res.send(activities)
+        const activities = await Activity.find(query, null, { limit: _limit + 1, sort: { _id: 'desc' } })
+        res.append('X-Has-More', activities.length === _limit + 1 ? 'true' : 'false')
+        res.send(activities.slice(0, _limit))
     } catch (error) {
         next(error)
     }

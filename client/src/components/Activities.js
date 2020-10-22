@@ -25,7 +25,7 @@ export default function Activities({ board }) {
   const classes = useStyles()
   // eslint-disable-next-line
   const [dt, setDt] = useState(new Date().toLocaleString())
-  const { activities, activityCount } = useSelector((state) => state.activities)
+  const { activities, hasMore } = useSelector((state) => state.activities)
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.user)
 
@@ -82,7 +82,7 @@ export default function Activities({ board }) {
           </div>
         )
       })}
-      {activities.length < activityCount && (
+      {hasMore && (
         <AddItem
           btnText="Load more"
           handleClick={() => loadMoreActivities()}

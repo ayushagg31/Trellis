@@ -12,13 +12,12 @@ export const activityReducer = (state = initialState, action) => {
           ...(action.payload.add ? state.activities : []),
           ...action.payload.activities,
         ],
-        activityCount: action.payload.activityCount,
+        hasMore: action.payload.hasMore,
       }
     case ACTIONS.ADD_ACTIVITY:
       return {
         ...state,
         activities: [action.payload.activity, ...state.activities],
-        activityCount: state.activityCount + 1,
       }
     case ACTIONS.DELETE_ACTIVITY: {
       const activitiesLog = state.activities
@@ -29,7 +28,6 @@ export const activityReducer = (state = initialState, action) => {
       return {
         ...state,
         activities: [...state.activitiesLog],
-        activityCount: state.activityCount - 1,
       }
     }
     case ACTIONS.ERROR_ACTIVITY:
