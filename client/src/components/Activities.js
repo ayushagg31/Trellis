@@ -28,7 +28,6 @@ export default function Activities({ board }) {
   const { activities, activityCount } = useSelector((state) => state.activities)
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.user)
-  const [page, setPage] = useState(0)
 
   useEffect(() => {
     const secTimer = setInterval(() => {
@@ -38,10 +37,10 @@ export default function Activities({ board }) {
   }, [])
 
   const loadMoreActivities = () => {
-    const currentPage = page + 1
-    const skip = currentPage * 10
-    dispatch(fetchActivitiesFromBoard(board.id, token, skip, 10))
-    setPage(currentPage)
+    const lastActivity = activities[activities.length - 1]
+    dispatch(
+      fetchActivitiesFromBoard(board.id, token, true, lastActivity._id, 10),
+    )
   }
 
   return (
@@ -85,7 +84,7 @@ export default function Activities({ board }) {
           </div>
         )
       })}
-      {(page + 1) * 10 < activityCount && (
+      {activities.length < activityCount && (
         <AddItem
           btnText="Load more"
           handleClick={() => loadMoreActivities()}

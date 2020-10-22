@@ -8,13 +8,16 @@ export const activityReducer = (state = initialState, action) => {
     case ACTIONS.GET_ACTIVITIES:
       return {
         ...state,
-        activities: [...state.activities, ...action.payload.activities],
+        activities: [
+          ...(action.payload.additional ? state.activities : []),
+          ...action.payload.activities,
+        ],
         activityCount: action.payload.activityCount,
       }
     case ACTIONS.ADD_ACTIVITY:
       return {
         ...state,
-        activities: [...state.activities, action.payload.activity],
+        activities: [action.payload.activity, ...state.activities],
         activityCount: state.activityCount + 1,
       }
     case ACTIONS.DELETE_ACTIVITY: {
@@ -26,7 +29,7 @@ export const activityReducer = (state = initialState, action) => {
       return {
         ...state,
         activities: [...state.activitiesLog],
-        activityCount: state.activitiesLog.length,
+        activityCount: state.activityCount - 1,
       }
     }
     case ACTIONS.ERROR_ACTIVITY:

@@ -74,13 +74,16 @@ router.get('/:id/cards', auth, async (req, res, next) => {
 // get activities based on boardId
 router.get('/:id/activities', auth, async (req, res, next) => {
     const _id = req.params.id
-    const _skip = Number.parseInt(req.query.skip, 10) || 0
+    const _last = req.query.last
     const _limit = Number.parseInt(req.query.limit, 10) || 10
     try {
         const board = await Board.findOne({ _id, userId: req.user })
         if (!board)
             return res.status(404).send()
-        const activities = await Activity.find({ boardId: _id }, null, { skip: _skip, limit: _limit, sort: { createdAt: 'desc' } })
+        const query = { boardId: _id }
+        if (_last)
+            query._id = {'$lt': _last}
+        const activities = await Activity.find(query, null, { limit: _limit, sort: { _id: 'desc' } })
         res.append('X-Total-Count', await Activity.countDocuments({ boardId: _id }))
         res.send(activities)
     } catch (error) {
