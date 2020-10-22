@@ -9,7 +9,7 @@ export const activityReducer = (state = initialState, action) => {
       return {
         ...state,
         activities: [
-          ...(action.payload.additional ? state.activities : []),
+          ...(action.payload.add ? state.activities : []),
           ...action.payload.activities,
         ],
         activityCount: action.payload.activityCount,

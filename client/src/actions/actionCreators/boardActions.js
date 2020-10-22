@@ -106,13 +106,9 @@ export const fetchsCardsFromBoard = (id, token) => (dispatch) => {
     })
 }
 
-export const fetchActivitiesFromBoard = (
-  id,
-  token,
-  additional,
-  last,
-  limit,
-) => (dispatch) => {
+export const fetchActivitiesFromBoard = (id, token, last, limit) => (
+  dispatch,
+) => {
   let params = ''
   if (last) params += `&last=${last}`
   if (limit) params += `&limit=${limit || 10}`
@@ -126,7 +122,7 @@ export const fetchActivitiesFromBoard = (
         payload: {
           activities: res.data,
           activityCount: parseInt(res.headers['x-total-count'], 10) || 1,
-          additional,
+          add: !!last,
         },
       })
     })

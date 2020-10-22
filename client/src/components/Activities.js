@@ -38,9 +38,7 @@ export default function Activities({ board }) {
 
   const loadMoreActivities = () => {
     const lastActivity = activities[activities.length - 1]
-    dispatch(
-      fetchActivitiesFromBoard(board.id, token, true, lastActivity._id, 10),
-    )
+    dispatch(fetchActivitiesFromBoard(board.id, token, lastActivity._id, 10))
   }
 
   return (
