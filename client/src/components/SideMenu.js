@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ReactDOM from "react-dom"
 import { Paper, makeStyles , fade} from '@material-ui/core'
 import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
@@ -77,16 +76,12 @@ const useStyles = makeStyles((theme) => ({
     },
   }
 }))
-export default function SideMenu({ setBackground, board }) {
+export default function SideMenu({ setBackground, board, setSearch, search }) {
   const [showMenu, setShowMenu] = useState(false)
   const [showBackground, setShowBackground] = useState(false)
   const classes = useStyles({ showMenu })
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.user)
-
-  const filterPage = (value) => {
-    console.log(value);
-  }
 
   return (
     <>
@@ -104,7 +99,10 @@ export default function SideMenu({ setBackground, board }) {
         <Paper className={classes.container} elevation={1} variant="outlined">
           <MenuHeader
             text="Menu"
-            closeHandler={() => setShowMenu(false)}
+            closeHandler={() => {
+              setShowMenu(false)
+              setSearch('')
+            }}
             type="menu"
           />
           <Hr />
@@ -120,9 +118,9 @@ export default function SideMenu({ setBackground, board }) {
               }}
               inputProps={{ 'aria-label': 'search' }}
               onChange={(e) => {
-                e.preventDefault()
-                filterPage(e.target.value)
+                setSearch(e.target.value)
               }}
+              value={search}
             />
           </div>
           <Hr />

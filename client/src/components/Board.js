@@ -79,6 +79,7 @@ export default function Board() {
   const [editable, setEditable] = useState(false)
   const [boardTitle, setBoardTitle] = useState('')
   const dispatch = useDispatch()
+  const [searchValue, setSearchValue] = useState('')
 
   if (!loading && name !== currBoard.name && currBoard.name !== undefined)
     name = currBoard.name
@@ -341,6 +342,10 @@ export default function Board() {
     setAddListFlag(true)
     addFlag.current = false
   }
+  const setSearch = (value) => {
+    setSearchValue(value)
+  }
+
   const setBackground = (background) => {
     if (background.thumb) {
       setUrl(background.full)
@@ -371,6 +376,7 @@ export default function Board() {
               color: background,
             },
           },
+    
           token,
         ),
       )
@@ -447,11 +453,15 @@ export default function Board() {
                       const tasks = column.taskIds.map(
                         (taskId) => initialData.tasks[taskId],
                       )
+                      const filteredTasks = tasks.filter(task => {
+                        return searchValue ? task.name.includes(searchValue) : true
+                      })
                       return (
                         <List
                           key={column._id}
                           column={column}
                           tasks={tasks}
+                          filteredTasks={filteredTasks}
                           index={index}
                         />
                       )
@@ -487,7 +497,7 @@ export default function Board() {
               )}
             </Droppable>
           </DragDropContext>
-          <SideMenu setBackground={setBackground} board={{ id, color, url }} />
+          <SideMenu setBackground={setBackground} board={{ id, color, url }} setSearch={setSearch} search={searchValue} />
         </div>
       ) : (
         <NotFound />
