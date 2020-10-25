@@ -115,7 +115,14 @@ export default function SideMenu({ setBackground, board }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setDeleting(false)} autoFocus="true">
+              <Button
+                autoFocus="true"
+                variant="contained"
+                color="default"
+                onClick={() => setDeleting(false)}
+                className={classes.button}
+                startIcon={<CancelIcon />}
+              >
                 Cancel
               </Button>
               <Button
@@ -123,7 +130,10 @@ export default function SideMenu({ setBackground, board }) {
                   dispatch(deleteBoardById(board.id, token))
                   history.push('/')
                 }}
-                color="primary"
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                startIcon={<DeleteIcon />}
               >
                 Delete
               </Button>
