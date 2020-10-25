@@ -84,7 +84,7 @@ export default function Activities({ board }) {
       })}
       {hasMore && (
         <AddItem
-          btnText="Load more"
+          btnText="Load more activities..."
           handleClick={() => loadMoreActivities()}
           type="background"
           width="310px"
