@@ -1,10 +1,19 @@
 import React, { useState } from 'react'
-import { Paper, makeStyles } from '@material-ui/core'
+import {
+  Paper,
+  makeStyles,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core'
 import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import { useDispatch, useSelector } from 'react-redux'
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import AddItem from './AddItem'
 import Activities from './Activities'
 import Hr from './Hr'
@@ -41,8 +50,10 @@ const useStyles = makeStyles((theme) => ({
 export default function SideMenu({ setBackground, board }) {
   const [showMenu, setShowMenu] = useState(false)
   const [showBackground, setShowBackground] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const classes = useStyles({ showMenu })
   const dispatch = useDispatch()
+  const history = useHistory()
   const { token } = useSelector((state) => state.user)
   return (
     <>
@@ -84,17 +95,40 @@ export default function SideMenu({ setBackground, board }) {
               ></span>
             }
           />
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <AddItem
-              btnText="Delete Board"
-              handleClick={() => {
-                dispatch(deleteBoardById(board.id, token))
-              }}
-              type="background"
-              width="310px"
-              icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />}
-            />
-          </Link>
+          <AddItem
+            btnText="Delete Board"
+            handleClick={() => setDeleting(true)}
+            type="background"
+            width="310px"
+            icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />}
+          />
+          <Dialog
+            open={deleting}
+            onClose={() => setDeleting(false)}
+            aria-labelledby="delete-dialog-title"
+            aria-describedby="delete-dialog-description"
+          >
+            <DialogTitle id="delete-dialog-title">Are you sure?</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="delete-dialog-description">
+                This will permanently delete the board {board.title}.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleting(false)} autoFocus="true">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatch(deleteBoardById(board.id, token))
+                  history.push('/')
+                }}
+                color="primary"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
           <div style={{ display: 'flex', marginTop: '20px' }}>
             <AccountTreeIcon
               fontSize="small"

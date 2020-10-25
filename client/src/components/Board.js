@@ -487,7 +487,10 @@ export default function Board() {
               )}
             </Droppable>
           </DragDropContext>
-          <SideMenu setBackground={setBackground} board={{ id, color, url }} />
+          <SideMenu
+            setBackground={setBackground}
+            board={{ id, color, url, title: boardTitle }}
+          />
         </div>
       ) : (
         <NotFound />
