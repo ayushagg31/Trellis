@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SideMenu({ setBackground, board }) {
   const [showMenu, setShowMenu] = useState(false)
   const [showBackground, setShowBackground] = useState(false)
-  const [deleting, setDeleting] = React.useState(false)
+  const [deleting, setDeleting] = useState(false)
   const classes = useStyles({ showMenu })
   const dispatch = useDispatch()
   const history = useHistory()
