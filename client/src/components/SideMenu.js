@@ -114,7 +114,7 @@ export default function SideMenu({ setBackground, board }) {
             </div>
           </div>
           <div className={classes.scroll}>
-            <Activities />
+            <Activities board={{ id: board.id }} />
           </div>
         </Paper>
       )}
