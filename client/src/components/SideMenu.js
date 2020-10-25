@@ -9,6 +9,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import CancelIcon from '@material-ui/icons/Cancel'
 import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import { useDispatch, useSelector } from 'react-redux'
