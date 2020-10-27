@@ -502,7 +502,7 @@ export default function Board() {
           <SideMenu
             setBackground={setBackground}
             board={{ id, color, url, title: boardTitle }}
-            setSearch={setSearch} 
+            setSearch={setSearch}
             search={searchValue}
           />
         </div>
