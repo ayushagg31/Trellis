@@ -376,7 +376,6 @@ export default function Board() {
               color: background,
             },
           },
-    
           token,
         ),
       )
@@ -453,8 +452,11 @@ export default function Board() {
                       const tasks = column.taskIds.map(
                         (taskId) => initialData.tasks[taskId],
                       )
-                      const filteredTasks = tasks.filter(task => {
-                        return searchValue ? task.name.includes(searchValue) : true
+                      const filteredTasks = tasks.filter((task) => {
+                        if (searchValue) {
+                          return task.name.includes(searchValue)
+                        }
+                        return true
                       })
                       return (
                         <List
@@ -500,7 +502,8 @@ export default function Board() {
           <SideMenu
             setBackground={setBackground}
             board={{ id, color, url, title: boardTitle }}
-            setSearch={setSearch} search={searchValue}
+            setSearch={setSearch} 
+            search={searchValue}
           />
         </div>
       ) : (

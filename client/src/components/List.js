@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Column({ column, tasks, filteredTasks, index}) {
+export default function Column({ column, tasks, filteredTasks, index }) {
   const classes = useStyles()
   const [cardTitle, setCardTitle] = useState('')
   const [listTitle, setListTitle] = useState(column.name)
