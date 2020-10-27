@@ -106,15 +106,24 @@ export const fetchsCardsFromBoard = (id, token) => (dispatch) => {
     })
 }
 
-export const fetchActivitiesFromBoard = (id, token) => (dispatch) => {
+export const fetchActivitiesFromBoard = (id, token, last, limit) => (
+  dispatch,
+) => {
+  let params = ''
+  if (last) params += `&last=${last}`
+  if (limit) params += `&limit=${limit || 10}`
   axios
-    .get(`${BASE_URL + id}/activities`, {
+    .get(`${BASE_URL + id}/activities?${params}`, {
       headers: { 'x-auth-token': token },
     })
     .then((res) => {
       dispatch({
         type: ACTIONS.GET_ACTIVITIES,
-        payload: { activities: res.data },
+        payload: {
+          activities: res.data,
+          hasMore: res.headers['x-has-more'] === 'true',
+          add: !!last,
+        },
       })
     })
     .catch((e) => {

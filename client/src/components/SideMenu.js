@@ -1,12 +1,24 @@
 import React, { useState } from 'react'
-import { Paper, makeStyles , fade} from '@material-ui/core'
+import {
+  Paper,
+  makeStyles,
+  fade,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import CancelIcon from '@material-ui/icons/Cancel'
 import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import InputBase from '@material-ui/core/InputBase'
 import SearchIcon from '@material-ui/icons/Search'
 import { useDispatch, useSelector } from 'react-redux'
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import AddItem from './AddItem'
 import Activities from './Activities'
 import Hr from './Hr'
@@ -79,8 +91,10 @@ const useStyles = makeStyles((theme) => ({
 export default function SideMenu({ setBackground, board, setSearch, search }) {
   const [showMenu, setShowMenu] = useState(false)
   const [showBackground, setShowBackground] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const classes = useStyles({ showMenu })
   const dispatch = useDispatch()
+  const history = useHistory()
   const { token } = useSelector((state) => state.user)
 
   return (
@@ -144,17 +158,50 @@ export default function SideMenu({ setBackground, board, setSearch, search }) {
               ></span>
             }
           />
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <AddItem
-              btnText="Delete Board"
-              handleClick={() => {
-                dispatch(deleteBoardById(board.id, token))
-              }}
-              type="background"
-              width="310px"
-              icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />}
-            />
-          </Link>
+          <AddItem
+            btnText="Delete Board"
+            handleClick={() => setDeleting(true)}
+            type="background"
+            width="310px"
+            icon={<DeleteSweepIcon style={{ marginRight: '10px' }} />}
+          />
+          <Dialog
+            open={deleting}
+            onClose={() => setDeleting(false)}
+            aria-labelledby="delete-dialog-title"
+            aria-describedby="delete-dialog-description"
+          >
+            <DialogTitle id="delete-dialog-title">Are you sure?</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="delete-dialog-description">
+                This will permanently delete the board {board.title}.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                autoFocus="true"
+                variant="contained"
+                color="default"
+                onClick={() => setDeleting(false)}
+                className={classes.button}
+                startIcon={<CancelIcon />}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatch(deleteBoardById(board.id, token))
+                  history.push('/')
+                }}
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
           <div style={{ display: 'flex', marginTop: '20px' }}>
             <AccountTreeIcon
               fontSize="small"
@@ -174,7 +221,7 @@ export default function SideMenu({ setBackground, board, setSearch, search }) {
             </div>
           </div>
           <div className={classes.scroll}>
-            <Activities />
+            <Activities board={{ id: board.id }} />
           </div>
         </Paper>
       )}
