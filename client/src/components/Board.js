@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
@@ -80,6 +80,15 @@ export default function Board() {
   const [boardTitle, setBoardTitle] = useState('')
   const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState('')
+
+  const filteredTasksById = useMemo(() => {
+    return Object.values(initialData.tasks || {}).reduce((acc, task) => {
+      if (task.name.includes(searchValue)) {
+        acc[task._id] = task
+      }
+      return acc
+    }, {})
+  }, [initialData, searchValue])
 
   if (!loading && name !== currBoard.name && currBoard.name !== undefined)
     name = currBoard.name
@@ -452,12 +461,9 @@ export default function Board() {
                       const tasks = column.taskIds.map(
                         (taskId) => initialData.tasks[taskId],
                       )
-                      const filteredTasks = tasks.filter((task) => {
-                        if (searchValue) {
-                          return task.name.includes(searchValue)
-                        }
-                        return true
-                      })
+                      const filteredTasks = column.taskIds
+                        .map((tId) => filteredTasksById[tId])
+                        .filter((x) => x)
                       return (
                         <List
                           key={column._id}
@@ -465,6 +471,7 @@ export default function Board() {
                           tasks={tasks}
                           filteredTasks={filteredTasks}
                           index={index}
+                          searchWord={searchValue}
                         />
                       )
                     })}
@@ -499,11 +506,13 @@ export default function Board() {
               )}
             </Droppable>
           </DragDropContext>
+          debugger
           <SideMenu
             setBackground={setBackground}
             board={{ id, color, url, title: boardTitle }}
             setSearch={setSearch}
             search={searchValue}
+            isResultEmpty={!Object.keys(filteredTasksById).length}
           />
         </div>
       ) : (

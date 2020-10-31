@@ -16,6 +16,7 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import InputBase from '@material-ui/core/InputBase'
 import SearchIcon from '@material-ui/icons/Search'
+import Alert from '@material-ui/lab/Alert'
 import { useDispatch, useSelector } from 'react-redux'
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep'
 import { useHistory } from 'react-router-dom'
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
+    paddingBottom: '10px',
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       width: 'auto',
@@ -88,7 +90,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }))
-export default function SideMenu({ setBackground, board, setSearch, search }) {
+export default function SideMenu({
+  setBackground,
+  board,
+  setSearch,
+  search,
+  isResultEmpty,
+}) {
   const [showMenu, setShowMenu] = useState(false)
   const [showBackground, setShowBackground] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -125,7 +133,7 @@ export default function SideMenu({ setBackground, board, setSearch, search }) {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search by keyword"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -137,6 +145,9 @@ export default function SideMenu({ setBackground, board, setSearch, search }) {
               value={search}
             />
           </div>
+          {isResultEmpty && search && (
+            <Alert severity="error">No result found</Alert>
+          )}
           <Hr />
           <AddItem
             btnText="Change Background"
