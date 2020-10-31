@@ -506,7 +506,6 @@ export default function Board() {
               )}
             </Droppable>
           </DragDropContext>
-          debugger
           <SideMenu
             setBackground={setBackground}
             board={{ id, color, url, title: boardTitle }}
