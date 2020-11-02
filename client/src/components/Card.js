@@ -4,6 +4,7 @@ import { Paper, makeStyles, InputBase, IconButton } from '@material-ui/core'
 
 import { useDispatch, useSelector } from 'react-redux'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import Highlighter from 'react-highlight-words'
 import {
   updateCardById,
   deleteCardById,
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Card({ task, index }) {
+export default function Card({ task, index, searchWord }) {
   const [editable, setEditable] = useState(false)
   const [title, setTitle] = useState(task.name)
   const [card, setCard] = useState(true)
@@ -38,6 +39,7 @@ export default function Card({ task, index }) {
   const classes = useStyles()
   const { token, user } = useSelector((state) => state.user)
   const dispatch = useDispatch()
+
   return (
     <Draggable draggableId={task._id} index={index}>
       {(provided) => (
@@ -86,7 +88,16 @@ export default function Card({ task, index }) {
                 />
               ) : (
                 <div style={{ position: 'relative' }}>
-                  <div>{task.name}</div>
+                  <div>
+                    <Highlighter
+                      highlightStyle={{
+                        backgroundColor: 'lightgray',
+                      }}
+                      searchWords={[searchWord]}
+                      autoEscape
+                      textToHighlight={task.name}
+                    />
+                  </div>
                   {showDelete && (
                     <IconButton
                       className={classes.delete}

@@ -62,7 +62,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Column({ column, tasks, index }) {
+export default function Column({
+  column,
+  tasks,
+  filteredTasks,
+  index,
+  searchWord,
+}) {
   const classes = useStyles()
   const [cardTitle, setCardTitle] = useState('')
   const [listTitle, setListTitle] = useState(column.name)
@@ -209,8 +215,13 @@ export default function Column({ column, tasks, index }) {
                       <div ref={provided.innerRef} {...provided.droppableProps}>
                         <div className={classes.scroll}>
                           {/* eslint-disable-next-line no-shadow */}
-                          {tasks.map((task, index) => (
-                            <Card key={task._id} task={task} index={index} />
+                          {filteredTasks.map((task, index) => (
+                            <Card
+                              key={task._id}
+                              task={task}
+                              index={index}
+                              searchWord={searchWord}
+                            />
                           ))}
                           {addCardFlag && (
                             <InputCard
