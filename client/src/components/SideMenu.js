@@ -65,7 +65,7 @@ export default function SideMenu({ setBackground, board }) {
           handleClick={() => setShowMenu(true)}
           icon={<MoreHorizIcon />}
           type="menu"
-          width="120px"
+          width="123px"
           color="white"
         />
       </div>
