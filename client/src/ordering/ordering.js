@@ -1,6 +1,9 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-var */
+/*
+Algorithm inspired from stackoverflow article - https://stackoverflow.com/questions/38923376/return-a-new-string-that-sorts-between-two-given-strings/38927158#38927158
+*/
 export default function midString(prev, next) {
   var p
   var n
